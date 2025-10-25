@@ -63,6 +63,35 @@ html, body {
 
 /* pointer cursor for interactive vector features */
 .leaflet-interactive { cursor: pointer; }
+
+/* Panels (left timeline, right info) */
+.panel {
+  position: fixed; /* overlay the map regardless of map layout */
+  top: 82px;
+  bottom: 12px;
+  width: 320px;
+  background: rgba(255,255,255,0.98);
+  box-shadow: 0 8px 24px rgba(10,30,60,0.16);
+  border-left: 1px solid rgba(0,0,0,0.06);
+  transition: transform 260ms ease, opacity 260ms ease;
+  opacity: 0;
+  overflow: auto;
+  z-index: 3000 !important; /* ensure panels sit above the map layers/controls */
+  padding-bottom: 20px;
+  pointer-events: auto; /* allow interaction even when map elements are below */
+}
+.panel.open { transform: translateX(0); opacity: 1; }
+.panel.left { left: 12px; transform: translateX(-100%); }
+.panel.right { right: 12px; transform: translateX(100%); border-left: none; border-right: 1px solid rgba(0,0,0,0.06); }
+.panel.open { transform: translateX(0); opacity: 1; }
+.panel-header { font-weight: 600; padding: 10px 12px; border-bottom: 1px solid #eee; display:flex; justify-content:space-between; align-items:center; }
+.panel-content { padding: 12px; font-size: 14px; color: #223; }
+.close-btn { background:transparent; border: none; font-size: 14px; cursor: pointer; }
+.timeline-list { list-style: decimal inside; margin: 8px 0; padding: 0; }
+.timeline-item { margin-bottom: 10px; }
+.t-year { color:#b44; font-weight:700; margin-right:6px; }
+.info-title { font-size: 16px; font-weight:700; margin-bottom:6px; }
+.empty { color: #666; }
 /* Popup content */
 .event-list { margin: 0; padding-left: 16px; }
 .event-item { margin-bottom: 6px; }

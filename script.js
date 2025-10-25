@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  const map = L.map('map', { preferCanvas: true }).setView([16.0, 108.0], 5.5);
+  const map = L.map('map', { preferCanvas: true }).setView([16.0, 108.0], 6.2);
+  // expose map globally so other small helper scripts can access it (map-actions.js)
+  try { window.map = map; } catch (err) { /* ignore if cannot attach */ }
 
   // Basemap: CartoDB Positron for a clean, light background
   const base = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -84,9 +86,13 @@ function onEachFeature(feature, layer) {
   const displayName = getFeatureDisplayName(feature);
   layer.on({
     click: () => {
+      // Do not show popup any more — open panels instead
       const items = eventsForFeatureAndPeriod(feature, currentPeriod);
-      const html = popupHtml(displayName, items);
-      layer.bindPopup(html, { maxWidth: 350 }).openPopup();
+      // focus/zoom to clicked feature
+      try { if (typeof focusOnLayer === 'function') focusOnLayer(layer); } catch (err) { /* ignore */ }
+      // render left timeline and right info panels
+      try { window.renderTimeline(displayName, items); } catch (err) { /* ignore */ }
+      try { window.renderProvinceInfo(feature, items.length); } catch (err) { /* ignore */ }
     },
     mouseover: (e) => {
       try {

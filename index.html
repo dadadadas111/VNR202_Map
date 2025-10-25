@@ -28,10 +28,25 @@
 
   <div id="loader" class="loader">Đang tải bản đồ...</div>
 
+  <!-- Left / Right panels (hidden by default) -->
+  <div id="leftPanel" class="panel left">
+    <div class="panel-header">Sự kiện <button id="closeLeft" class="close-btn">✕</button></div>
+    <div id="leftContent" class="panel-content">Chưa có dữ liệu.</div>
+  </div>
+
+  <div id="rightPanel" class="panel right">
+    <div class="panel-header">Thông tin tỉnh <button id="closeRight" class="close-btn">✕</button></div>
+    <div id="rightContent" class="panel-content">Chưa có tỉnh được chọn.</div>
+  </div>
+
   <div id="map"></div>
 
   <!-- Leaflet JS (no integrity attribute to avoid blocked loading) -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- small UI and map action helpers split out to keep main script smaller -->
+  <script src="ui-panels.js"></script>
+  <script src="map-actions.js"></script>
 
   <script src="script.js"></script>
 </body>
