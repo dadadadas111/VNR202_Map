@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bản đồ số lịch sử Đảng Cộng sản Việt Nam — Prototype</title>
+
+  <!-- Leaflet CSS (no integrity to avoid CDN digest mismatch in some environments) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="title-area">
+      <h1>Bản đồ số lịch sử — Đảng Cộng sản Việt Nam</h1>
+      <p class="subtitle">Chọn giai đoạn để lọc sự kiện; click vào tỉnh để xem chi tiết.</p>
+    </div>
+    <div class="control-area">
+      <label for="periodSelect">Giai đoạn</label>
+      <select id="periodSelect">
+        <option value="p1">1930–1945</option>
+        <option value="p2">1945–1975</option>
+        <option value="p3">1975–nay</option>
+      </select>
+    </div>
+  </header>
+
+  <div id="loader" class="loader">Đang tải bản đồ...</div>
+
+  <div id="map"></div>
+
+  <!-- Leaflet JS (no integrity attribute to avoid blocked loading) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script src="script.js"></script>
+</body>
+</html>

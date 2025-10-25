@@ -1,0 +1,75 @@
+/* Basic layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, Roboto, 'Segoe UI', Arial, Helvetica, sans-serif;
+  background: #fafafa;
+  color: #222;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 18px;
+  background: linear-gradient(180deg, #ffffff, #f7f9fc);
+  border-bottom: 1px solid #e6eef6;
+  box-shadow: 0 1px 6px rgba(20,40,60,0.04);
+}
+.title-area h1 { margin: 0; font-size: 18px; }
+.title-area .subtitle { margin: 4px 0 0 0; color: #556; font-size: 13px; }
+.control-area { display:flex; align-items:center; gap:8px; }
+.control-area label { font-size: 13px; color: #334; }
+.control-area select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #d0d7de;
+  background: white;
+}
+
+#map { position: absolute; left: 0; right: 0; bottom: 0; top: 82px; }
+
+.loader {
+  position: absolute;
+  top: 92px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1200;
+  background: rgba(255,255,255,0.95);
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  font-size: 13px;
+}
+/* Legend */
+.legend {
+  background: white;
+  padding: 8px 10px;
+  font-size: 13px;
+  line-height: 18px;
+  color: #333;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(10,30,60,0.06);
+}
+.legend .box {
+  display: inline-block;
+  width: 18px;
+  height: 12px;
+  margin-right: 6px;
+  vertical-align: middle;
+  border: 1px solid #ddd;
+}
+
+/* pointer cursor for interactive vector features */
+.leaflet-interactive { cursor: pointer; }
+/* Popup content */
+.event-list { margin: 0; padding-left: 16px; }
+.event-item { margin-bottom: 6px; }
+.event-year { font-weight: bold; margin-right: 6px; }
+
+@media (max-width: 600px) {
+  header h1 { font-size: 16px; }
+  #controls { top: 72px; left: 6px; right: 6px; }
+  #map { top: 120px; }
+}

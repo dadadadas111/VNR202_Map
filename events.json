@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Thành lập Đảng Cộng sản Việt Nam",
+    "year": 1930,
+    "province": "Nghệ An",
+    "description": "Đánh dấu sự ra đời của chính đảng cách mạng đầu tiên của giai cấp công nhân Việt Nam."
+  },
+  {
+    "name": "Phong trào Xô viết Nghệ Tĩnh",
+    "year": 1930,
+    "province": "Hà Tĩnh",
+    "description": "Phong trào cách mạng tiêu biểu trong giai đoạn đầu đấu tranh chống thực dân phong kiến."
+  },
+  {
+    "name": "Cách mạng tháng Tám thành công",
+    "year": 1945,
+    "province": "Hà Nội",
+    "description": "Cách mạng thành công, giành chính quyền về tay nhân dân."
+  },
+  {
+    "name": "Chiến thắng Điện Biên Phủ",
+    "year": 1954,
+    "province": "Điện Biên",
+    "description": "Chiến thắng lịch sử lừng lẫy năm châu, chấn động địa cầu."
+  },
+  {
+    "name": "Đại thắng mùa Xuân 1975",
+    "year": 1975,
+    "province": "TP. Hồ Chí Minh",
+    "description": "Giải phóng hoàn toàn miền Nam, thống nhất đất nước."
+  }
+]
