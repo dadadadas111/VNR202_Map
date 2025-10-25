@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const map = L.map('map', { preferCanvas: true }).setView([16.0, 108.0], 6.2);
+  // ensure tooltip pane is above vector/canvas layers
+  try { const tp = map.getPane && map.getPane('tooltipPane'); if (tp) tp.style.zIndex = 4600; } catch (err) { /* ignore */ }
   // expose map globally so other small helper scripts can access it (map-actions.js)
   try { window.map = map; } catch (err) { /* ignore if cannot attach */ }
 
@@ -28,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let events = [];
   let geo = null;
   let currentPeriod = 'p1';
+  let selectedLayer = null;
+  let selectedFeature = null;
+  let suppressStyleUpdateDuringAnimation = false;
 
 // Period definitions (ASSUMPTION: to avoid double-counting boundary years we use these ranges)
 // p1: 1930-1944, p2: 1945-1974, p3: 1975-present
@@ -88,23 +93,97 @@ function onEachFeature(feature, layer) {
     click: () => {
       // Do not show popup any more — open panels instead
       const items = eventsForFeatureAndPeriod(feature, currentPeriod);
-      // focus/zoom to clicked feature
-      try { if (typeof focusOnLayer === 'function') focusOnLayer(layer); } catch (err) { /* ignore */ }
+      // select/highlight clicked feature immediately
+      try { selectFeature(layer, feature); } catch (err) { /* ignore */ }
+      // focus/zoom to clicked feature (use smoother flyToBounds if available)
+      try {
+        if (typeof window.map !== 'undefined' && typeof window.map.flyToBounds === 'function') {
+          // suppress style updates during animation to avoid popping
+          suppressStyleUpdateDuringAnimation = true;
+          const bounds = layer.getBounds ? layer.getBounds() : null;
+          if (bounds) window.map.flyToBounds(bounds, { padding: [40,40], maxZoom: 9, duration: 0.8 });
+        } else if (typeof focusOnLayer === 'function') {
+          suppressStyleUpdateDuringAnimation = true;
+          focusOnLayer(layer);
+        }
+      } catch (err) { /* ignore */ }
+
       // render left timeline and right info panels
       try { window.renderTimeline(displayName, items); } catch (err) { /* ignore */ }
       try { window.renderProvinceInfo(feature, items.length); } catch (err) { /* ignore */ }
+      // when movement/zoom finishes, re-enable style updates and reapply styles
+      try {
+        if (window.map) {
+          window.map.once('moveend', () => {
+            suppressStyleUpdateDuringAnimation = false;
+            updateGeoStyle();
+            // reapply selection style so it's not overwritten
+            if (selectedLayer && selectedFeature) {
+              applySelectedStyle(selectedLayer);
+            }
+          });
+        }
+      } catch (err) { /* ignore */ }
     },
     mouseover: (e) => {
+      // don't apply hover effect while animating or if this layer is already selected
+      if (suppressStyleUpdateDuringAnimation) return;
+      if (selectedLayer === layer) return;
       try {
-        e.target.setStyle({ fillColor: '#ffe082', fillOpacity: 0.95, color: '#b8860b' });
-        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) e.target.bringToFront();
+        layer.setStyle({ fillColor: '#ffe082', fillOpacity: 0.95, color: '#b8860b' });
+        // do not bring hovered layer to front (avoid covering selected outline)
+        // ensure selected layer stays on top if present
+        if (selectedLayer && selectedLayer !== layer && selectedLayer.bringToFront) selectedLayer.bringToFront();
+        if (layer.openTooltip) layer.openTooltip();
       } catch (err) { /* ignore */ }
     },
     mouseout: (e) => {
-      try { if (geojsonLayer) geojsonLayer.resetStyle(e.target); } catch (err) { /* ignore */ }
+      // if this layer is selected, keep its selected styling
+      if (selectedLayer === layer) return;
+      try {
+        if (geojsonLayer && typeof geojsonLayer.resetStyle === 'function') geojsonLayer.resetStyle(layer);
+        if (layer.closeTooltip) layer.closeTooltip();
+        // reassert selected layer on top so its outline remains visible
+        if (selectedLayer && selectedLayer.bringToFront) selectedLayer.bringToFront();
+      } catch (err) { /* ignore */ }
     }
   });
+  // bind a tooltip showing the display name (appears on hover)
+  try { layer.bindTooltip(displayName, { direction: 'auto', sticky: true, className: 'province-tooltip' }); } catch (err) { /* ignore */ }
 }
+
+  // Apply selected style to a layer
+  function applySelectedStyle(layer) {
+    try {
+      if (!layer) return;
+      layer.setStyle({
+        fillColor: '#fff2cc',
+        color: '#ff6f00',
+        weight: 3,
+        fillOpacity: 0.95
+      });
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge && layer.bringToFront) layer.bringToFront();
+    } catch (err) { /* ignore */ }
+  }
+
+  // Clear previously selected layer and restore style
+  function deselectFeature() {
+    try {
+      if (selectedLayer && geojsonLayer && typeof geojsonLayer.resetStyle === 'function') {
+        geojsonLayer.resetStyle(selectedLayer);
+      }
+    } catch (err) { /* ignore */ }
+    selectedLayer = null; selectedFeature = null;
+  }
+
+  function selectFeature(layer, feature) {
+    try {
+      deselectFeature();
+      selectedLayer = layer;
+      selectedFeature = feature;
+      applySelectedStyle(layer);
+    } catch (err) { /* ignore */ }
+  }
 
 function popupHtml(provinceName, items) {
   let html = `<div><strong>${provinceName}</strong></div>`;
@@ -144,7 +223,10 @@ function countEventsForFeature(feature, periodKey) {
 
     function updateGeoStyle() {
       if (!geojsonLayer) return;
+      if (suppressStyleUpdateDuringAnimation) return; // avoid resetting while animating
       geojsonLayer.setStyle(styleFeature);
+      // reapply selected layer style after default styles applied
+      if (selectedLayer && selectedFeature) applySelectedStyle(selectedLayer);
     }
 
     // Load data and initialize
@@ -172,8 +254,11 @@ function countEventsForFeature(feature, periodKey) {
         } catch (err) { /* ignore */ }
       });
 
+      // Use an SVG renderer for geojson layer so HTML tooltips appear above it reliably
+      const svgRenderer = L.svg({ pane: 'geojsonPane' });
       geojsonLayer = L.geoJSON(geo, {
         pane: 'geojsonPane',
+        renderer: svgRenderer,
         style: styleFeature,
         onEachFeature: onEachFeature
       }).addTo(map);

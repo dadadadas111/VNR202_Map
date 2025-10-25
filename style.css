@@ -92,6 +92,23 @@ html, body {
 .t-year { color:#b44; font-weight:700; margin-right:6px; }
 .info-title { font-size: 16px; font-weight:700; margin-bottom:6px; }
 .empty { color: #666; }
+
+/* Tooltip for provinces */
+.province-tooltip {
+  background: rgba(255,255,255,0.98);
+  color: #112;
+  border: 1px solid rgba(0,0,0,0.08);
+  padding: 6px 8px;
+  box-shadow: 0 4px 12px rgba(10,30,60,0.08);
+  font-size: 13px;
+  border-radius: 4px;
+}
+
+/* Ensure leaflet tooltips (including our province tooltip) appear above panels */
+.leaflet-tooltip, .province-tooltip {
+  z-index: 4700 !important;
+  pointer-events: none; /* avoid capturing pointer events that interfere with hover/select */
+}
 /* Popup content */
 .event-list { margin: 0; padding-left: 16px; }
 .event-item { margin-bottom: 6px; }
