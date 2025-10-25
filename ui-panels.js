@@ -6,15 +6,9 @@
 
   window.panels = {
     openLeft: function (htmlContent) {
-      // On mobile, open bottom panel with Events tab
-      if (window.innerWidth && window.innerWidth <= 700) {
-        panels.openBottom('events', htmlContent);
-        return;
-      }
+      if (isMobile()) return showMobileOverlay();
       const p = byId('leftPanel');
       const c = byId('leftContent');
-      // On small screens, close right panel to avoid overlap
-      try { if (window.innerWidth && window.innerWidth <= 700) panels.closeRight(); } catch (err) {}
       if (c) c.innerHTML = htmlContent || '';
       if (p) p.classList.add('open');
     },
@@ -22,41 +16,14 @@
       const p = byId('leftPanel'); if (p) p.classList.remove('open');
     },
     openRight: function (htmlContent) {
-      // On mobile, open bottom panel with Info tab
-      if (window.innerWidth && window.innerWidth <= 700) {
-        panels.openBottom('info', htmlContent);
-        return;
-      }
+      if (isMobile()) return showMobileOverlay();
       const p = byId('rightPanel');
       const c = byId('rightContent');
-      // On small screens, close left panel to avoid overlap
-      try { if (window.innerWidth && window.innerWidth <= 700) panels.closeLeft(); } catch (err) {}
       if (c) c.innerHTML = htmlContent || '';
       if (p) p.classList.add('open');
     },
     closeRight: function () { const p = byId('rightPanel'); if (p) p.classList.remove('open'); }
   };
-
-  // bottom panel control (mobile)
-  panels.openBottom = function (tab, htmlContent) {
-    const bp = byId('bottomPanel');
-    const bc = byId('bottomContent');
-    const tabEvents = byId('tabEvents');
-    const tabInfo = byId('tabInfo');
-    try { panels.closeLeft(); panels.closeRight(); } catch (err) {}
-    if (!bp) return;
-    // store contents so switching tabs works client-side
-    if (tab === 'events') bp._eventsHtml = htmlContent || '<div class="empty">Không có sự kiện trong giai đoạn này.</div>';
-    if (tab === 'info') bp._infoHtml = htmlContent || '<div class="empty">Không có thông tin.</div>';
-    // set current content
-    if (bc) bc.innerHTML = (tab === 'events' ? bp._eventsHtml : bp._infoHtml) || '';
-    bp.classList.add('open');
-    if (tabEvents && tabInfo) {
-      tabEvents.classList.toggle('active', tab === 'events');
-      tabInfo.classList.toggle('active', tab === 'info');
-    }
-  };
-  panels.closeBottom = function () { const p = byId('bottomPanel'); if (p) p.classList.remove('open'); };
 
   // wire close buttons
   document.addEventListener('DOMContentLoaded', () => {
@@ -64,21 +31,39 @@
     const closeRight = byId('closeRight');
     if (closeLeft) closeLeft.addEventListener('click', () => panels.closeLeft());
     if (closeRight) closeRight.addEventListener('click', () => panels.closeRight());
-    // bottom panel buttons
-    const closeBottom = byId('closeBottom');
-    const tabEvents = byId('tabEvents');
-    const tabInfo = byId('tabInfo');
-    if (closeBottom) closeBottom.addEventListener('click', () => panels.closeBottom());
-    if (tabEvents) tabEvents.addEventListener('click', () => {
-      const bp = byId('bottomPanel'); const bc = byId('bottomContent');
-      tabEvents.classList.add('active'); tabInfo && tabInfo.classList.remove('active');
-      if (bp && bc) bc.innerHTML = bp._eventsHtml || '<div class="empty">Không có sự kiện trong giai đoạn này.</div>';
-    });
-    if (tabInfo) tabInfo.addEventListener('click', () => {
-      const bp = byId('bottomPanel'); const bc = byId('bottomContent');
-      tabInfo.classList.add('active'); tabEvents && tabEvents.classList.remove('active');
-      if (bp && bc) bc.innerHTML = bp._infoHtml || '<div class="empty">Không có thông tin.</div>';
-    });
+  });
+
+  // Mobile overlay helpers
+  function isMobile() {
+    try { return window.matchMedia && window.matchMedia('(max-width: 800px)').matches; } catch (err) { return (window.innerWidth || 0) <= 800; }
+  }
+
+  function createMobileOverlay() {
+    if (byId('mobileOverlay')) return;
+    const o = document.createElement('div');
+    o.id = 'mobileOverlay';
+    o.className = 'mobile-overlay';
+    o.innerHTML = `
+      <div class="mobile-overlay-inner">
+        <h2>Phiên bản di động chưa hỗ trợ</h2>
+        <p>Hiện tại giao diện phân tích chi tiết (tabs trái/phải) chưa hỗ trợ trên màn hình nhỏ. Vui lòng dùng màn hình lớn hơn (máy tính hoặc tablet ở chế độ ngang).</p>
+        <div class="mobile-actions"><button id="mobileDismiss">Đóng và tiếp tục (không hỗ trợ)</button></div>
+      </div>`;
+    document.body.appendChild(o);
+    const btn = byId('mobileDismiss');
+    if (btn) btn.addEventListener('click', () => { o.style.display = 'none'; });
+  }
+
+  function showMobileOverlay() {
+    createMobileOverlay();
+    const o = byId('mobileOverlay');
+    if (o) o.style.display = 'flex';
+    return true;
+  }
+
+  // show overlay automatically on mobile load
+  document.addEventListener('DOMContentLoaded', () => {
+    if (isMobile()) showMobileOverlay();
   });
 
   // helpers to render timeline items and province info

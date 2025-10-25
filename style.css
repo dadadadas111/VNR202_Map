@@ -84,46 +84,6 @@ html, body {
 .panel.left { left: 12px; transform: translateX(-100%); }
 .panel.right { right: 12px; transform: translateX(100%); border-left: none; border-right: 1px solid rgba(0,0,0,0.06); }
 .panel.open { transform: translateX(0); opacity: 1; }
-
-/* Mobile: make panels top/bottom full-width overlays */
-@media (max-width: 700px) {
-  .topbar { padding: 10px 12px; }
-  .panel {
-    left: 8px;
-    right: 8px;
-    width: auto;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(10,30,60,0.18);
-  }
-  .panel.left {
-    /* top panel: slide from top */
-    top: 72px;
-    bottom: auto;
-    height: 42%;
-    transform: translateY(-110%);
-  }
-  .panel.right {
-    /* bottom panel: slide from bottom */
-    bottom: 12px;
-    top: auto;
-    height: 42%;
-    transform: translateY(110%);
-  }
-  .panel.open { transform: translateY(0); opacity: 1; }
-  /* Ensure map takes the remaining space and header is compact */
-  #map { top: 120px; }
-}
-
-/* bottom panel (mobile) specifics */
-.panel.bottom { display: none; }
-@media (max-width:700px) {
-  .panel.bottom { display: block; left: 8px; right: 8px; }
-  .bottom-header { display:flex; justify-content:space-between; align-items:center; padding: 8px; }
-  .bottom-tabs { display:flex; gap:8px; }
-  .tab-btn { background: transparent; border: 1px solid transparent; padding:6px 10px; border-radius:6px; font-weight:600; }
-  .tab-btn.active { background: #fff; border: 1px solid #e6e6e6; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
-  #bottomContent { padding: 12px; }
-}
 .panel-header { font-weight: 600; padding: 10px 12px; border-bottom: 1px solid #eee; display:flex; justify-content:space-between; align-items:center; }
 .panel-content { padding: 12px; font-size: 14px; color: #223; }
 .close-btn { background:transparent; border: none; font-size: 14px; cursor: pointer; }
@@ -149,6 +109,29 @@ html, body {
   z-index: 4700 !important;
   pointer-events: none; /* avoid capturing pointer events that interfere with hover/select */
 }
+
+/* Mobile overlay (temporary 'not supported' message) */
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  display: none; /* shown on small screens by JS */
+  align-items: center;
+  justify-content: center;
+  background: rgba(12,17,23,0.6);
+  z-index: 9999;
+}
+.mobile-overlay-inner {
+  width: min(720px, 92%);
+  background: white;
+  padding: 20px 22px;
+  border-radius: 10px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.4);
+  color: #122;
+}
+.mobile-overlay-inner h2 { margin: 0 0 8px 0; font-size: 20px; }
+.mobile-overlay-inner p { margin: 0 0 12px 0; color: #445; }
+.mobile-actions { text-align: right; }
+.mobile-actions button { padding: 8px 12px; border-radius: 6px; background: #2b6cb0; color: white; border: none; cursor: pointer; }
 /* Popup content */
 .event-list { margin: 0; padding-left: 16px; }
 .event-item { margin-bottom: 6px; }
