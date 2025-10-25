@@ -39,6 +39,18 @@
     <div id="rightContent" class="panel-content">Chưa có tỉnh được chọn.</div>
   </div>
 
+  <!-- Bottom panel for mobile: will show tabs (Events / Info) -->
+  <div id="bottomPanel" class="panel bottom">
+    <div class="panel-header bottom-header">
+      <div class="bottom-tabs">
+        <button id="tabEvents" class="tab-btn active">Sự kiện</button>
+        <button id="tabInfo" class="tab-btn">Thông tin tỉnh</button>
+      </div>
+      <button id="closeBottom" class="close-btn">✕</button>
+    </div>
+    <div id="bottomContent" class="panel-content">Chưa có dữ liệu.</div>
+  </div>
+
   <div id="map"></div>
 
   <!-- Leaflet JS (no integrity attribute to avoid blocked loading) -->
