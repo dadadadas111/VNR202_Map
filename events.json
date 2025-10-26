@@ -3,30 +3,49 @@
     "name": "Thành lập Đảng Cộng sản Việt Nam",
     "year": 1930,
     "province": "Nghệ An",
-    "description": "Đánh dấu sự ra đời của chính đảng cách mạng đầu tiên của giai cấp công nhân Việt Nam."
+    "description": "Đánh dấu sự ra đời của chính đảng cách mạng đầu tiên của giai cấp công nhân Việt Nam.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c0?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1505238680356-667803448bb6?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1505238680356-667803448bb6?w=800&auto=format&fit=crop"
+    ]
   },
   {
     "name": "Phong trào Xô viết Nghệ Tĩnh",
     "year": 1930,
     "province": "Hà Tĩnh",
-    "description": "Phong trào cách mạng tiêu biểu trong giai đoạn đầu đấu tranh chống thực dân phong kiến."
+    "description": "Phong trào cách mạng tiêu biểu trong giai đoạn đầu đấu tranh chống thực dân phong kiến.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1505238680356-667803448bb6?w=800&auto=format&fit=crop"
+    ]
   },
   {
     "name": "Cách mạng tháng Tám thành công",
     "year": 1945,
     "province": "Hà Nội",
-    "description": "Cách mạng thành công, giành chính quyền về tay nhân dân."
+    "description": "Cách mạng thành công, giành chính quyền về tay nhân dân.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1549880338-65ddcdfd017b?w=800&auto=format&fit=crop"
+    ]
   },
   {
     "name": "Chiến thắng Điện Biên Phủ",
     "year": 1954,
     "province": "Điện Biên",
-    "description": "Chiến thắng lịch sử lừng lẫy năm châu, chấn động địa cầu."
+    "description": "Chiến thắng lịch sử lừng lẫy năm châu, chấn động địa cầu.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1482192596544-9eb780fc7f66?w=800&auto=format&fit=crop"
+    ]
   },
   {
     "name": "Đại thắng mùa Xuân 1975",
     "year": 1975,
     "province": "TP. Hồ Chí Minh",
-    "description": "Giải phóng hoàn toàn miền Nam, thống nhất đất nước."
+    "description": "Giải phóng hoàn toàn miền Nam, thống nhất đất nước.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1511732351679-8bfa8a8d4d6f?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1505238680356-667803448bb6?w=800&auto=format&fit=crop"
+    ]
   }
 ]
