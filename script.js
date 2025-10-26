@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let selectedLayer = null;
   let selectedFeature = null;
   let suppressStyleUpdateDuringAnimation = false;
+  let selectedLayers = []; // for multi-province selection when event is clicked
+  let selectionMode = null; // 'event' or 'province' to track selection mode
+  let selectedEvent = null; // track currently selected event for UI highlighting
 
 // Period definitions (ASSUMPTION: to avoid double-counting boundary years we use these ranges)
 // p1: 1930-1944, p2: 1945-1974, p3: 1975-present
@@ -128,23 +131,29 @@ function onEachFeature(feature, layer) {
     mouseover: (e) => {
       // don't apply hover effect while animating or if this layer is already selected
       if (suppressStyleUpdateDuringAnimation) return;
-      if (selectedLayer === layer) return;
+      // skip hover if in event-mode and this layer is in selectedLayers
+      if (selectionMode === 'event' && selectedLayers.indexOf(layer) !== -1) return;
+      // skip hover if in province-mode and this is the selected layer
+      if (selectionMode === 'province' && selectedLayer === layer) return;
       try {
         layer.setStyle({ fillColor: '#ffe082', fillOpacity: 0.95, color: '#b8860b' });
         // do not bring hovered layer to front (avoid covering selected outline)
-        // ensure selected layer stays on top if present
-        if (selectedLayer && selectedLayer !== layer && selectedLayer.bringToFront) selectedLayer.bringToFront();
+        // ensure selected layer(s) stay on top if present
+        if (selectionMode === 'province' && selectedLayer && selectedLayer !== layer && selectedLayer.bringToFront) selectedLayer.bringToFront();
+        if (selectionMode === 'event') selectedLayers.forEach(l => { if (l !== layer && l.bringToFront) l.bringToFront(); });
         if (layer.openTooltip) layer.openTooltip();
       } catch (err) { /* ignore */ }
     },
     mouseout: (e) => {
-      // if this layer is selected, keep its selected styling
-      if (selectedLayer === layer) return;
+      // if this layer is selected in either mode, keep its selected styling
+      if (selectionMode === 'province' && selectedLayer === layer) return;
+      if (selectionMode === 'event' && selectedLayers.indexOf(layer) !== -1) return;
       try {
         if (geojsonLayer && typeof geojsonLayer.resetStyle === 'function') geojsonLayer.resetStyle(layer);
         if (layer.closeTooltip) layer.closeTooltip();
-        // reassert selected layer on top so its outline remains visible
-        if (selectedLayer && selectedLayer.bringToFront) selectedLayer.bringToFront();
+        // reassert selected layer(s) on top so outline remains visible
+        if (selectionMode === 'province' && selectedLayer && selectedLayer.bringToFront) selectedLayer.bringToFront();
+        if (selectionMode === 'event') selectedLayers.forEach(l => { if (l.bringToFront) l.bringToFront(); });
       } catch (err) { /* ignore */ }
     }
   });
@@ -178,12 +187,171 @@ function onEachFeature(feature, layer) {
 
   function selectFeature(layer, feature) {
     try {
-      deselectFeature();
+      deselectAllFeatures(); // clear any previous selection (event or province)
+      selectionMode = 'province';
       selectedLayer = layer;
       selectedFeature = feature;
       applySelectedStyle(layer);
     } catch (err) { /* ignore */ }
   }
+
+  // Multi-province selection for event-based highlighting
+  function deselectAllFeatures() {
+    try {
+      // clear province mode
+      if (selectedLayer && geojsonLayer && typeof geojsonLayer.resetStyle === 'function') {
+        geojsonLayer.resetStyle(selectedLayer);
+      }
+      selectedLayer = null;
+      selectedFeature = null;
+      // clear event mode
+      selectedLayers.forEach(l => {
+        if (geojsonLayer && typeof geojsonLayer.resetStyle === 'function') geojsonLayer.resetStyle(l);
+      });
+      selectedLayers = [];
+      selectionMode = null;
+      selectedEvent = null; // clear selected event tracking
+      // NOTE: UI selection state is managed separately in ui-panels.js and is never cleared
+    } catch (err) { /* ignore */ }
+  }
+
+  function selectMultipleFeatures(layersArray) {
+    try {
+      deselectAllFeatures();
+      selectionMode = 'event';
+      selectedLayers = layersArray.slice();
+      layersArray.forEach(l => applySelectedStyle(l));
+    } catch (err) { /* ignore */ }
+  }
+
+  // Helper to find layers by province name
+  function findLayersByProvinceNames(provinceNames) {
+    const normNames = provinceNames.map(n => normalizeString(n));
+    const layers = [];
+    if (!geojsonLayer) return layers;
+    geojsonLayer.eachLayer(l => {
+      const f = l.feature;
+      if (!f || !f.properties) return;
+      const fNorm = f.properties._normName;
+      if (normNames.indexOf(fNorm) !== -1) layers.push(l);
+    });
+    return layers;
+  }
+
+  // Refresh timeline to show all events for the given period
+  function refreshTimelineForPeriod(periodKey) {
+    try {
+      const [start, end] = getPeriodRange(periodKey);
+      const periodEvents = events.filter(e => e.year >= start && e.year <= end);
+      if (typeof window.renderAllEventsTimeline === 'function') {
+        window.renderAllEventsTimeline(periodEvents, periodKey);
+      }
+    } catch (err) { console.warn('refreshTimelineForPeriod error', err); }
+  }
+
+  // Expose selectedEvent getter
+  window.getSelectedEvent = function() {
+    return selectedEvent;
+  };
+
+  // Expose helpers globally for ui-panels
+  window.selectEventProvinces = function(event) {
+    try {
+      if (!event) return;
+      selectedEvent = event; // track selected event
+      const provinceNames = event._normProvinces || [];
+      if (event._isNational) {
+        // select all provinces
+        const allLayers = [];
+        if (geojsonLayer) geojsonLayer.eachLayer(l => allLayers.push(l));
+        selectMultipleFeatures(allLayers);
+        // zoom to full extent
+        if (window.map && geojsonLayer) {
+          suppressStyleUpdateDuringAnimation = true;
+          window.map.flyToBounds(geojsonLayer.getBounds(), { padding: [20,20], maxZoom: 6, duration: 0.8 });
+          window.map.once('moveend', () => {
+            suppressStyleUpdateDuringAnimation = false;
+            updateGeoStyle();
+            selectedLayers.forEach(l => applySelectedStyle(l));
+          });
+        }
+        // render multi-province info
+        if (typeof window.renderMultiProvinceInfo === 'function') {
+          const allFeatures = allLayers.map(l => l.feature).filter(Boolean);
+          window.renderMultiProvinceInfo(allFeatures, event);
+        }
+      } else {
+        const layers = findLayersByProvinceNames(provinceNames);
+        selectMultipleFeatures(layers);
+        // zoom to combined bounds of selected
+        if (layers.length && window.map) {
+          const group = L.featureGroup(layers);
+          suppressStyleUpdateDuringAnimation = true;
+          window.map.flyToBounds(group.getBounds(), { padding: [40,40], maxZoom: 8, duration: 0.8 });
+          window.map.once('moveend', () => {
+            suppressStyleUpdateDuringAnimation = false;
+            updateGeoStyle();
+            selectedLayers.forEach(l => applySelectedStyle(l));
+          });
+        }
+        // render multi-province info
+        if (typeof window.renderMultiProvinceInfo === 'function') {
+          const features = layers.map(l => l.feature).filter(Boolean);
+          window.renderMultiProvinceInfo(features, event);
+        }
+      }
+    } catch (err) { console.warn('selectEventProvinces error', err); }
+  };
+
+  // Select a single province (called from province link in right panel or map click)
+  window.selectSingleProvince = function(provinceName) {
+    try {
+      const normName = normalizeString(provinceName);
+      let targetLayer = null;
+      if (geojsonLayer) {
+        geojsonLayer.eachLayer(l => {
+          const f = l.feature;
+          if (!f || !f.properties) return;
+          if (f.properties._normName === normName) targetLayer = l;
+        });
+      }
+      if (!targetLayer) return;
+      // deselect event mode, enter province mode
+      deselectAllFeatures();
+      selectFeature(targetLayer, targetLayer.feature);
+      // focus/zoom
+      try {
+        if (typeof window.map !== 'undefined' && typeof window.map.flyToBounds === 'function') {
+          suppressStyleUpdateDuringAnimation = true;
+          const bounds = targetLayer.getBounds ? targetLayer.getBounds() : null;
+          if (bounds) window.map.flyToBounds(bounds, { padding: [40,40], maxZoom: 9, duration: 0.8 });
+        } else if (typeof focusOnLayer === 'function') {
+          suppressStyleUpdateDuringAnimation = true;
+          focusOnLayer(targetLayer);
+        }
+      } catch (err) { /* ignore */ }
+      // render panels
+      const displayName = getFeatureDisplayName(targetLayer.feature);
+      const items = eventsForFeatureAndPeriod(targetLayer.feature, currentPeriod);
+      try { window.renderTimeline(displayName, items); } catch (err) { /* ignore */ }
+      try { window.renderProvinceInfo(targetLayer.feature, items.length); } catch (err) { /* ignore */ }
+      // handle moveend
+      try {
+        if (window.map) {
+          window.map.once('moveend', () => {
+            suppressStyleUpdateDuringAnimation = false;
+            updateGeoStyle();
+            if (selectedLayer && selectedFeature) applySelectedStyle(selectedLayer);
+          });
+        }
+      } catch (err) { /* ignore */ }
+    } catch (err) { console.warn('selectSingleProvince error', err); }
+  };
+
+  window.getEventsForPeriod = function(periodKey) {
+    const [start, end] = getPeriodRange(periodKey);
+    return events.filter(e => e.year >= start && e.year <= end);
+  };
 
 function popupHtml(provinceName, items) {
   let html = `<div><strong>${provinceName}</strong></div>`;
@@ -310,6 +478,9 @@ function countEventsForFeature(feature, periodKey) {
       }
 
       addLegend();
+
+      // initialize timeline to show all events for the initial period
+      refreshTimelineForPeriod(currentPeriod);
     }).catch(err => {
       console.error('Error loading data:', err);
       const loader = document.getElementById('loader');
@@ -321,6 +492,8 @@ function countEventsForFeature(feature, periodKey) {
     periodSelect.addEventListener('change', (e) => {
       currentPeriod = e.target.value;
       updateGeoStyle();
+      // refresh timeline to show all events in new period
+      refreshTimelineForPeriod(currentPeriod);
     });
 
     // Add a simple legend control

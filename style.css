@@ -96,6 +96,30 @@ html, body {
 /* scope label under timeline items */
 .t-scope { margin-top:6px; color:#445; font-size:13px; font-style:italic; }
 
+/* clickable timeline items (when showing all events) */
+.timeline-clickable { cursor: pointer; transition: background 140ms; }
+.timeline-clickable:hover { background: rgba(255,235,200,0.3); }
+.timeline-item.selected {
+  background: rgba(255,200,0,0.2);
+  border-left: 3px solid #ff6b00;
+  padding-left: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* province list in right panel (multi-province display) */
+.province-list { list-style: disc inside; margin: 8px 0; padding: 0; }
+.province-link {
+  color: #0066cc;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.province-link:hover {
+  color: #ff6b00;
+  text-decoration: underline;
+}
+.info-event-ref { margin-bottom: 8px; color: #445; font-size: 13px; }
+
 /* Tooltip for provinces */
 .province-tooltip {
   background: rgba(255,255,255,0.98);

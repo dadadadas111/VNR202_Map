@@ -3,6 +3,10 @@
 
 (function () {
   function byId(id) { return document.getElementById(id); }
+  
+  // UI-only state: track selected event for visual highlight ONLY
+  // This variable is NEVER reset, only updated when user clicks a different event
+  let uiSelectedEvent = null;
 
   window.panels = {
     openLeft: function (htmlContent) {
@@ -77,7 +81,8 @@
     const sorted = eventsArray.slice().sort((a,b) => a.year - b.year);
     sorted.forEach((ev, idx) => {
       const imgs = ev.image_urls || [];
-      html += `<li class="timeline-item" data-evt-idx="${idx}">`;
+      // Add timeline-clickable class for hover + selection
+      html += `<li class="timeline-item timeline-clickable" data-evt-idx="${idx}">`;
       html += `<div class="timeline-main"><span class="t-year">${ev.year}</span> <strong>${ev.name}</strong></div>`;
       html += `<div class="t-desc">${ev.description}</div>`;
       // scope / phạm vi: show original province field or 'Cả nước'
@@ -110,12 +115,13 @@
     html += '</ol>';
     panels.openLeft(html);
 
-    // wire thumbnail clicks to open gallery
+    // wire thumbnail clicks to open gallery and event item selection
     setTimeout(() => {
       const container = document.getElementById('leftContent');
       if (!container) return;
       container.querySelectorAll('.event-thumb').forEach(img => {
         img.addEventListener('click', (e) => {
+          e.stopPropagation(); // Don't trigger parent timeline-item click
           const idx = Number(img.getAttribute('data-idx')) || 0;
           const imgIndex = Number(img.getAttribute('data-img-index')) || 0;
           const items = sorted; // use the locally sorted array
@@ -124,6 +130,124 @@
           showImageGallery(event.image_urls, imgIndex);
         });
       });
+      
+      // wire event item clicks for selection highlight + province highlighting
+      container.querySelectorAll('.timeline-clickable').forEach((item, idx) => {
+        item.addEventListener('click', (e) => {
+          // Remove previous selection highlight
+          container.querySelectorAll('.timeline-item').forEach(el => el.classList.remove('selected'));
+          // Mark current item as selected
+          item.classList.add('selected');
+          
+          // Get event and trigger province highlighting on map
+          const event = sorted[idx];
+          if (event) {
+            // Update UI-only selection state (never reset)
+            uiSelectedEvent = event;
+            // Trigger map highlighting
+            if (typeof window.selectEventProvinces === 'function') {
+              window.selectEventProvinces(event);
+            }
+          }
+        });
+      });
+      
+      // Restore selection state from uiSelectedEvent
+      if (uiSelectedEvent) {
+        container.querySelectorAll('.timeline-clickable').forEach((item, idx) => {
+          const event = sorted[idx];
+          if (event && event.name === uiSelectedEvent.name && event.year === uiSelectedEvent.year) {
+            item.classList.add('selected');
+          }
+        });
+      }
+    }, 10);
+  };
+
+  // NEW: Render timeline for all events in a period (not tied to a single province)
+  window.renderAllEventsTimeline = function (eventsArray, periodKey) {
+    if (!eventsArray || eventsArray.length === 0) {
+      panels.openLeft('<div class="empty">Không có sự kiện trong giai đoạn này.</div>');
+      return;
+    }
+    let html = `<div class="timeline-title">Tất cả sự kiện giai đoạn hiện tại (${eventsArray.length})</div>`;
+    html += '<ol class="timeline-list timeline-all">';
+    const sorted = eventsArray.slice().sort((a,b) => a.year - b.year);
+    sorted.forEach((ev, idx) => {
+      const imgs = ev.image_urls || [];
+      html += `<li class="timeline-item timeline-clickable" data-evt-idx="${idx}">`;
+      html += `<div class="timeline-main"><span class="t-year">${ev.year}</span> <strong>${ev.name}</strong></div>`;
+      html += `<div class="t-desc">${ev.description}</div>`;
+      // scope
+      let scopeLabel = '';
+      if (ev.province) {
+        const raw = String(ev.province).trim();
+        if (raw.toLowerCase().includes('cả nước') || raw.toLowerCase().includes('ca nuoc')) scopeLabel = 'Cả nước';
+        else scopeLabel = raw;
+      }
+      if (scopeLabel) html += `<div class="t-scope"><strong>Phạm vi:</strong> ${scopeLabel}</div>`;
+      // images
+      if (imgs && imgs.length) {
+        html += `<div class="event-image-row">`;
+        const show = Math.min(3, imgs.length);
+        for (let i = 0; i < show; i++) {
+          const url = imgs[i];
+          const extra = (i === 2 && imgs.length > 3) ? imgs.length - 3 : 0;
+          html += `<div class="event-image-wrap">`;
+          html += `<img src="${url}" class="event-thumb" data-idx="${idx}" data-img-index="${i}" />`;
+          if (extra) html += `<div class="image-overlay">+${extra}</div>`;
+          html += `</div>`;
+        }
+        html += `</div>`;
+      }
+      html += `</li>`;
+    });
+    html += '</ol>';
+    panels.openLeft(html);
+
+    // wire thumbnail clicks
+    setTimeout(() => {
+      const container = document.getElementById('leftContent');
+      if (!container) return;
+      container.querySelectorAll('.event-thumb').forEach(img => {
+        img.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = Number(img.getAttribute('data-idx')) || 0;
+          const imgIndex = Number(img.getAttribute('data-img-index')) || 0;
+          const event = sorted[idx];
+          if (!event || !event.image_urls || !event.image_urls.length) return;
+          showImageGallery(event.image_urls, imgIndex);
+        });
+      });
+      // wire event item clicks to select provinces
+      container.querySelectorAll('.timeline-clickable').forEach((item, idx) => {
+        item.addEventListener('click', (e) => {
+          // Remove previous selection highlight
+          container.querySelectorAll('.timeline-item').forEach(el => el.classList.remove('selected'));
+          // Mark current item as selected
+          item.classList.add('selected');
+          
+          const event = sorted[idx];
+          if (event) {
+            // Update UI-only selection state (never reset)
+            uiSelectedEvent = event;
+            // Trigger map highlighting
+            if (typeof window.selectEventProvinces === 'function') {
+              window.selectEventProvinces(event);
+            }
+          }
+        });
+      });
+      
+      // Restore selection state from uiSelectedEvent
+      if (uiSelectedEvent) {
+        container.querySelectorAll('.timeline-clickable').forEach((item, idx) => {
+          const event = sorted[idx];
+          if (event && event.name === uiSelectedEvent.name && event.year === uiSelectedEvent.year) {
+            item.classList.add('selected');
+          }
+        });
+      }
     }, 10);
   };
 
@@ -138,6 +262,41 @@
     html += '</div>';
     html += `<div class="info-desc">${p && p.ghichu ? p.ghichu : ''}</div>`;
     panels.openRight(html);
+  };
+
+  // NEW: Render info for multiple provinces (when event is selected)
+  window.renderMultiProvinceInfo = function (features, event) {
+    if (!features || features.length === 0) {
+      panels.openRight('<div class="empty">Không có thông tin.</div>');
+      return;
+    }
+    let html = `<div class="info-title">Các tỉnh liên quan</div>`;
+    if (event && event.name) html += `<div class="info-event-ref"><strong>Sự kiện:</strong> ${event.name} (${event.year})</div>`;
+    html += `<div class="info-meta"><strong>Số tỉnh:</strong> ${features.length}</div>`;
+    html += '<ul class="province-list">';
+    features.forEach(f => {
+      const p = f.properties;
+      const dName = (p && (p._displayName || p.ten_tinh || p.name)) || 'Không rõ';
+      const code = p && p.ma_tinh ? ` (${p.ma_tinh})` : '';
+      html += `<li><a href="#" class="province-link" data-province="${dName}">${dName}${code}</a></li>`;
+    });
+    html += '</ul>';
+    panels.openRight(html);
+    
+    // Wire up province links after rendering
+    setTimeout(() => {
+      const rightContent = document.getElementById('rightContent');
+      if (!rightContent) return;
+      rightContent.querySelectorAll('.province-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const prov = link.getAttribute('data-province');
+          if (prov && typeof window.selectSingleProvince === 'function') {
+            window.selectSingleProvince(prov);
+          }
+        });
+      });
+    }, 10);
   };
   
   // Image gallery modal
