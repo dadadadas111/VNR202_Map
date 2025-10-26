@@ -85,15 +85,16 @@
       html += `<li class="timeline-item timeline-clickable" data-evt-idx="${idx}">`;
       html += `<div class="timeline-main"><span class="t-year">${ev.year}</span> <strong>${ev.name}</strong></div>`;
       html += `<div class="t-desc">${ev.description}</div>`;
-      // scope / phạm vi: show original province field or 'Cả nước'
+      // scope / phạm vi: prefer support_label if present, otherwise fall back to province
       let scopeLabel = '';
-      if (ev.province) {
+      if (ev.support_label) {
+        const s = String(ev.support_label).trim();
+        if (s.toLowerCase().includes('cả nước') || s.toLowerCase().includes('ca nuoc')) scopeLabel = 'Cả nước';
+        else scopeLabel = s;
+      } else if (ev.province) {
         const raw = String(ev.province).trim();
-        // normalize display for 'cả nước' variants
         if (raw.toLowerCase().includes('cả nước') || raw.toLowerCase().includes('ca nuoc')) scopeLabel = 'Cả nước';
         else scopeLabel = raw;
-      } else {
-        scopeLabel = '';
       }
       if (scopeLabel) html += `<div class="t-scope"><strong>Phạm vi:</strong> ${scopeLabel}</div>`;
       // images row placed below description, show up to 3
@@ -178,9 +179,13 @@
       html += `<li class="timeline-item timeline-clickable" data-evt-idx="${idx}">`;
       html += `<div class="timeline-main"><span class="t-year">${ev.year}</span> <strong>${ev.name}</strong></div>`;
       html += `<div class="t-desc">${ev.description}</div>`;
-      // scope
+      // scope: prefer support_label if present, otherwise fall back to province
       let scopeLabel = '';
-      if (ev.province) {
+      if (ev.support_label) {
+        const s = String(ev.support_label).trim();
+        if (s.toLowerCase().includes('cả nước') || s.toLowerCase().includes('ca nuoc')) scopeLabel = 'Cả nước';
+        else scopeLabel = s;
+      } else if (ev.province) {
         const raw = String(ev.province).trim();
         if (raw.toLowerCase().includes('cả nước') || raw.toLowerCase().includes('ca nuoc')) scopeLabel = 'Cả nước';
         else scopeLabel = raw;

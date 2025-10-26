@@ -424,6 +424,8 @@ function countEventsForFeature(feature, periodKey) {
         if (!raw) {
           e._normProvinces = [];
           e._isNational = false;
+          // ensure there is at least an empty support_label for UI code
+          if (!e.support_label) e.support_label = '';
           return;
         }
         // split by comma or semicolon
@@ -431,6 +433,11 @@ function countEventsForFeature(feature, periodKey) {
         const norms = parts.map(p => normalizeString(p)).filter(Boolean);
         e._normProvinces = norms;
         e._isNational = norms.indexOf(normalizeString('cả nước')) !== -1 || norms.indexOf('ca nuoc') !== -1;
+        // set a support_label for UI display if not explicitly provided in the JSON
+        if (!e.support_label) {
+          // join the original parts for display (keeps country markers like 'Hồng Kông (Trung Quốc)')
+          e.support_label = parts.join(', ');
+        }
       });
 
       // create a dedicated pane for the geojson so it renders above tiles
