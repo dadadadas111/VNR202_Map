@@ -2,50 +2,379 @@
   {
     "name": "Thành lập Đảng Cộng sản Việt Nam",
     "year": 1930,
-    "province": "Nghệ An",
-    "description": "Đánh dấu sự ra đời của chính đảng cách mạng đầu tiên của giai cấp công nhân Việt Nam.",
+    "province": "Cả nước",
+    "description": "Mốc thành lập chính đảng của giai cấp công nhân Việt Nam, mở ra kỷ nguyên đấu tranh mới.",
     "image_urls": [
-      "https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c0?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1505238680356-667803448bb6?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1505238680356-667803448bb6?w=800&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?w=800&auto=format&fit=crop"
     ]
   },
   {
     "name": "Phong trào Xô viết Nghệ Tĩnh",
     "year": 1930,
-    "province": "Hà Tĩnh",
-    "description": "Phong trào cách mạng tiêu biểu trong giai đoạn đầu đấu tranh chống thực dân phong kiến.",
+    "province": "Nghệ An, Hà Tĩnh",
+    "description": "Phong trào đấu tranh tiêu biểu của công nông miền Trung dưới sự lãnh đạo của Đảng.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c0?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Khởi nghĩa Bắc Sơn",
+    "year": 1940,
+    "province": "Lạng Sơn",
+    "description": "Cuộc nổi dậy mở đầu truyền thống khởi nghĩa vũ trang ở miền Bắc.",
     "image_urls": [
       "https://images.unsplash.com/photo-1505238680356-667803448bb6?w=800&auto=format&fit=crop"
     ]
   },
   {
-    "name": "Cách mạng tháng Tám thành công",
+    "name": "Khởi nghĩa Nam Kỳ",
+    "year": 1940,
+    "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Tiền Giang, Bến Tre",
+    "description": "Khởi nghĩa quy mô lớn ở Nam Bộ chống thực dân Pháp và phát xít Nhật.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Binh biến Đô Lương",
+    "year": 1941,
+    "province": "Nghệ An",
+    "description": "Cuộc nổi dậy của binh lính người Việt trong quân đội Pháp.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1520975922215-230f6c0f04e8?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Thành lập Mặt trận Việt Minh",
+    "year": 1941,
+    "province": "Cao Bằng",
+    "description": "Mặt trận Việt Nam Độc lập Đồng minh ra đời, đoàn kết lực lượng cứu nước.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Hội nghị Trung ương 8 (chuyển hướng chỉ đạo)",
+    "year": 1941,
+    "province": "Cao Bằng",
+    "description": "Đặt nhiệm vụ giải phóng dân tộc lên hàng đầu, chuẩn bị tổng khởi nghĩa.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Tổng khởi nghĩa Tháng Tám",
+    "year": 1945,
+    "province": "Cả nước",
+    "description": "Cuộc tổng khởi nghĩa giành chính quyền trên phạm vi cả nước.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Tuyên ngôn Độc lập",
     "year": 1945,
     "province": "Hà Nội",
-    "description": "Cách mạng thành công, giành chính quyền về tay nhân dân.",
+    "description": "Chủ tịch Hồ Chí Minh đọc Tuyên ngôn, khai sinh nước Việt Nam Dân chủ Cộng hòa.",
     "image_urls": [
-      "https://images.unsplash.com/photo-1549880338-65ddcdfd017b?w=800&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&auto=format&fit=crop"
     ]
   },
   {
-    "name": "Chiến thắng Điện Biên Phủ",
+    "name": "Tổng tuyển cử bầu Quốc hội khóa I",
+    "year": 1946,
+    "province": "Cả nước",
+    "description": "Cuộc tổng tuyển cử đầu tiên, xây dựng chính quyền cách mạng hợp pháp.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1564865878688-9a2444440428?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Toàn quốc kháng chiến",
+    "year": 1946,
+    "province": "Cả nước",
+    "description": "Lời kêu gọi kháng chiến, mở đầu cuộc kháng chiến chống Pháp.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Chiến dịch Việt Bắc Thu–Đông",
+    "year": 1947,
+    "province": "Cao Bằng, Bắc Kạn, Lạng Sơn",
+    "description": "Đập tan cuộc tiến công lên Việt Bắc của Pháp, giữ vững căn cứ địa.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Chiến dịch Biên Giới",
+    "year": 1950,
+    "province": "Cao Bằng, Lạng Sơn",
+    "description": "Mở thông biên giới, chuyển kháng chiến sang thế chủ động chiến lược.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1505238680356-667803448bb6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Đại hội Đảng lần II",
+    "year": 1951,
+    "province": "Tuyên Quang",
+    "description": "Đảng Lao động Việt Nam ra đời, hoàn thiện đường lối kháng chiến kiến quốc.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1520975922215-230f6c0f04e8?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Chiến dịch Hòa Bình",
+    "year": 1951,
+    "province": "Hòa Bình",
+    "description": "Đánh bại ý đồ tập trung lực lượng của Pháp ở Hòa Bình.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Chiến dịch Tây Bắc",
+    "year": 1952,
+    "province": "Sơn La, Lai Châu",
+    "description": "Mở rộng vùng giải phóng Tây Bắc, tạo thế mới trên chiến trường.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c0?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Chiến dịch Điện Biên Phủ",
     "year": 1954,
     "province": "Điện Biên",
-    "description": "Chiến thắng lịch sử lừng lẫy năm châu, chấn động địa cầu.",
+    "description": "Chiến thắng quyết định, buộc Pháp ký Hiệp định Giơ-ne-vơ.",
     "image_urls": [
-      "https://images.unsplash.com/photo-1482192596544-9eb780fc7f66?w=800&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=800&auto=format&fit=crop"
     ]
   },
   {
-    "name": "Đại thắng mùa Xuân 1975",
+    "name": "Hiệp định Giơ-ne-vơ về Đông Dương",
+    "year": 1954,
+    "province": "Cả nước",
+    "description": "Đình chỉ chiến sự, Pháp rút quân; Việt Nam tạm thời chia cắt và tiến tới tổng tuyển cử.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1520975922215-230f6c0f04e8?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Phong trào Đồng khởi",
+    "year": 1960,
+    "province": "Bến Tre",
+    "description": "Bùng nổ nổi dậy phá thế kìm kẹp, mở ra cao trào đấu tranh ở miền Nam.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1487956382158-bb926046304a?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Mặt trận Dân tộc Giải phóng miền Nam Việt Nam",
+    "year": 1960,
+    "province": "Tây Ninh",
+    "description": "Thành lập lực lượng chính trị – quân sự đại diện phong trào miền Nam.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1564865878688-9a2444440428?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Trận Ấp Bắc",
+    "year": 1963,
+    "province": "Tiền Giang",
+    "description": "Trận đánh mẫu mực chống ‘Chiến tranh đặc biệt’ của Mỹ – ngụy.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1505238680356-667803448bb6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Chiến dịch Bình Giã",
+    "year": 1964,
+    "province": "Bà Rịa - Vũng Tàu",
+    "description": "Trận then chốt ở Đông Nam Bộ làm phá sản nhiều mục tiêu của địch.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c0?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Sự kiện Vịnh Bắc Bộ và leo thang chiến tranh",
+    "year": 1964,
+    "province": "Vịnh Bắc Bộ",
+    "description": "Mỹ lấy cớ mở rộng chiến tranh, ném bom miền Bắc.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Plâyme – Ia Drang",
+    "year": 1965,
+    "province": "Gia Lai",
+    "description": "Chiến dịch đánh bại lực lượng cơ động Mỹ đầu tiên ở Tây Nguyên.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Tổng tiến công và nổi dậy Tết Mậu Thân",
+    "year": 1968,
+    "province": "Cả nước",
+    "description": "Đòn tiến công chiến lược, buộc Mỹ ngồi vào bàn đàm phán.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Hội nghị Paris về Việt Nam",
+    "year": 1968,
+    "province": "Cả nước",
+    "description": "Mở đầu quá trình đàm phán, dẫn tới Hiệp định Paris 1973.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1564865878688-9a2444440428?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Đường 9 – Nam Lào (Lam Sơn 719)",
+    "year": 1971,
+    "province": "Quảng Trị",
+    "description": "Đập tan cuộc hành quân Lam Sơn 719, bảo vệ tuyến vận tải chiến lược.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1520975922215-230f6c0f04e8?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Điện Biên Phủ trên không",
+    "year": 1972,
+    "province": "Hà Nội, Hải Phòng",
+    "description": "Đánh bại tập kích B-52, tạo thế ký kết Hiệp định Paris.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Hiệp định Paris 1973",
+    "year": 1973,
+    "province": "Cả nước",
+    "description": "Chấm dứt chiến tranh, lập lại hòa bình ở Việt Nam; Mỹ rút quân.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c0?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Chiến dịch Hồ Chí Minh",
     "year": 1975,
     "province": "TP. Hồ Chí Minh",
-    "description": "Giải phóng hoàn toàn miền Nam, thống nhất đất nước.",
+    "description": "Đỉnh cao tổng tiến công; giải phóng Sài Gòn, thống nhất đất nước.",
     "image_urls": [
-      "https://images.unsplash.com/photo-1511732351679-8bfa8a8d4d6f?w=800&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1505238680356-667803448bb6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Quốc hội khóa VI – thống nhất đất nước",
+    "year": 1976,
+    "province": "Cả nước",
+    "description": "Thông qua tên nước CHXHCN Việt Nam; hoàn tất thống nhất về nhà nước.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1564865878688-9a2444440428?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Đại hội Đảng lần V",
+    "year": 1982,
+    "province": "Hà Nội",
+    "description": "Điều chỉnh chủ trương phát triển KT-XH trong giai đoạn khó khăn.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Đại hội Đảng lần VI – khởi xướng Đổi mới",
+    "year": 1986,
+    "province": "Hà Nội",
+    "description": "Đổi mới toàn diện, trước hết là đổi mới tư duy kinh tế.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1520975922215-230f6c0f04e8?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Luật Đầu tư nước ngoài",
+    "year": 1987,
+    "province": "Cả nước",
+    "description": "Khung pháp lý mở cửa thu hút FDI phục vụ công cuộc Đổi mới.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1564865878688-9a2444440428?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Việt Nam gia nhập ASEAN",
+    "year": 1995,
+    "province": "Cả nước",
+    "description": "Đánh dấu hội nhập khu vực sâu rộng, nâng cao vị thế quốc tế.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Bình thường hóa quan hệ Việt – Mỹ",
+    "year": 1995,
+    "province": "Cả nước",
+    "description": "Mở ra giai đoạn hợp tác mới trên nhiều lĩnh vực.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1505238680356-667803448bb6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Đại hội Đảng lần VIII",
+    "year": 1996,
+    "province": "Hà Nội",
+    "description": "Đẩy mạnh CNH-HĐH và hội nhập kinh tế quốc tế.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c0?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Việt Nam gia nhập WTO",
+    "year": 2007,
+    "province": "Cả nước",
+    "description": "Thành viên thứ 150 của WTO, bước ngoặt hội nhập kinh tế quốc tế.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Đại hội Đảng lần XI",
+    "year": 2011,
+    "province": "Hà Nội",
+    "description": "Đề ra Chiến lược phát triển KT-XH 2011–2020, tái cơ cấu kinh tế.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Nghị quyết TW4 (khóa XI) về xây dựng, chỉnh đốn Đảng",
+    "year": 2012,
+    "province": "Cả nước",
+    "description": "Tăng cường xây dựng Đảng, chống suy thoái tư tưởng và đạo đức.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1564865878688-9a2444440428?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Đại hội Đảng lần XII",
+    "year": 2016,
+    "province": "Hà Nội",
+    "description": "Tăng cường xây dựng, chỉnh đốn Đảng; phát triển KT-XH bền vững.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=800&auto=format&fit=crop"
+    ]
+  },
+  {
+    "name": "Đại hội Đảng lần XIII",
+    "year": 2021,
+    "province": "Hà Nội",
+    "description": "Đề ra khát vọng phát triển đất nước hùng cường đến năm 2045.",
+    "image_urls": [
+      "https://images.unsplash.com/photo-1520975922215-230f6c0f04e8?w=800&auto=format&fit=crop"
     ]
   }
 ]

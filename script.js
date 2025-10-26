@@ -202,7 +202,13 @@ function popupHtml(provinceName, items) {
 function eventsForProvinceAndPeriod(provinceName, periodKey) {
   const [start, end] = getPeriodRange(periodKey);
   const probe = normalizeString(provinceName);
-  return events.filter(e => e._normProvince === probe && e.year >= start && e.year <= end);
+  return events.filter(e => {
+    if (!e) return false;
+    const inTime = e.year >= start && e.year <= end;
+    if (!inTime) return false;
+    if (e._isNational) return true; // applies to whole country
+    return Array.isArray(e._normProvinces) && e._normProvinces.indexOf(probe) !== -1;
+  });
 }
 
 function countEventsForProvince(provinceName, periodKey) {
@@ -214,7 +220,13 @@ function eventsForFeatureAndPeriod(feature, periodKey) {
   const [start, end] = getPeriodRange(periodKey);
   const probe = feature && feature.properties && feature.properties._normName;
   if (!probe) return [];
-  return events.filter(e => e._normProvince === probe && e.year >= start && e.year <= end);
+  return events.filter(e => {
+    if (!e) return false;
+    const inTime = e.year >= start && e.year <= end;
+    if (!inTime) return false;
+    if (e._isNational) return true;
+    return Array.isArray(e._normProvinces) && e._normProvinces.indexOf(probe) !== -1;
+  });
 }
 
 function countEventsForFeature(feature, periodKey) {
@@ -238,8 +250,19 @@ function countEventsForFeature(feature, periodKey) {
       geo = vg;
 
       // normalize event province names for fast matching
+      // support multiple provinces separated by comma/semicolon, and the special term 'cả nước'
       events.forEach(e => {
-        e._normProvince = normalizeString(e.province || e.province_name || e.provinceName || '');
+        const raw = e.province || e.province_name || e.provinceName || '';
+        if (!raw) {
+          e._normProvinces = [];
+          e._isNational = false;
+          return;
+        }
+        // split by comma or semicolon
+        const parts = String(raw).split(/[;,]/).map(s => s.trim()).filter(Boolean);
+        const norms = parts.map(p => normalizeString(p)).filter(Boolean);
+        e._normProvinces = norms;
+        e._isNational = norms.indexOf(normalizeString('cả nước')) !== -1 || norms.indexOf('ca nuoc') !== -1;
       });
 
       // create a dedicated pane for the geojson so it renders above tiles

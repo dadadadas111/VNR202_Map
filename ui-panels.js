@@ -80,6 +80,17 @@
       html += `<li class="timeline-item" data-evt-idx="${idx}">`;
       html += `<div class="timeline-main"><span class="t-year">${ev.year}</span> <strong>${ev.name}</strong></div>`;
       html += `<div class="t-desc">${ev.description}</div>`;
+      // scope / phạm vi: show original province field or 'Cả nước'
+      let scopeLabel = '';
+      if (ev.province) {
+        const raw = String(ev.province).trim();
+        // normalize display for 'cả nước' variants
+        if (raw.toLowerCase().includes('cả nước') || raw.toLowerCase().includes('ca nuoc')) scopeLabel = 'Cả nước';
+        else scopeLabel = raw;
+      } else {
+        scopeLabel = '';
+      }
+      if (scopeLabel) html += `<div class="t-scope"><strong>Phạm vi:</strong> ${scopeLabel}</div>`;
       // images row placed below description, show up to 3
       if (imgs && imgs.length) {
         html += `<div class="event-image-row">`;
