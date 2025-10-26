@@ -260,6 +260,17 @@ function onEachFeature(feature, layer) {
       if (!event) return;
       selectedEvent = event; // track selected event
       const provinceNames = event._normProvinces || [];
+      // clear any existing foreign marker when selecting a new event
+      try {
+        if (window._foreignMarker) {
+          try { map.removeLayer(window._foreignMarker); } catch (e) {}
+          window._foreignMarker = null;
+        }
+        if (window._foreignCircle) {
+          try { map.removeLayer(window._foreignCircle); } catch (e) {}
+          window._foreignCircle = null;
+        }
+      } catch (err) { /* ignore */ }
       if (event._isNational) {
         // select all provinces
         const allLayers = [];
@@ -282,6 +293,28 @@ function onEachFeature(feature, layer) {
         }
       } else {
         const layers = findLayersByProvinceNames(provinceNames);
+        // If no matching province layers found, and the event appears to reference a
+        // foreign location (contains parentheses like "(Trung Quốc)") or otherwise
+        // cannot be mapped to provinces, try geocoding the support_label or province
+        // and show a pin on the map instead of province highlighting.
+        const isLikelyForeign = (() => {
+          const probe = String(event.support_label || event.province || '').toLowerCase();
+          return probe.includes('(') || probe.includes('thụy') || probe.includes('paris') || probe.includes('hong kong') || probe.includes('ma cao') || probe.includes('geneva') || probe.includes('brunei') || /\([^)]*\)/.test(String(event.province || ''));
+        })();
+        if ((!layers || layers.length === 0) && isLikelyForeign) {
+          // ensure map clears any province selection
+          deselectAllFeatures();
+          // render right panel with foreign info
+          if (typeof window.renderMultiProvinceInfo === 'function') {
+            window.renderMultiProvinceInfo([], event);
+          }
+          // geocode and focus the foreign place (use support_label first)
+          const label = event.support_label || event.province || '';
+          if (label && typeof window.geocodeAndFocus === 'function') {
+            window.geocodeAndFocus(label);
+          }
+          return;
+        }
         selectMultipleFeatures(layers);
         // zoom to combined bounds of selected
         if (layers.length && window.map) {
@@ -347,6 +380,53 @@ function onEachFeature(feature, layer) {
       } catch (err) { /* ignore */ }
     } catch (err) { console.warn('selectSingleProvince error', err); }
   };
+
+  // Simple geocode + focus for foreign locations (uses Nominatim). Caches results.
+  window._geocodeCache = window._geocodeCache || {};
+  window.geocodeAndFocus = async function(query) {
+    try {
+      if (!query || !window.map) return;
+      const key = String(query).trim();
+      // use cache
+      if (window._geocodeCache[key]) {
+        const r = window._geocodeCache[key];
+        showForeignPin(r.lat, r.lon, key);
+        return r;
+      }
+      // call Nominatim
+      const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(key);
+      const resp = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+      const json = await resp.json();
+      if (!json || !json.length) return null;
+      const top = json[0];
+      window._geocodeCache[key] = { lat: parseFloat(top.lat), lon: parseFloat(top.lon), display: top.display_name };
+      showForeignPin(parseFloat(top.lat), parseFloat(top.lon), key);
+      return window._geocodeCache[key];
+    } catch (err) { console.warn('geocodeAndFocus error', err); return null; }
+  };
+
+  function showForeignPin(lat, lon, label) {
+    try {
+      if (!window.map) return;
+      const latlng = L.latLng(lat, lon);
+      // remove previous
+      if (window._foreignMarker) { try { map.removeLayer(window._foreignMarker); } catch (e) {} }
+      if (window._foreignCircle) { try { map.removeLayer(window._foreignCircle); } catch (e) {} }
+      // small pulsing circle (as circle + marker)
+      window._foreignCircle = L.circle(latlng, { radius: 30000, color: '#ff6b00', weight: 2, fill: false, interactive: false }).addTo(map);
+      window._foreignMarker = L.marker(latlng, { riseOnHover: true }).addTo(map);
+      window._foreignMarker.bindPopup(`<div style="min-width:140px"><strong>${escapeHtml(label)}</strong></div>`).openPopup();
+      // center map so pin appears nicely centered with a little offset for panels (if any)
+      try {
+        const targetZoom = 6;
+        map.flyTo(latlng, targetZoom, { duration: 0.9 });
+      } catch (err) {
+        map.setView(latlng, 6);
+      }
+    } catch (err) { console.warn('showForeignPin error', err); }
+  }
+
+  function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   window.getEventsForPeriod = function(periodKey) {
     const [start, end] = getPeriodRange(periodKey);
