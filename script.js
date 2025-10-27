@@ -36,6 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let selectedLayers = []; // for multi-province selection when event is clicked
   let selectionMode = null; // 'event' or 'province' to track selection mode
   let selectedEvent = null; // track currently selected event for UI highlighting
+  // Performance/config
+  const MAP_ANIMATION_DURATION = 0.6; // seconds (used for flyTo/flyToBounds)
+  window._isMapMoving = false; // flag used to debounce map interactions
+  window._pendingEventSelection = null; // store last clicked event while flying
 
 // Period definitions (ASSUMPTION: to avoid double-counting boundary years we use these ranges)
 // p1: 1930-1944, p2: 1945-1974, p3: 1975-present
@@ -49,10 +53,11 @@ function getPeriodRange(key) {
 
 // Simple color scale by count
 function getColorForCount(c) {
-  // red scale: light -> dark
-  return c >= 3 ? '#7f0000' :
-         c === 2 ? '#c00000' :
-         c === 1 ? '#ff6b6b' :
+  // softer color scale (avoid overwhelmingly dark red for moderate counts)
+  // thresholds: 5+ (dark), 3-4 (medium), 1-2 (light)
+  return c >= 5 ? '#7f0000' :
+         c >= 3 ? '#c0452b' :
+         c >= 1 ? '#ffc4a3' :
                     '#f0f0f0';
 }
 
@@ -85,8 +90,8 @@ function styleFeature(feature) {
     fillColor: getColorForCount(count),
     weight: 1.6,
     opacity: 1,
-    color: '#b8860b', // dark golden/yellow stroke to avoid glare
-    fillOpacity: count > 0 ? 0.82 : 0.28
+    color: '#b8860b', // stroke (kept warm) — contrast with softer fills
+    fillOpacity: count > 0 ? 0.6 : 0.14
   };
 }
 
@@ -104,7 +109,13 @@ function onEachFeature(feature, layer) {
           // suppress style updates during animation to avoid popping
           suppressStyleUpdateDuringAnimation = true;
           const bounds = layer.getBounds ? layer.getBounds() : null;
-          if (bounds) window.map.flyToBounds(bounds, { padding: [40,40], maxZoom: 9, duration: 0.8 });
+          if (bounds) {
+            window._isMapMoving = true;
+            window.map.flyToBounds(bounds, { padding: [40,40], maxZoom: 9, duration: MAP_ANIMATION_DURATION });
+            window.map.once('moveend', () => {
+              window._isMapMoving = false;
+            });
+          }
         } else if (typeof focusOnLayer === 'function') {
           suppressStyleUpdateDuringAnimation = true;
           focusOnLayer(layer);
@@ -258,6 +269,15 @@ function onEachFeature(feature, layer) {
   window.selectEventProvinces = function(event) {
     try {
       if (!event) return;
+      // If the map is currently moving/animating, queue the last-clicked event and
+      // process it after movement completes. This avoids back-to-back flyTo calls
+      // which cause jank on some devices.
+      if (window._isMapMoving) {
+        window._pendingEventSelection = event;
+        // also update selectedEvent so UI shows immediate selection feedback
+        selectedEvent = event;
+        return;
+      }
       selectedEvent = event; // track selected event
       const provinceNames = event._normProvinces || [];
       // clear any existing foreign marker when selecting a new event
@@ -278,13 +298,25 @@ function onEachFeature(feature, layer) {
         selectMultipleFeatures(allLayers);
         // zoom to full extent
         if (window.map && geojsonLayer) {
-          suppressStyleUpdateDuringAnimation = true;
-          window.map.flyToBounds(geojsonLayer.getBounds(), { padding: [20,20], maxZoom: 6, duration: 0.8 });
-          window.map.once('moveend', () => {
-            suppressStyleUpdateDuringAnimation = false;
-            updateGeoStyle();
-            selectedLayers.forEach(l => applySelectedStyle(l));
-          });
+          // use cached bounds if available to avoid recomputing
+          const b = (event && event._cachedBounds) ? event._cachedBounds : (geojsonLayer.getBounds && geojsonLayer.getBounds());
+          if (b) {
+            suppressStyleUpdateDuringAnimation = true;
+            window._isMapMoving = true;
+            window.map.flyToBounds(b, { padding: [20,20], maxZoom: 6, duration: MAP_ANIMATION_DURATION });
+            window.map.once('moveend', () => {
+              suppressStyleUpdateDuringAnimation = false;
+              window._isMapMoving = false;
+              updateGeoStyle();
+              selectedLayers.forEach(l => applySelectedStyle(l));
+              // if user clicked another event while we were moving, process it now
+              if (window._pendingEventSelection) {
+                const p = window._pendingEventSelection;
+                window._pendingEventSelection = null;
+                window.selectEventProvinces(p);
+              }
+            });
+          }
         }
         // render multi-province info
         if (typeof window.renderMultiProvinceInfo === 'function') {
@@ -318,14 +350,24 @@ function onEachFeature(feature, layer) {
         selectMultipleFeatures(layers);
         // zoom to combined bounds of selected
         if (layers.length && window.map) {
-          const group = L.featureGroup(layers);
-          suppressStyleUpdateDuringAnimation = true;
-          window.map.flyToBounds(group.getBounds(), { padding: [40,40], maxZoom: 8, duration: 0.8 });
-          window.map.once('moveend', () => {
-            suppressStyleUpdateDuringAnimation = false;
-            updateGeoStyle();
-            selectedLayers.forEach(l => applySelectedStyle(l));
-          });
+          // use cached bounds when available
+          const b = event && event._cachedBounds ? event._cachedBounds : (L.featureGroup(layers).getBounds());
+          if (b) {
+            suppressStyleUpdateDuringAnimation = true;
+            window._isMapMoving = true;
+            window.map.flyToBounds(b, { padding: [40,40], maxZoom: 8, duration: MAP_ANIMATION_DURATION });
+            window.map.once('moveend', () => {
+              suppressStyleUpdateDuringAnimation = false;
+              window._isMapMoving = false;
+              updateGeoStyle();
+              selectedLayers.forEach(l => applySelectedStyle(l));
+              if (window._pendingEventSelection) {
+                const p = window._pendingEventSelection;
+                window._pendingEventSelection = null;
+                window.selectEventProvinces(p);
+              }
+            });
+          }
         }
         // render multi-province info
         if (typeof window.renderMultiProvinceInfo === 'function') {
@@ -357,7 +399,11 @@ function onEachFeature(feature, layer) {
         if (typeof window.map !== 'undefined' && typeof window.map.flyToBounds === 'function') {
           suppressStyleUpdateDuringAnimation = true;
           const bounds = targetLayer.getBounds ? targetLayer.getBounds() : null;
-          if (bounds) window.map.flyToBounds(bounds, { padding: [40,40], maxZoom: 9, duration: 0.8 });
+          if (bounds) {
+            window._isMapMoving = true;
+            window.map.flyToBounds(bounds, { padding: [40,40], maxZoom: 9, duration: MAP_ANIMATION_DURATION });
+            window.map.once('moveend', () => { window._isMapMoving = false; });
+          }
         } else if (typeof focusOnLayer === 'function') {
           suppressStyleUpdateDuringAnimation = true;
           focusOnLayer(targetLayer);
@@ -405,21 +451,157 @@ function onEachFeature(feature, layer) {
     } catch (err) { console.warn('geocodeAndFocus error', err); return null; }
   };
 
+  // Image discovery using Wikimedia Commons (safe, attribution-friendly, no API key)
+  // Cache results in window._imageCache to avoid repeated network calls
+  window._imageCache = window._imageCache || {};
+  // image metadata cache keyed by resolved safe_url
+  window._imageMeta = window._imageMeta || {};
+  // Optional Google Custom Search config (set these in console or a secure proxy)
+  // Example: window._googleConfig = { key: 'YOUR_API_KEY', cx: 'YOUR_SEARCH_ENGINE_ID' };
+  // WARNING: The API key and CX are embedded for demo purposes only.
+  // Do NOT commit production keys to source control. Use a server-side proxy for real deployments.
+  window._googleConfig = window._googleConfig || { key: 'AIzaSyCH-sk3CruotRQDJZMnHdQ_NnvAxVLBi_k', cx: 'b0a1adb011c72481d' };
+  window.fetchImagesFromWikimedia = async function(query, limit = 8) {
+    try {
+      if (!query) return [];
+      const key = String(query).trim();
+      if (window._imageCache[key]) return window._imageCache[key];
+      // Use MediaWiki API on Commons: search in file namespace (6) for images
+      const url = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*'
+        + '&generator=search&gsrsearch=' + encodeURIComponent(key)
+        + '&gsrnamespace=6&gsrlimit=' + encodeURIComponent(limit)
+        + '&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=640';
+      const resp = await fetch(url);
+      const json = await resp.json();
+      const out = [];
+      if (json && json.query && json.query.pages) {
+        const pages = Object.values(json.query.pages);
+        pages.forEach(p => {
+          try {
+            const info = (p.imageinfo && p.imageinfo[0]) || null;
+            if (!info) return;
+            const thumb = info.thumburl || null;
+            const origUrl = info.url || null;
+            // detect mime if present
+            const mime = info.mime || info.mimetype || (info.extmetadata && info.extmetadata.MimeType && info.extmetadata.MimeType.value) || '';
+            const isImageMime = typeof mime === 'string' && mime.toLowerCase().startsWith('image');
+            // function to test image extension
+            const hasImageExt = (u) => typeof u === 'string' && /\.(jpe?g|png|gif|webp|svg|avif|apng|bmp)(\?.*)?$/i.test(u);
+            // avoid PDFs as main full-size URLs; prefer thumbnail if original is PDF
+            const origIsPdf = typeof origUrl === 'string' && /\.pdf(\?.*)?$/i.test(origUrl);
+            // choose a safe url for opening: prefer original if it's an image, otherwise thumb if available
+            let safe = null;
+            if (origUrl && (isImageMime || hasImageExt(origUrl)) && !origIsPdf) safe = origUrl;
+            else if (thumb) safe = thumb;
+            else if (origUrl && !origIsPdf) safe = origUrl;
+            if (!safe) return; // skip items that cannot provide a displayable image
+            const license = info.extmetadata && info.extmetadata.LicenseShortName && info.extmetadata.LicenseShortName.value || '';
+            const artist = info.extmetadata && info.extmetadata.Artist && info.extmetadata.Artist.value || '';
+            const credit = artist || (info.extmetadata && info.extmetadata.Credit && info.extmetadata.Credit.value) || '';
+            const item = { title: p.title || '', url: origUrl, thumb: thumb || safe, safe_url: safe, license: license, credit: credit, source: 'commons' };
+            // cache metadata by safe_url for gallery use
+            if (item.safe_url) window._imageMeta[item.safe_url] = Object.assign({}, item);
+            out.push(item);
+          } catch (err) { /* ignore per-item */ }
+        });
+      }
+      window._imageCache[key] = out;
+      return out;
+    } catch (err) { console.warn('fetchImagesFromWikimedia error', err); return []; }
+  };
+
+  // Fetch images using Google Custom Search API (image search). This requires
+  // a valid API key and a Search Engine ID (cx). For security, do not embed
+  // production keys in public sites; use a proxy. This function will return
+  // items with safe_url/thumb/contextLink metadata when available.
+  window.fetchImagesFromGoogle = async function(query, limit = 8) {
+    try {
+      const cfg = window._googleConfig || {};
+      if (!cfg.key || !cfg.cx) return [];
+      const key = cfg.key; const cx = cfg.cx;
+      const num = Math.min(10, limit);
+      const url = 'https://www.googleapis.com/customsearch/v1?key=' + encodeURIComponent(key)
+        + '&cx=' + encodeURIComponent(cx)
+        + '&q=' + encodeURIComponent(query)
+        + '&searchType=image&num=' + encodeURIComponent(num);
+      const resp = await fetch(url);
+      const json = await resp.json();
+      const out = [];
+      if (json && Array.isArray(json.items)) {
+        json.items.forEach(it => {
+          try {
+            // it.link is the image URL, it.image.thumbnailLink is thumbnail, it.image.contextLink is page
+            const imgUrl = it.link || null;
+            const thumb = (it.image && it.image.thumbnailLink) ? it.image.thumbnailLink : null;
+            const context = (it.image && it.image.contextLink) ? it.image.contextLink : (it.link || null);
+            // prefer direct image URLs; basic check to skip non-image links
+            const hasImageExt = (u) => typeof u === 'string' && /\.(jpe?g|png|gif|webp|svg|avif|apng|bmp)(\?.*)?$/i.test(u);
+            const safe = (imgUrl && hasImageExt(imgUrl)) ? imgUrl : (thumb || imgUrl);
+            if (!safe) return;
+            const item = { title: it.title || '', url: imgUrl, thumb: thumb || safe, safe_url: safe, contextLink: context, license: null, credit: null, source: 'google' };
+            if (item.safe_url) window._imageMeta[item.safe_url] = Object.assign({}, item);
+            out.push(item);
+          } catch (err) { /* ignore item */ }
+        });
+      }
+      return out;
+    } catch (err) { console.warn('fetchImagesFromGoogle error', err); return []; }
+  };
+
+  // Convenience: fetch images for an event and append them to event.image_urls at runtime
+  window.fetchImagesForEvent = async function(event, limit = 8) {
+    try {
+      if (!event) return [];
+      const parts = [event.name || '', event.year || '', event.support_label || event.province || ''];
+      const query = parts.filter(Boolean).join(' ');
+      // Prefer Google if configured, otherwise fall back to Wikimedia Commons
+      let imgs = [];
+      try {
+        const cfg = window._googleConfig || {};
+        if (cfg.key && cfg.cx && typeof window.fetchImagesFromGoogle === 'function') {
+          imgs = await window.fetchImagesFromGoogle(query, limit);
+        }
+      } catch (err) { imgs = []; }
+      if ((!imgs || imgs.length === 0) && typeof window.fetchImagesFromWikimedia === 'function') {
+        imgs = await window.fetchImagesFromWikimedia(query, limit);
+      }
+      if (!imgs || !imgs.length) return [];
+      // Return found image items; the caller will decide whether to append them
+      // to event._auto_images (keeps original JSON images separate).
+      return imgs;
+    } catch (err) { console.warn('fetchImagesForEvent error', err); return []; }
+  };
+
   function showForeignPin(lat, lon, label) {
     try {
       if (!window.map) return;
       const latlng = L.latLng(lat, lon);
       // remove previous
-      if (window._foreignMarker) { try { map.removeLayer(window._foreignMarker); } catch (e) {} }
-      if (window._foreignCircle) { try { map.removeLayer(window._foreignCircle); } catch (e) {} }
-      // small pulsing circle (as circle + marker)
-      window._foreignCircle = L.circle(latlng, { radius: 30000, color: '#ff6b00', weight: 2, fill: false, interactive: false }).addTo(map);
-      window._foreignMarker = L.marker(latlng, { riseOnHover: true }).addTo(map);
+      // reuse existing marker/circle if present to avoid create/destroy overhead
+      if (window._foreignMarker) {
+        try { window._foreignMarker.setLatLng(latlng); } catch (e) {}
+      } else {
+        window._foreignMarker = L.marker(latlng, { riseOnHover: true }).addTo(map);
+      }
+      if (window._foreignCircle) {
+        try { window._foreignCircle.setLatLng(latlng); } catch (e) {}
+      } else {
+        window._foreignCircle = L.circle(latlng, { radius: 30000, color: '#ff6b00', weight: 2, fill: false, interactive: false }).addTo(map);
+      }
       window._foreignMarker.bindPopup(`<div style="min-width:140px"><strong>${escapeHtml(label)}</strong></div>`).openPopup();
       // center map so pin appears nicely centered with a little offset for panels (if any)
       try {
         const targetZoom = 6;
-        map.flyTo(latlng, targetZoom, { duration: 0.9 });
+        window._isMapMoving = true;
+        map.flyTo(latlng, targetZoom, { duration: MAP_ANIMATION_DURATION });
+        map.once('moveend', () => {
+          window._isMapMoving = false;
+          if (window._pendingEventSelection) {
+            const p = window._pendingEventSelection;
+            window._pendingEventSelection = null;
+            window.selectEventProvinces(p);
+          }
+        });
       } catch (err) {
         map.setView(latlng, 6);
       }
@@ -566,6 +748,34 @@ function countEventsForFeature(feature, periodKey) {
 
       addLegend();
 
+      // Performance optimization: precompute and cache bounds for each geojson layer
+      // and for each event (combined bounds). This avoids repeated expensive
+      // getBounds() calculations on each click.
+      try {
+        if (geojsonLayer) {
+          geojsonLayer.eachLayer(l => {
+            try { l._cachedBounds = (l.getBounds && l.getBounds()) || null; } catch (e) { l._cachedBounds = null; }
+          });
+        }
+        // compute event-level cached bounds (for multi-province events)
+        if (Array.isArray(events)) {
+          events.forEach(e => {
+            try {
+              if (e._isNational) {
+                e._cachedBounds = geojsonLayer ? geojsonLayer.getBounds() : null;
+                return;
+              }
+              const layers = findLayersByProvinceNames(e._normProvinces || []);
+              if (layers && layers.length) {
+                e._cachedBounds = L.featureGroup(layers).getBounds();
+              } else {
+                e._cachedBounds = null;
+              }
+            } catch (err) { e._cachedBounds = null; }
+          });
+        }
+      } catch (err) { /* ignore */ }
+
       // initialize timeline to show all events for the initial period
       refreshTimelineForPeriod(currentPeriod);
     }).catch(err => {
@@ -590,9 +800,9 @@ function countEventsForFeature(feature, periodKey) {
         const div = L.DomUtil.create('div', 'legend');
         div.innerHTML = '<div><strong>Ghi chú</strong></div>' +
           `<div><span class="box" style="background:${getColorForCount(0)}"></span> 0 sự kiện</div>` +
-          `<div><span class="box" style="background:${getColorForCount(1)}"></span> 1 sự kiện</div>` +
-          `<div><span class="box" style="background:${getColorForCount(2)}"></span> 2 sự kiện</div>` +
-          `<div><span class="box" style="background:${getColorForCount(3)}"></span> 3+ sự kiện</div>`;
+          `<div><span class="box" style="background:${getColorForCount(1)}"></span> 1-2 sự kiện</div>` +
+          `<div><span class="box" style="background:${getColorForCount(3)}"></span> 3-4 sự kiện</div>` +
+          `<div><span class="box" style="background:${getColorForCount(5)}"></span> 5+ sự kiện</div>`;
         return div;
       };
       legend.addTo(map);
