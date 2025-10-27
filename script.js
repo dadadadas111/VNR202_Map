@@ -125,6 +125,24 @@ function onEachFeature(feature, layer) {
       // render left timeline and right info panels
       try { window.renderTimeline(displayName, items); } catch (err) { /* ignore */ }
       try { window.renderProvinceInfo(feature, items.length); } catch (err) { /* ignore */ }
+      // Asynchronously fetch a short Wikipedia summary for this province and append a source link
+      try {
+        const rightContent = document.getElementById('rightContent');
+        if (rightContent && typeof window.fetchWikiSummary === 'function') {
+          const loadId = 'wiki_load_' + Date.now();
+          rightContent.insertAdjacentHTML('beforeend', `<div id="${loadId}" class="wiki-loading">Đang tải tóm tắt từ Wikipedia...</div>`);
+          window.fetchWikiSummary(displayName).then(w => {
+            const node = document.getElementById(loadId);
+            if (!w) {
+              if (node) node.textContent = 'Không tìm thấy tóm tắt trên Wikipedia.';
+              return;
+            }
+            const extract = w.extract ? (w.extract.length > 600 ? escapeHtml(w.extract.slice(0,600)) + '...' : escapeHtml(w.extract)) : '';
+            const html = `<div class="wiki-summary"><h3>Tóm tắt Wikipedia</h3><div class="wiki-extract">${extract}</div><div class="meta-actions"><a class="visit-site" href="${w.url}" target="_blank" rel="noopener">Xem nguồn</a></div></div>`;
+            if (node) node.outerHTML = html; else rightContent.insertAdjacentHTML('beforeend', html);
+          }).catch(err => { const node = document.getElementById(loadId); if (node) node.textContent = 'Lỗi khi tải Wikipedia.'; });
+        }
+      } catch (err) { /* ignore */ }
       // when movement/zoom finishes, re-enable style updates and reapply styles
       try {
         if (window.map) {
@@ -414,6 +432,24 @@ function onEachFeature(feature, layer) {
       const items = eventsForFeatureAndPeriod(targetLayer.feature, currentPeriod);
       try { window.renderTimeline(displayName, items); } catch (err) { /* ignore */ }
       try { window.renderProvinceInfo(targetLayer.feature, items.length); } catch (err) { /* ignore */ }
+          // Fetch a short Wikipedia summary (vi.wikipedia) and append a "Xem nguồn" link
+          try {
+            const rightContent = document.getElementById('rightContent');
+            if (rightContent && typeof window.fetchWikiSummary === 'function') {
+              const loadId = 'wiki_load_' + Date.now();
+              rightContent.insertAdjacentHTML('beforeend', `<div id="${loadId}" class="wiki-loading">Đang tải tóm tắt từ Wikipedia...</div>`);
+              window.fetchWikiSummary(displayName).then(w => {
+                const node = document.getElementById(loadId);
+                if (!w) {
+                  if (node) node.textContent = 'Không tìm thấy tóm tắt trên Wikipedia.';
+                  return;
+                }
+                const extract = w.extract ? (w.extract.length > 600 ? escapeHtml(w.extract.slice(0,600)) + '...' : escapeHtml(w.extract)) : '';
+                const html = `<div class="wiki-summary"><h3>Tóm tắt Wikipedia</h3><div class="wiki-extract">${extract}</div><div class="meta-actions"><a class="visit-site" href="${w.url}" target="_blank" rel="noopener">Xem nguồn</a></div></div>`;
+                if (node) node.outerHTML = html; else rightContent.insertAdjacentHTML('beforeend', html);
+              }).catch(err => { const node = document.getElementById(loadId); if (node) node.textContent = 'Lỗi khi tải Wikipedia.'; });
+            }
+          } catch (err) { /* ignore */ }
       // handle moveend
       try {
         if (window.map) {
@@ -449,6 +485,43 @@ function onEachFeature(feature, layer) {
       showForeignPin(parseFloat(top.lat), parseFloat(top.lon), key);
       return window._geocodeCache[key];
     } catch (err) { console.warn('geocodeAndFocus error', err); return null; }
+  };
+
+  // Wikipedia fetch (Vietnamese). Cache simple page summaries to enrich province info.
+  window._wikiCache = window._wikiCache || {};
+  window.fetchWikiSummary = async function(title) {
+    try {
+      if (!title) return null;
+      const key = String(title).trim();
+      if (window._wikiCache[key]) return window._wikiCache[key];
+      // Try REST summary endpoint first
+      const restUrl = 'https://vi.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(key);
+      try {
+        const r = await fetch(restUrl);
+        if (r.ok) {
+          const j = await r.json();
+          const pageUrl = (j && j.content_urls && j.content_urls.desktop && j.content_urls.desktop.page) ? j.content_urls.desktop.page : ('https://vi.wikipedia.org/wiki/' + encodeURIComponent(j.title || key));
+          const out = { title: j.title || key, extract: j.extract || '', url: pageUrl };
+          window._wikiCache[key] = out;
+          return out;
+        }
+      } catch (err) {
+        // ignore and fall back to search
+      }
+      // fallback: use MediaWiki search API to find the best match, then request its summary
+      const searchUrl = 'https://vi.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=' + encodeURIComponent(key) + '&srlimit=1';
+      try {
+        const s = await fetch(searchUrl);
+        const js = await s.json();
+        if (js && js.query && Array.isArray(js.query.search) && js.query.search.length) {
+          const first = js.query.search[0];
+          if (first && first.title) {
+            return await window.fetchWikiSummary(first.title);
+          }
+        }
+      } catch (err) { /* ignore */ }
+      return null;
+    } catch (err) { console.warn('fetchWikiSummary error', err); return null; }
   };
 
   // Image discovery using Wikimedia Commons (safe, attribution-friendly, no API key)

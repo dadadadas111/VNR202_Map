@@ -199,6 +199,13 @@ html, body {
 .img-meta .meta-actions { margin-top: 8px; }
 .img-meta .visit-site { display: inline-block; background: rgba(255,255,255,0.08); color: #fff; border-radius: 6px; padding: 6px 10px; text-decoration: none; }
 
+/* Wikipedia summary box in right panel */
+.wiki-loading { font-size: 13px; color: #666; margin-top: 8px; }
+.wiki-summary { margin-top: 10px; background: transparent; color: #223; }
+.wiki-summary h3 { margin: 0 0 6px 0; font-size: 15px; }
+.wiki-extract { color: #334; font-size: 13px; line-height: 1.4; }
+.wiki-summary .visit-site { display: inline-block; margin-top: 8px; padding: 6px 10px; border-radius: 6px; background: #2b6cb0; color: white; text-decoration: none; }
+
 /* images row below description */
 .event-image-row { margin-top: 8px; display:flex; gap:8px; }
 .event-image-wrap { position: relative; width: 84px; height: 56px; overflow: hidden; border-radius: 6px; z-index: 0; }
