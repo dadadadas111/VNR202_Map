@@ -625,7 +625,7 @@ function onEachFeature(feature, layer) {
   window.fetchImagesForEvent = async function(event, limit = 8) {
     try {
       if (!event) return [];
-      const parts = [event.name || '', event.year || '', event.support_label || event.province || ''];
+      const parts = [event.name || '', event.year ];
       const query = parts.filter(Boolean).join(' ');
       // Prefer Google if configured, otherwise fall back to Wikimedia Commons
       let imgs = [];
@@ -636,7 +636,7 @@ function onEachFeature(feature, layer) {
         }
       } catch (err) { imgs = []; }
       if ((!imgs || imgs.length === 0) && typeof window.fetchImagesFromWikimedia === 'function') {
-        imgs = await window.fetchImagesFromWikimedia(query, limit);
+        // imgs = await window.fetchImagesFromWikimedia(query, limit);
       }
       if (!imgs || !imgs.length) return [];
       // Return found image items; the caller will decide whether to append them

@@ -52,7 +52,7 @@
   {
     "name": "Nam Kỳ khởi nghĩa",
     "year": 1940,
-    "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau",
+    "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Cần Thơ, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau",
     "support_label": "Nam Bộ",
     "description": "Cuộc nổi dậy vũ trang của Đảng bộ Nam Kỳ (22/11–31/12/1940) chống ách thống trị Pháp – Nhật, diễn ra tại nhiều tỉnh Nam Bộ và bị đàn áp đẫm máu.",
     "image_urls": [
@@ -100,7 +100,7 @@
   {
     "name": "Bùng nổ Nam Bộ kháng chiến",
     "year": 1945,
-    "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau, Quảng Bình, Quảng Trị, Thừa Thiên Huế, Đà Nẵng, Quảng Nam, Quảng Ngãi, Bình Định, Phú Yên, Khánh Hòa, Ninh Thuận, Bình Thuận, Kon Tum, Gia Lai, Đắk Lắk, Đắk Nông, Lâm Đồng",
+    "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Cần Thơ, Bà Rịa - Vũng Tàu, Đồng Nai, Bình Dương, Bình Phước, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau, Quảng Bình, Quảng Trị, Thừa Thiên Huế, Đà Nẵng, Quảng Nam, Quảng Ngãi, Bình Định, Phú Yên, Khánh Hòa, Ninh Thuận, Bình Thuận, Kon Tum, Gia Lai, Đắk Lắk, Đắk Nông, Lâm Đồng",
     "support_label": "Nam Bộ, Nam Trung Bộ, Tây Nguyên",
     "description": "Ngày 23/9/1945, quân Pháp tái chiếm Sài Gòn khiến Nam Bộ nổ ra kháng chiến. Lực lượng Việt Nam rút ra chiến khu, chiến đấu lan sang Nam Trung Bộ và Tây Nguyên.",
     "image_urls": [
@@ -110,7 +110,7 @@
   {
     "name": "Kết thúc Nam Bộ kháng chiến",
     "year": 1946,
-    "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau, Quảng Bình, Quảng Trị, Thừa Thiên Huế, Đà Nẵng, Quảng Nam, Quảng Ngãi, Bình Định, Phú Yên, Khánh Hòa, Ninh Thuận, Bình Thuận, Kon Tum, Gia Lai, Đắk Lắk, Đắk Nông, Lâm Đồng",
+        "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Cần Thơ, Bà Rịa - Vũng Tàu, Đồng Nai, Bình Dương, Bình Phước, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau, Quảng Bình, Quảng Trị, Thừa Thiên Huế, Đà Nẵng, Quảng Nam, Quảng Ngãi, Bình Định, Phú Yên, Khánh Hòa, Ninh Thuận, Bình Thuận, Kon Tum, Gia Lai, Đắk Lắk, Đắk Nông, Lâm Đồng",
     "support_label": "Nam Bộ, Nam Trung Bộ, Tây Nguyên",
     "description": "Cuộc kháng chiến Nam Bộ kéo dài tới 30/3/1946 khi các lực lượng chuyển sang chiến tranh lâu dài, bảo vệ thành quả cách mạng ở Nam Bộ và vùng cao.",
     "image_urls": [
@@ -148,7 +148,7 @@
   {
     "name": "Phát động cải cách ruộng đất ở miền Bắc",
     "year": 1953,
-    "province": "Hà Nội, Hà Giang, Cao Bằng, Bắc Kạn, Tuyên Quang, Thái Nguyên, Phú Thọ, Vĩnh Phúc, Bắc Ninh, Hải Dương, Hải Phòng, Hưng Yên, Thái Bình, Hà Nam, Nam Định, Ninh Bình, Thanh Hóa, Nghệ An, Hà Tĩnh, Quảng Bình, Quảng Trị",
+    "province": "Lai Châu, Lào Cai, Yên Bái, Điện Biên, Sơn La, Hòa Bình, Bắc Giang, Lạng Sơn, Quảng Ninh, Hà Nội, Hà Giang, Cao Bằng, Bắc Kạn, Tuyên Quang, Thái Nguyên, Phú Thọ, Vĩnh Phúc, Bắc Ninh, Hải Dương, Hải Phòng, Hưng Yên, Thái Bình, Hà Nam, Nam Định, Ninh Bình, Thanh Hóa, Nghệ An, Hà Tĩnh, Quảng Bình, Quảng Trị",
     "support_label": "Miền Bắc",
     "description": "Từ năm 1953, Đảng và Chính phủ phát động cải cách ruộng đất nhằm xóa bỏ chế độ chiếm hữu ruộng đất phong kiến, trao đất cho nông dân, thực hiện khẩu hiệu 'người cày có ruộng'.",
     "image_urls": [
@@ -158,7 +158,7 @@
   {
     "name": "Kết thúc cải cách ruộng đất",
     "year": 1956,
-    "province": "Hà Nội, Hà Giang, Cao Bằng, Bắc Kạn, Tuyên Quang, Thái Nguyên, Phú Thọ, Vĩnh Phúc, Bắc Ninh, Hải Dương, Hải Phòng, Hưng Yên, Thái Bình, Hà Nam, Nam Định, Ninh Bình, Thanh Hóa, Nghệ An, Hà Tĩnh, Quảng Bình, Quảng Trị",
+        "province": "Lai Châu, Lào Cai, Yên Bái, Điện Biên, Sơn La, Hòa Bình, Bắc Giang, Lạng Sơn, Quảng Ninh, Hà Nội, Hà Giang, Cao Bằng, Bắc Kạn, Tuyên Quang, Thái Nguyên, Phú Thọ, Vĩnh Phúc, Bắc Ninh, Hải Dương, Hải Phòng, Hưng Yên, Thái Bình, Hà Nam, Nam Định, Ninh Bình, Thanh Hóa, Nghệ An, Hà Tĩnh, Quảng Bình, Quảng Trị",
     "support_label": "Miền Bắc",
     "description": "Chương trình cải cách ruộng đất kết thúc năm 1956 sau khi đã phân phối lại ruộng đất cho nông dân, mặc dù có sai lầm phải sửa chữa, góp phần biến đổi quan hệ sở hữu ở nông thôn.",
     "image_urls": [
@@ -222,7 +222,7 @@
   {
     "name": "Cuộc tổng tiến công và nổi dậy Tết Mậu Thân",
     "year": 1968,
-    "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau, Bình Phước, Bình Dương, Đồng Nai, Bà Rịa - Vũng Tàu, Quảng Bình, Quảng Trị, Thừa Thiên Huế, Đà Nẵng, Quảng Nam, Quảng Ngãi, Bình Định, Phú Yên, Khánh Hòa, Ninh Thuận, Bình Thuận, Kon Tum, Gia Lai, Đắk Lắk, Đắk Nông, Lâm Đồng",
+    "province": "TP. Hồ Chí Minh,Cần Thơ, Tây Ninh, Long An, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau, Bình Phước, Bình Dương, Đồng Nai, Bà Rịa - Vũng Tàu, Quảng Bình, Quảng Trị, Thừa Thiên Huế, Đà Nẵng, Quảng Nam, Quảng Ngãi, Bình Định, Phú Yên, Khánh Hòa, Ninh Thuận, Bình Thuận, Kon Tum, Gia Lai, Đắk Lắk, Đắk Nông, Lâm Đồng",
     "support_label": "Miền Nam Việt Nam",
     "description": "Nửa đêm 30/1/1968, quân và dân miền Nam đồng loạt tiến công vào hầu hết đô thị, căn cứ quân sự Mỹ – Sài Gòn, tạo bước ngoặt chiến lược trong cuộc kháng chiến.",
     "image_urls": [
@@ -232,7 +232,7 @@
   {
     "name": "Chiến dịch ‘Điện Biên Phủ trên không’ (Linebacker II)",
     "year": 1972,
-    "province": "Hà Nội, Hải Phòng, Thái Nguyên, Lạng Sơn, Bắc Giang",
+    "province": "Hà Nội, Hải Phòng, Bắc Ninh, Quảng Ninh, Thái Nguyên, Lạng Sơn, Bắc Giang",
     "description": "Từ 18–30/12/1972, Không quân Mỹ ném bom rải thảm Hà Nội, Hải Phòng và miền Bắc song thất bại; Việt Nam bắn rơi nhiều B‑52, buộc Mỹ phải ký Hiệp định Paris.",
     "image_urls": [
       "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
@@ -277,8 +277,8 @@
   {
     "name": "Chiến dịch Hồ Chí Minh",
     "year": 1975,
-    "province": "TP. Hồ Chí Minh, Gia Định, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau",
-    "support_label": "TP. Hồ Chí Minh, Gia Định, Đồng bằng sông Cửu Long",
+    "province": "TP. Hồ Chí Minh, Bình Dương, Đồng Nai, Tây Ninh, Long An, Tiền Giang, Bà Rịa – Vũng Tàu, Bình Phước",
+    "support_label": "Khu vực Đông Nam Bộ và vùng phụ cận Nam Bộ, lấy Sài Gòn – Gia Định làm trung tâm",
     "description": "Từ 26–30/4/1975, quân giải phóng mở Chiến dịch Hồ Chí Minh giải phóng Sài Gòn – Gia Định và đồng bằng Nam Bộ, buộc chính quyền Sài Gòn phải đầu hàng vô điều kiện.",
     "image_urls": [
       "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
