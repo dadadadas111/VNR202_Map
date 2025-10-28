@@ -32,6 +32,24 @@ html, body {
   align-items: center;
   gap: 12px;
 }
+.header-ghost {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #4b3b34;
+  cursor: pointer;
+  transition: background 140ms ease, transform 120ms ease;
+}
+.header-ghost:hover { background: rgba(0,0,0,0.04); transform: translateY(-2px); }
+
+/* Help popup specifics (reuse about-popup styles) */
+#helpPopup .about-content { max-width: 640px; }
+#helpPopup .about-content h2 { color: #7a2a1f; font-family: 'Playfair Display', serif; }
+#helpPopup .about-content ol { margin-left: 18px; color: #333; }
+#helpPopup .about-content li { margin-bottom: 8px; }
+/* placeholder for start tour button if you want specific styling later */
 .github-link {
   display: flex;
   align-items: center;

@@ -35,6 +35,8 @@
       </select>
     </div>
     <div class="header-actions">
+      <button id="feedbackBtn" class="header-ghost" title="Gửi góp ý">Góp ý</button>
+      <button id="helpBtn" class="header-ghost" title="Hướng dẫn sử dụng">Hướng dẫn</button>
       <a href="https://github.com/dadadadas111/VNR202_Map" target="_blank" class="github-link" title="Xem trên GitHub">
         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" style="height:22px;vertical-align:middle;"> GitHub
       </a>
@@ -64,7 +66,26 @@
         </ul>
       </div>
       <div class="about-actions" style="margin-top:14px;text-align:right;">
+        <button id="helpFromAboutBtn" class="about-continue" style="background:transparent;color:#5b2b1a;border:1px solid rgba(0,0,0,0.06);padding:8px 12px;margin-right:8px;">Hướng dẫn sử dụng</button>
         <button id="continueBtn" class="about-continue">Tiếp tục xem</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help / Guide Modal -->
+  <div id="helpPopup" class="about-popup" style="display:none;">
+    <div class="about-content" style="max-width:640px;">
+      <button id="closeHelp" class="close-about">×</button>
+      <h2>Hướng dẫn sử dụng</h2>
+      <p>Đây là phần hướng dẫn nhanh để giúp người dùng làm quen với giao diện:</p>
+      <ol>
+        <li>Chọn giai đoạn từ menu trên cùng để lọc sự kiện.</li>
+        <li>Mở bảng bên trái để xem danh sách sự kiện; click vào một mục để làm nổi vùng liên quan trên bản đồ.</li>
+        <li>Sử dụng nút GitHub để xem mã nguồn; dùng nút Góp ý để gửi phản hồi.</li>
+        <li>Click vào biểu tượng Bác Hồ để xem thông tin theo mốc thời gian.</li>
+      </ol>
+      <div style="margin-top:12px;text-align:right;">
+        <button id="startTourBtn" class="about-continue">Bắt đầu hướng dẫn (tour)</button>
       </div>
     </div>
   </div>

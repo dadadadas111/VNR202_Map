@@ -16,6 +16,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (continueBtn) {
       continueBtn.addEventListener('click', () => { aboutPopup.style.display = 'none'; });
     }
+    // Feedback / Help buttons
+    const feedbackBtn = document.getElementById('feedbackBtn');
+    const helpBtn = document.getElementById('helpBtn');
+    const helpFromAboutBtn = document.getElementById('helpFromAboutBtn');
+    const helpPopup = document.getElementById('helpPopup');
+    const closeHelp = document.getElementById('closeHelp');
+    const startTourBtn = document.getElementById('startTourBtn');
+    if (feedbackBtn) {
+      feedbackBtn.addEventListener('click', () => {
+        // placeholder: open feedback form in new tab (user will update link later)
+        window.open('https://forms.gle/your-feedback-form', '_blank');
+      });
+    }
+    function openHelp() { if (helpPopup) helpPopup.style.display = 'flex'; }
+    if (helpBtn) helpBtn.addEventListener('click', openHelp);
+    if (helpFromAboutBtn) helpFromAboutBtn.addEventListener('click', () => { aboutPopup.style.display = 'none'; openHelp(); });
+    if (closeHelp) closeHelp.addEventListener('click', () => { if (helpPopup) helpPopup.style.display = 'none'; });
+    if (helpPopup) helpPopup.addEventListener('click', (e) => { if (e.target === helpPopup) helpPopup.style.display = 'none'; });
+    if (startTourBtn) startTourBtn.addEventListener('click', () => {
+      // Placeholder action: start a guided tour. For now we can show a small alert.
+      try { alert('Bắt đầu hướng dẫn tương tác (placeholder). Bạn có thể tích hợp Intro.js hoặc Shepherd.js để có tour đẹp hơn.'); } catch (err) {}
+    });
     // Đóng popup khi click ra ngoài vùng nội dung
     aboutPopup.addEventListener('click', (e) => {
       if (e.target === aboutPopup) aboutPopup.style.display = 'none';
