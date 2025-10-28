@@ -1,0 +1,162 @@
+[
+  {
+    "start_year": 1890,
+    "end_year": 1910,
+    "name": "Nguyễn Sinh Cung / Nguyễn Tất Thành",
+    "activity": "Sinh ra tại làng Kim Liên, Nam Đàn, Nghệ An. Học tại Huế, sau đó vào Nam.",
+    "location": "Nghệ An, Huế",
+    "lat": 18.6792,
+    "lon": 105.6819,
+    "description": "Thời niên thiếu, học hành và hình thành tư tưởng yêu nước ban đầu."
+  },
+  {
+    "start_year": 1911,
+    "end_year": 1916,
+    "name": "Nguyễn Tất Thành / Văn Ba",
+    "activity": "Rời Tổ quốc, đi tìm đường cứu nước. Làm phục vụ trên tàu Đô đốc Latouche-Tréville, đi qua nhiều nước châu Phi, châu Mỹ.",
+    "location": "Pháp, Anh, Mỹ, Châu Phi",
+    "lat": 48.8566,
+    "lon": 2.3522,
+    "description": "Chu du thế giới, quan sát cuộc sống của người dân các nước thuộc địa, tìm hiểu phong trào cách mạng thế giới."
+  },
+  {
+    "start_year": 1917,
+    "end_year": 1922,
+    "name": "Nguyễn Ái Quốc",
+    "activity": "Sống tại Pháp, tham gia phong trào công nhân. Là thành viên sáng lập Đảng Cộng sản Pháp (1920).",
+    "location": "Paris, Pháp",
+    "lat": 48.8566,
+    "lon": 2.3522,
+    "description": "Hoạt động chính trị tích cực tại Pháp, viết bài báo, tố cáo chủ nghĩa thực dân, tham dự Đại hội Tours."
+  },
+  {
+    "start_year": 1923,
+    "end_year": 1923,
+    "name": "Nguyễn Ái Quốc",
+    "activity": "Đến Liên Xô, học tập tại Trường Đại học Phương Đông (tên thật: Trường Đại học Lao động Phương Đông).",
+    "location": "Mát-xcơ-va, Liên Xô",
+    "lat": 55.7558,
+    "lon": 37.6173,
+    "description": "Học tập lý luận cách mạng, tích lũy kinh nghiệm từ cách mạng Nga."
+  },
+  {
+    "start_year": 1924,
+    "end_year": 1926,
+    "name": "Nguyễn Ái Quốc / Lý Thụy",
+    "activity": "Công tác tại Quảng Châu, Trung Quốc. Thành lập Hội Việt Nam Cách mạng Thanh niên (1925).",
+    "location": "Quảng Châu, Trung Quốc",
+    "lat": 23.1291,
+    "lon": 113.2644,
+    "description": "Đào tạo cán bộ cách mạng cho Việt Nam, chuẩn bị lực lượng cho việc thành lập Đảng."
+  },
+  {
+    "start_year": 1927,
+    "end_year": 1929,
+    "name": "Nguyễn Ái Quốc",
+    "activity": "Hoạt động bí mật tại nhiều nước châu Á (Thái Lan, Myanmar, Trung Quốc). Chuẩn bị thành lập Đảng.",
+    "location": "Thái Lan, Trung Quốc",
+    "lat": 13.7563,
+    "lon": 100.5018,
+    "description": "Tránh sự truy lùng của thực dân, tiếp tục công tác chuẩn bị về mặt tổ chức và lý luận."
+  },
+  {
+    "start_year": 1930,
+    "end_year": 1930,
+    "name": "Nguyễn Ái Quốc",
+    "activity": "Chủ trì Hội nghị hợp nhất thành lập Đảng Cộng sản Việt Nam tại Hương Cảng (3/2/1930). Sau đó hoạt động tại Thượng Hải.",
+    "location": "Hương Cảng (Hong Kong), Thượng Hải",
+    "lat": 22.3193,
+    "lon": 114.1694,
+    "description": "Sự kiện lịch sử trọng đại: thành lập Đảng, thống nhất các tổ chức cộng sản trong nước."
+  },
+  {
+    "start_year": 1931,
+    "end_year": 1932,
+    "name": "Nguyễn Ái Quốc",
+    "activity": "Bị mật thám Anh bắt giữ tại Hương Cảng. Sau đó được thả và tiếp tục hoạt động bí mật.",
+    "location": "Hương Cảng (Hong Kong)",
+    "lat": 22.3193,
+    "lon": 114.1694,
+    "description": "Giai đoạn khó khăn, bị giam giữ nhưng vẫn giữ vững tinh thần và lập trường cách mạng."
+  },
+  {
+    "start_year": 1933,
+    "end_year": 1937,
+    "name": "Nguyễn Ái Quốc",
+    "activity": "Tiếp tục hoạt động tại Liên Xô và Trung Quốc. Tham gia công tác Quốc tế Cộng sản.",
+    "location": "Mát-xcơ-va, Liên Xô",
+    "lat": 55.7558,
+    "lon": 37.6173,
+    "description": "Thời kỳ khó khăn, Đảng trong nước bị đàn áp, Bác tiếp tục hoạt động quốc tế."
+  },
+  {
+    "start_year": 1938,
+    "end_year": 1940,
+    "name": "Nguyễn Ái Quốc",
+    "activity": "Hoạt động tại Trung Quốc, theo dõi tình hình trong nước, chuẩn bị trở về Tổ quốc.",
+    "location": "Trung Quốc (Quế Lâm, Côn Minh)",
+    "lat": 25.2744,
+    "lon": 110.2900,
+    "description": "Chuẩn bị điều kiện để về nước lãnh đạo cách mạng trong bối cảnh Chiến tranh thế giới thứ hai."
+  },
+  {
+    "start_year": 1941,
+    "end_year": 1941,
+    "name": "Hồ Chí Minh",
+    "activity": "Về nước (1/1941), chủ trì Hội nghị Trung ương 8 tại Pắc Bó (Cao Bằng), thành lập Việt Minh. Đổi tên thành Hồ Chí Minh.",
+    "location": "Pắc Bó, Cao Bằng",
+    "lat": 22.6833,
+    "lon": 106.2167,
+    "description": "Trở về Tổ quốc sau 30 năm, lãnh đạo trực tiếp cách mạng Việt Nam."
+  },
+  {
+    "start_year": 1942,
+    "end_year": 1942,
+    "name": "Hồ Chí Minh",
+    "activity": "Sang Trung Quốc tìm kiếm liên lạc và hỗ trợ, bị quân Tưởng giam giữ tại nhiều nhà tù (Liễu Châu, Quảng Tây).",
+    "location": "Các nhà tù tại Trung Quốc (Liễu Châu, Quế Lâm)",
+    "lat": 24.3264,
+    "lon": 109.4281,
+    "description": "Bị giam giữ oan, viết 'Nhật ký trong tù'. Thử thách khắc nghiệt nhưng không khuất phục."
+  },
+  {
+    "start_year": 1943,
+    "end_year": 1944,
+    "name": "Hồ Chí Minh",
+    "activity": "Được thả (9/1943), tiếp tục hoạt động ở biên giới Việt - Trung. Về nước cuối 1944, chuẩn bị Tổng khởi nghĩa.",
+    "location": "Cao Bằng, Việt Bắc",
+    "lat": 22.6666,
+    "lon": 106.2639,
+    "description": "Chỉ đạo chuẩn bị lực lượng vũ trang và căn cứ địa, sẵn sàng cho Cách mạng Tháng Tám."
+  },
+  {
+    "start_year": 1945,
+    "end_year": 1953,
+    "name": "Chủ tịch Hồ Chí Minh",
+    "activity": "Lãnh đạo Cách mạng Tháng Tám thành công (8/1945). Đọc Tuyên ngôn Độc lập (2/9/1945). Chủ tịch nước Việt Nam Dân chủ Cộng hòa. Lãnh đạo kháng chiến chống Pháp.",
+    "location": "Hà Nội, Việt Bắc",
+    "lat": 21.0285,
+    "lon": 105.8542,
+    "description": "Giai đoạn lịch sử vẻ vang: Độc lập dân tộc và kháng chiến toàn dân chống thực dân Pháp."
+  },
+  {
+    "start_year": 1954,
+    "end_year": 1964,
+    "name": "Chủ tịch Hồ Chí Minh",
+    "activity": "Lãnh đạo xây dựng miền Bắc xã hội chủ nghĩa. Đấu tranh thống nhất đất nước. Phát động phong trào thi đua yêu nước.",
+    "location": "Hà Nội",
+    "lat": 21.0285,
+    "lon": 105.8542,
+    "description": "Xây dựng miền Bắc, chi viện cho miền Nam đấu tranh giải phóng. Củng cố Đảng và Nhà nước."
+  },
+  {
+    "start_year": 1965,
+    "end_year": 1969,
+    "name": "Chủ tịch Hồ Chí Minh",
+    "activity": "Lãnh đạo kháng chiến chống Mỹ cứu nước. Sức khỏe suy yếu nhưng vẫn quan tâm chỉ đạo mọi mặt. Viết Di chúc (1969).",
+    "location": "Hà Nội",
+    "lat": 21.0285,
+    "lon": 105.8542,
+    "description": "Giai đoạn cuối đời, lãnh đạo cuộc kháng chiến vĩ đại chống đế quốc Mỹ xâm lược."
+  }
+]

@@ -229,6 +229,27 @@ html, body {
   filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
 }
 
+/* HCM center bubble (floating on map) */
+.hcm-center-bubble {
+  position: fixed;
+  bottom: 18px;
+  left: 18px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid rgba(0,0,0,0.06);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+  z-index: 7700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 4px;
+}
+.hcm-center-bubble:hover { transform: scale(1.04); }
+.hcm-center-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 1px solid #fff; }
+
 .timeline-list { list-style: decimal inside; margin: 8px 0; padding: 0; }
 .timeline-item { margin-bottom: 10px; }
 .t-year { color:#b44; font-weight:700; margin-right:6px; }
@@ -271,6 +292,109 @@ html, body {
   box-shadow: 0 4px 12px rgba(10,30,60,0.08);
   font-size: 13px;
   border-radius: 4px;
+}
+
+/* Ho Chi Minh Marker Styles */
+.hcm-marker {
+  background: transparent;
+  border: none;
+  z-index: 5000 !important;
+}
+.hcm-icon-wrapper {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+  transition: transform 0.2s ease;
+  z-index: 5001 !important;
+}
+.hcm-icon-wrapper:hover {
+  transform: scale(1.15);
+}
+.hcm-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid #da2032;
+  object-fit: cover;
+  background: white;
+}
+.hcm-year-badge {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  background: linear-gradient(135deg, #da2032 0%, #8b0000 100%);
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 10px;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Ho Chi Minh Tooltip */
+.hcm-tooltip {
+  background: rgba(218,32,50,0.95) !important;
+  color: white !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  border-radius: 6px !important;
+  padding: 8px 10px !important;
+  font-size: 13px !important;
+  box-shadow: 0 4px 12px rgba(218,32,50,0.4) !important;
+  font-weight: 500;
+  z-index: 5002 !important;
+}
+.hcm-tooltip-content {
+  line-height: 1.4;
+}
+
+/* Ho Chi Minh Popup */
+.hcm-popup-container .leaflet-popup-content-wrapper {
+  background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+  border: 2px solid #da2032;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(218,32,50,0.3);
+  z-index: 5003 !important;
+}
+.hcm-popup-container .leaflet-popup-tip {
+  background: #ffffff;
+  border-left: 2px solid #da2032;
+  border-bottom: 2px solid #da2032;
+}
+.hcm-popup {
+  padding: 8px;
+  font-size: 14px;
+  color: #222;
+}
+.hcm-popup-header {
+  font-size: 16px;
+  font-weight: 700;
+  color: #da2032;
+  border-bottom: 2px solid #da2032;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+.hcm-popup-year {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+  margin-top: 2px;
+}
+.hcm-popup-location,
+.hcm-popup-activity {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.hcm-popup-desc {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+  font-size: 13px;
+  color: #555;
+  font-style: italic;
+  line-height: 1.5;
 }
 
 /* Ensure leaflet tooltips (including our province tooltip) appear above panels */

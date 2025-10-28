@@ -42,6 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let tilesLoaded = false;
   base.on('load', () => { tilesLoaded = true; hideLoaderIfReady(); });
 
+  // Create dedicated panes for Ho Chi Minh marker, tooltip and popup so they render above other layers/effects
+  try {
+    if (map.createPane) {
+      map.createPane('hcmPane');
+      map.getPane('hcmPane').style.zIndex = 7500;
+      map.createPane('hcmPopupPane');
+      map.getPane('hcmPopupPane').style.zIndex = 7600;
+      map.createPane('hcmTooltipPane');
+      map.getPane('hcmTooltipPane').style.zIndex = 7601;
+    }
+  } catch (err) { /* ignore if panes exist or not supported */ }
+
   let geojsonLayer;
   let events = [];
   let geo = null;
@@ -52,6 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let selectedLayers = []; // for multi-province selection when event is clicked
   let selectionMode = null; // 'event' or 'province' to track selection mode
   let selectedEvent = null; // track currently selected event for UI highlighting
+  let hcmTimeline = []; // Ho Chi Minh timeline data
+  let hcmMarker = null; // marker for Ho Chi Minh location
   const layerIndex = new Map(); // cache normalized province name -> Leaflet layer
   const featurePeriodCache = new Map(); // cache per-feature event counts/arrays by period
   const PERIOD_KEYS = ['p1', 'p2', 'p3'];
@@ -70,6 +84,99 @@ function getPeriodRange(key) {
   if (key === 'p1') return [1930, 1944];
   if (key === 'p2') return [1945, 1974];
   return [1975, 9999];
+}
+
+// Get Ho Chi Minh info for a specific year
+function getHCMInfoForYear(year) {
+  if (!hcmTimeline || !hcmTimeline.length) return null;
+  // Find the item where year is between start_year and end_year
+  const item = hcmTimeline.find(h => year >= h.start_year && year <= h.end_year);
+  return item || null;
+}
+
+// Update Ho Chi Minh marker based on current context (period or selected event year)
+function updateHCMMarker(year = null) {
+  try {
+    if (!window.map) return;
+    
+    // Determine year: use selected event year if available, otherwise period start year
+    let targetYear = year;
+    if (!targetYear && selectedEvent) {
+      targetYear = selectedEvent.year;
+    }
+    if (!targetYear) {
+      const [startYear] = getPeriodRange(currentPeriod);
+      targetYear = startYear;
+    }
+    
+    const info = getHCMInfoForYear(targetYear);
+    if (!info) {
+      // Remove marker if no info available
+      if (hcmMarker) {
+        try { map.removeLayer(hcmMarker); } catch (e) {}
+        hcmMarker = null;
+      }
+      return;
+    }
+    
+    // Create custom icon for Ho Chi Minh
+    const hcmIcon = L.divIcon({
+      className: 'hcm-marker',
+      html: `<div class="hcm-icon-wrapper">
+        <img src="https://nld.mediacdn.vn/thumb_w/698/2017/img20170214095702-1487398972673.jpg" alt="Bác Hồ" class="hcm-avatar" />
+        <div class="hcm-year-badge">${targetYear}</div>
+      </div>`,
+      iconSize: [50, 50],
+      iconAnchor: [25, 25],
+      popupAnchor: [0, -25]
+    });
+    
+    const latlng = L.latLng(info.lat, info.lon);
+    
+    // Update or create marker (place into the dedicated HCM pane so it sits above map effects)
+    if (hcmMarker) {
+      hcmMarker.setLatLng(latlng);
+      hcmMarker.setIcon(hcmIcon);
+    } else {
+      hcmMarker = L.marker(latlng, { icon: hcmIcon, pane: 'hcmPane', zIndexOffset: 10000 }).addTo(map);
+    }
+    
+    // Popup content
+    const popupContent = `
+      <div class="hcm-popup">
+        <div class="hcm-popup-header">
+          <strong>${info.name}</strong>
+          <div class="hcm-popup-year">${info.start_year}${info.start_year !== info.end_year ? ' - ' + info.end_year : ''}</div>
+        </div>
+        <div class="hcm-popup-location"><strong>Địa điểm:</strong> ${info.location}</div>
+        <div class="hcm-popup-activity"><strong>Hoạt động:</strong> ${info.activity}</div>
+        <div class="hcm-popup-desc">${info.description}</div>
+      </div>
+    `;
+    
+    // Bind popup into the high z-index popup pane
+    try {
+      const popup = L.popup({ maxWidth: 300, className: 'hcm-popup-container', pane: 'hcmPopupPane' }).setContent(popupContent);
+      hcmMarker.bindPopup(popup);
+    } catch (err) {
+      // fallback
+      hcmMarker.bindPopup(popupContent, { maxWidth: 300, className: 'hcm-popup-container' });
+    }
+    
+    // Tooltip on hover
+    const tooltipText = `<div class="hcm-tooltip-content"><strong>${info.name}</strong><br/>${info.location} (${targetYear})</div>`;
+    try {
+      hcmMarker.bindTooltip(tooltipText, { direction: 'top', offset: [0, -15], className: 'hcm-tooltip', pane: 'hcmTooltipPane' });
+    } catch (err) {
+      hcmMarker.bindTooltip(tooltipText, { direction: 'top', offset: [0, -15], className: 'hcm-tooltip' });
+    }
+
+    // ensure marker and its popup/tooltip are on top
+    try { if (hcmMarker && hcmMarker.bringToFront) hcmMarker.bringToFront(); } catch (err) {}
+    
+  } catch (err) {
+    console.warn('updateHCMMarker error:', err);
+  }
 }
 
 // Simple color scale by count
@@ -249,16 +356,6 @@ function onEachFeature(feature, layer) {
     } catch (err) { /* ignore */ }
   }
 
-  // Clear previously selected layer and restore style
-  function deselectFeature() {
-    try {
-      if (selectedLayer && geojsonLayer && typeof geojsonLayer.resetStyle === 'function') {
-        geojsonLayer.resetStyle(selectedLayer);
-      }
-    } catch (err) { /* ignore */ }
-    selectedLayer = null; selectedFeature = null;
-  }
-
   function selectFeature(layer, feature) {
     try {
       deselectAllFeatures(); // clear any previous selection (event or province)
@@ -361,6 +458,10 @@ function onEachFeature(feature, layer) {
       }
       selectedEvent = event; // track selected event
       const provinceNames = event._normProvinces || [];
+      
+      // Update Ho Chi Minh marker for selected event year
+      updateHCMMarker(event.year);
+      
       // clear any existing foreign marker when selecting a new event
       try {
         if (window._foreignMarker) {
@@ -751,31 +852,11 @@ function onEachFeature(feature, layer) {
     return arr ? arr.slice() : [];
   };
 
-function popupHtml(provinceName, items) {
-  let html = `<div><strong>${provinceName}</strong></div>`;
-  if (!items || items.length === 0) {
-    html += '<div>Không có sự kiện trong giai đoạn này.</div>';
-    return html;
-  }
-  html += '<ul class="event-list">';
-  items.forEach(it => {
-    html += `<li class="event-item"><span class="event-year">${it.year}</span><strong>${it.name}</strong><div>${it.description}</div></li>`;
-  });
-  html += '</ul>';
-  return html;
-}
-
 function getFeatureCacheByProvinceName(provinceName) {
   if (!provinceName && provinceName !== 0) return null;
   const norm = normalizeString(provinceName);
   if (!norm) return null;
   return featurePeriodCache.get(norm) || null;
-}
-
-function eventsForProvinceAndPeriod(provinceName, periodKey) {
-  const cache = getFeatureCacheByProvinceName(provinceName);
-  if (!cache || !cache.events) return [];
-  return cache.events[periodKey] || [];
 }
 
 function countEventsForProvince(provinceName, periodKey) {
@@ -812,10 +893,12 @@ function countEventsForFeature(feature, periodKey) {
     // Load data and initialize
     Promise.all([
       fetch('events.json').then(r => r.json()),
-      fetch('vietnam.geojson').then(r => r.json())
-    ]).then(([ev, vg]) => {
+      fetch('vietnam.geojson').then(r => r.json()),
+      fetch('ho-chi-minh-timeline.json').then(r => r.json())
+    ]).then(([ev, vg, hcm]) => {
       events = Array.isArray(ev) ? ev : [];
       geo = vg || {};
+      hcmTimeline = Array.isArray(hcm) ? hcm : [];
 
       layerIndex.clear();
       featurePeriodCache.clear();
@@ -921,6 +1004,14 @@ function countEventsForFeature(feature, periodKey) {
 
       addLegend();
 
+      // Initialize Ho Chi Minh marker for current period
+      updateHCMMarker();
+
+      // Create the HCM center bubble UI so user can quickly center on Bác
+      try {
+        createHCMCenterBubble();
+      } catch (err) { /* ignore */ }
+
       // Performance optimization: precompute and cache bounds for each geojson layer
       // and for each event (combined bounds). This avoids repeated expensive
       // getBounds() calculations on each click.
@@ -962,6 +1053,8 @@ function countEventsForFeature(feature, periodKey) {
     periodSelect.addEventListener('change', (e) => {
       currentPeriod = e.target.value;
       updateGeoStyle();
+      // Update Ho Chi Minh marker for new period
+      updateHCMMarker();
       // refresh timeline to show all events in new period
       refreshTimelineForPeriod(currentPeriod);
     });
@@ -991,6 +1084,28 @@ function countEventsForFeature(feature, periodKey) {
     }
 
     // Expose small helper for debugging in console
+    // Create HCM center bubble (if not already present) - helper UI
+    function createHCMCenterBubble() {
+      try {
+        if (document.getElementById('hcmCenterBubble')) return;
+        const btn = document.createElement('button');
+        btn.id = 'hcmCenterBubble';
+        btn.className = 'hcm-center-bubble';
+        btn.title = 'Tập trung vị trí Bác Hồ';
+        btn.innerHTML = `<img src="https://nld.mediacdn.vn/thumb_w/698/2017/img20170214095702-1487398972673.jpg" alt="Bác Hồ" class="hcm-center-avatar" />`;
+        document.body.appendChild(btn);
+        btn.addEventListener('click', (e) => {
+          try {
+            if (!hcmMarker || !map) return;
+            const latlng = hcmMarker.getLatLng();
+            if (!latlng) return;
+            map.flyTo(latlng, Math.max(map.getZoom(), 6), { duration: MAP_ANIMATION_DURATION });
+            setTimeout(() => { try { hcmMarker.openPopup(); } catch (err) {} }, (MAP_ANIMATION_DURATION + 0.05) * 1000);
+          } catch (err) { /* ignore */ }
+        });
+      } catch (err) { /* ignore */ }
+    }
+
     window._histMap = {
       eventsArray: () => events,
       countsForPeriod: (p) => {
