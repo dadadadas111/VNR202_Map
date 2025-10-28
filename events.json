@@ -4,10 +4,7 @@
     "year": 1930,
     "province": "Hồng Kông (Trung Quốc)",
     "description": "Hội nghị hợp nhất các tổ chức cộng sản do Nguyễn Ái Quốc chủ trì tại Hồng Kông tháng 1-2/1930, lập ra Đảng Cộng sản Việt Nam và thông qua Cương lĩnh đầu tiên.",
-    "image_urls": [
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Comrade_Nguyen_Ai_Quoc_%281924%29.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/b/bd/1924_Victoria_Harbour,_Hong_Kong.jpg"
-    ]
+    "image_urls": []
   },
   {
     "name": "Thông qua Điều lệ và tên Đảng Cộng sản Việt Nam",
@@ -15,8 +12,6 @@
     "province": "Hồng Kông (Trung Quốc)",
     "description": "Ngày 3/2/1930, hội nghị hợp nhất thông qua Điều lệ lâm thời và quyết định lấy tên Đảng Cộng sản Việt Nam cho tổ chức mới.",
     "image_urls": [
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Comrade_Nguyen_Ai_Quoc_%281924%29.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/b/bd/1924_Victoria_Harbour,_Hong_Kong.jpg"
     ]
   },
   {
@@ -26,8 +21,6 @@
     "support_label": "Nghệ An, Hà Tĩnh",
     "description": "Phong trào đấu tranh cách mạng của nông dân và công nhân Nghệ An, Hà Tĩnh năm 1930–1931, lập các chính quyền Xô viết ở nông thôn bị thực dân đàn áp dữ dội.",
     "image_urls": [
-      "https://quocphongthudo.vn/upload/2001606/fck/files/xo%20viet.jpg",
-      "https://bbt.1cdn.vn/2024/09/11/2.jpg"
     ]
   },
   {
@@ -36,7 +29,6 @@
     "province": "Ma Cao (Trung Quốc)",
     "description": "Đại hội Đảng đầu tiên tổ chức tại Ma Cao (27–31/3/1935) với 13 đại biểu, bầu Lê Hồng Phong làm Tổng Bí thư và củng cố tổ chức sau khủng bố trắng.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
     ]
   },
   {
@@ -46,7 +38,6 @@
     "support_label": "Lạng Sơn",
     "description": "Ngày 27/9/1940, quân dân Bắc Sơn (Lạng Sơn) nhất tề nổi dậy cướp khí giới, thành lập chính quyền cách mạng rồi bị lực lượng Pháp – Nhật đàn áp.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
     ]
   },
   {
@@ -56,7 +47,6 @@
     "support_label": "Nam Bộ",
     "description": "Cuộc nổi dậy vũ trang của Đảng bộ Nam Kỳ (22/11–31/12/1940) chống ách thống trị Pháp – Nhật, diễn ra tại nhiều tỉnh Nam Bộ và bị đàn áp đẫm máu.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
     ]
   },
   {
@@ -66,7 +56,6 @@
     "support_label": "Hà Quảng, Cao Bằng",
     "description": "Từ 10–19/5/1941, Hội nghị Trung ương 8 họp tại hang Pác Bó (Hà Quảng, Cao Bằng) quyết định chuyển hướng đấu tranh giành độc lập và thành lập Mặt trận Việt Minh.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
     ]
   },
   {
@@ -75,7 +64,6 @@
     "province": "Hà Quảng, Cao Bằng",
     "description": "Ngày 19/5/1941, tại hang Pác Bó, Hội nghị Trung ương 8 công bố thành lập Việt Minh – mặt trận dân tộc thống nhất nhằm tập hợp lực lượng đánh đuổi phát xít và giành độc lập.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
     ]
   },
   {
@@ -85,7 +73,6 @@
     "support_label": "Cả nước",
     "description": "Từ 13–28/8/1945, Việt Minh lãnh đạo tổng khởi nghĩa giành chính quyền trên toàn quốc, lật đổ chính quyền bù nhìn, mở đường cho nền độc lập Việt Nam.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
     ]
   },
   {
@@ -94,7 +81,6 @@
     "province": "Hà Nội",
     "description": "Ngày 2/9/1945 tại Quảng trường Ba Đình, Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Ðộc lập, khai sinh nước Việt Nam Dân chủ Cộng hòa trước hàng chục vạn nhân dân.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
     ]
   },
   {
@@ -104,17 +90,15 @@
     "support_label": "Nam Bộ, Nam Trung Bộ, Tây Nguyên",
     "description": "Ngày 23/9/1945, quân Pháp tái chiếm Sài Gòn khiến Nam Bộ nổ ra kháng chiến. Lực lượng Việt Nam rút ra chiến khu, chiến đấu lan sang Nam Trung Bộ và Tây Nguyên.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
     ]
   },
   {
     "name": "Kết thúc Nam Bộ kháng chiến",
     "year": 1946,
-        "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Cần Thơ, Bà Rịa - Vũng Tàu, Đồng Nai, Bình Dương, Bình Phước, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau, Quảng Bình, Quảng Trị, Thừa Thiên Huế, Đà Nẵng, Quảng Nam, Quảng Ngãi, Bình Định, Phú Yên, Khánh Hòa, Ninh Thuận, Bình Thuận, Kon Tum, Gia Lai, Đắk Lắk, Đắk Nông, Lâm Đồng",
+    "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Cần Thơ, Bà Rịa - Vũng Tàu, Đồng Nai, Bình Dương, Bình Phước, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau, Quảng Bình, Quảng Trị, Thừa Thiên Huế, Đà Nẵng, Quảng Nam, Quảng Ngãi, Bình Định, Phú Yên, Khánh Hòa, Ninh Thuận, Bình Thuận, Kon Tum, Gia Lai, Đắk Lắk, Đắk Nông, Lâm Đồng",
     "support_label": "Nam Bộ, Nam Trung Bộ, Tây Nguyên",
     "description": "Cuộc kháng chiến Nam Bộ kéo dài tới 30/3/1946 khi các lực lượng chuyển sang chiến tranh lâu dài, bảo vệ thành quả cách mạng ở Nam Bộ và vùng cao.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
     ]
   },
   {
@@ -124,7 +108,6 @@
     "support_label": "Cả nước",
     "description": "Ngày 6/1/1946, hơn 90% cử tri toàn quốc tham gia bầu cử Quốc hội đầu tiên, lựa chọn 333 đại biểu đại diện cho 71 tỉnh thành của nước Việt Nam Dân chủ Cộng hòa.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
     ]
   },
   {
@@ -133,7 +116,6 @@
     "province": "Cao Bằng, Lạng Sơn",
     "description": "Từ 16/9 đến 14/10/1950, Quân đội Nhân dân tiến công Biên giới Cao Bằng – Lạng Sơn, phá vỡ hệ thống đồn bốt, mở hành lang với Trung Quốc và củng cố lực lượng kháng chiến.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
     ]
   },
   {
@@ -142,7 +124,7 @@
     "province": "Vinh Quang, Chiêm Hóa, Tuyên Quang",
     "description": "Đại hội II (11–19/2/1951) họp tại Chiêm Hóa (Tuyên Quang) đổi tên Đảng Lao động Việt Nam, đề ra nhiệm vụ kháng chiến kiến quốc và bầu Hồ Chí Minh làm Chủ tịch.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -152,17 +134,17 @@
     "support_label": "Miền Bắc",
     "description": "Từ năm 1953, Đảng và Chính phủ phát động cải cách ruộng đất nhằm xóa bỏ chế độ chiếm hữu ruộng đất phong kiến, trao đất cho nông dân, thực hiện khẩu hiệu 'người cày có ruộng'.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
     "name": "Kết thúc cải cách ruộng đất",
     "year": 1956,
-        "province": "Lai Châu, Lào Cai, Yên Bái, Điện Biên, Sơn La, Hòa Bình, Bắc Giang, Lạng Sơn, Quảng Ninh, Hà Nội, Hà Giang, Cao Bằng, Bắc Kạn, Tuyên Quang, Thái Nguyên, Phú Thọ, Vĩnh Phúc, Bắc Ninh, Hải Dương, Hải Phòng, Hưng Yên, Thái Bình, Hà Nam, Nam Định, Ninh Bình, Thanh Hóa, Nghệ An, Hà Tĩnh, Quảng Bình, Quảng Trị",
+    "province": "Lai Châu, Lào Cai, Yên Bái, Điện Biên, Sơn La, Hòa Bình, Bắc Giang, Lạng Sơn, Quảng Ninh, Hà Nội, Hà Giang, Cao Bằng, Bắc Kạn, Tuyên Quang, Thái Nguyên, Phú Thọ, Vĩnh Phúc, Bắc Ninh, Hải Dương, Hải Phòng, Hưng Yên, Thái Bình, Hà Nam, Nam Định, Ninh Bình, Thanh Hóa, Nghệ An, Hà Tĩnh, Quảng Bình, Quảng Trị",
     "support_label": "Miền Bắc",
     "description": "Chương trình cải cách ruộng đất kết thúc năm 1956 sau khi đã phân phối lại ruộng đất cho nông dân, mặc dù có sai lầm phải sửa chữa, góp phần biến đổi quan hệ sở hữu ở nông thôn.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -171,7 +153,7 @@
     "province": "Điện Biên",
     "description": "Từ 13/3 đến 7/5/1954, Quân đội Nhân dân Việt Nam tiến công tập đoàn cứ điểm Điện Biên Phủ, giành chiến thắng quyết định buộc Pháp ký Hiệp định Genève chấm dứt chiến tranh Đông Dương.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -180,7 +162,7 @@
     "province": "Hà Nội",
     "description": "Ngày 22/1/1959, Trung ương Đảng ra Nghị quyết 15 cho phép sử dụng đấu tranh vũ trang ở miền Nam để chống chế độ Mỹ – Diệm và giành độc lập dân tộc.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -189,7 +171,7 @@
     "province": "Hà Nội",
     "description": "Ngày 19/5/1959, Bộ Chính trị quyết định thành lập Đoàn 559 để mở tuyến vận tải chiến lược Trường Sơn – Ðường mòn Hồ Chí Minh nhằm chi viện cho cách mạng miền Nam.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -198,7 +180,7 @@
     "province": "Bến Tre",
     "description": "Cuối năm 1959, phong trào Đồng Khởi nổ ra ở Bến Tre, nhân dân nổi dậy phá ấp chiến lược, lập chính quyền cách mạng, mở đầu cao trào đấu tranh ở miền Nam.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -207,7 +189,7 @@
     "province": "Bến Tre",
     "description": "Đầu năm 1960, Đồng Khởi lan rộng khắp miền Tây Nam Bộ và Trung Nam Bộ, tạo tiền đề thành lập Mặt trận Dân tộc Giải phóng miền Nam Việt Nam.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -216,7 +198,7 @@
     "province": "Hà Nội",
     "description": "Đại hội III (5–10/9/1960) họp ở Hà Nội, thông qua đường lối xây dựng CNXH ở miền Bắc, đấu tranh giải phóng miền Nam và bầu Ban Chấp hành Trung ương mới với 525 đại biểu.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -226,7 +208,7 @@
     "support_label": "Miền Nam Việt Nam",
     "description": "Nửa đêm 30/1/1968, quân và dân miền Nam đồng loạt tiến công vào hầu hết đô thị, căn cứ quân sự Mỹ – Sài Gòn, tạo bước ngoặt chiến lược trong cuộc kháng chiến.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -235,7 +217,7 @@
     "province": "Hà Nội, Hải Phòng, Bắc Ninh, Quảng Ninh, Thái Nguyên, Lạng Sơn, Bắc Giang",
     "description": "Từ 18–30/12/1972, Không quân Mỹ ném bom rải thảm Hà Nội, Hải Phòng và miền Bắc song thất bại; Việt Nam bắn rơi nhiều B‑52, buộc Mỹ phải ký Hiệp định Paris.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -244,7 +226,7 @@
     "province": "Paris (Pháp)",
     "description": "Ngày 27/1/1973 tại Paris, Chính phủ Cách mạng lâm thời và Mỹ ký Hiệp định chấm dứt chiến tranh, cam kết tôn trọng độc lập và thống nhất của Việt Nam.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -253,7 +235,7 @@
     "province": "Cả nước",
     "description": "Hiệp định Paris bắt đầu có hiệu lực ngày 28/1/1973; quân đội Mỹ và đồng minh phải rút khỏi Việt Nam, tạo điều kiện để cuộc đấu tranh thống nhất đất nước tiến lên.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -262,7 +244,7 @@
     "province": "Đắk Lắk, Gia Lai, Kon Tum",
     "description": "Từ 4/3 đến 3/4/1975, quân Giải phóng mở Chiến dịch Tây Nguyên giải phóng Buôn Ma Thuột, Pleiku, Kon Tum, phá thế phòng thủ của chính quyền Sài Gòn tại cao nguyên.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -271,7 +253,7 @@
     "province": "Thừa Thiên Huế, Đà Nẵng",
     "description": "Từ 5/3 đến 2/4/1975, quân giải phóng tiến công Huế, Đà Nẵng và các tỉnh ven biển miền Trung, tiêu diệt lực lượng chính quyền Sài Gòn, giải phóng khu vực trọng yếu.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -281,7 +263,7 @@
     "support_label": "Khu vực Đông Nam Bộ và vùng phụ cận Nam Bộ, lấy Sài Gòn – Gia Định làm trung tâm",
     "description": "Từ 26–30/4/1975, quân giải phóng mở Chiến dịch Hồ Chí Minh giải phóng Sài Gòn – Gia Định và đồng bằng Nam Bộ, buộc chính quyền Sài Gòn phải đầu hàng vô điều kiện.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -290,7 +272,7 @@
     "province": "Cả nước",
     "description": "Ngày 2/7/1976, nước Việt Nam Dân chủ Cộng hòa và Chính phủ Cách mạng lâm thời miền Nam hợp nhất thành nước Cộng hòa xã hội chủ nghĩa Việt Nam.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -299,7 +281,7 @@
     "province": "Hà Nội",
     "description": "Đại hội IV (14–20/12/1976) được gọi là Đại hội thống nhất đất nước, xác định nhiệm vụ xây dựng CNXH trên cả nước và bầu Lê Duẩn làm Tổng Bí thư.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -308,7 +290,7 @@
     "province": "Hà Nội",
     "description": "Đại hội V (27–31/3/1982) đánh giá 5 năm sau thống nhất, đề ra mục tiêu kinh tế – xã hội 1981–1985, bầu Trường Chinh làm Chủ tịch Đoàn Chủ tịch.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -317,7 +299,7 @@
     "province": "Hà Nội",
     "description": "Đại hội VI (15–18/12/1986) công bố đường lối đổi mới toàn diện, chuyển sang nền kinh tế thị trường định hướng XHCN và bầu Nguyễn Văn Linh làm Tổng Bí thư.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -326,7 +308,7 @@
     "province": "Cả nước",
     "description": "Sau Đại hội VI, Đảng khởi xướng công cuộc Đổi mới, chuyển đổi mô hình quản lý kinh tế, mở cửa với thế giới và thúc đẩy kinh tế nhiều thành phần.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -335,7 +317,7 @@
     "province": "Hà Nội",
     "description": "Tại Đại hội VI (12/1986), Nguyễn Văn Linh được bầu làm Tổng Bí thư, lãnh đạo phong trào Đổi mới và cải cách kinh tế ở Việt Nam.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -344,7 +326,7 @@
     "province": "Cả nước",
     "description": "Ngày 5/4/1988, Bộ Chính trị ban hành Nghị quyết 10-NQ/TW (Khoán 10) đổi mới quản lý kinh tế nông nghiệp, giao ruộng đất cho hộ gia đình sản xuất lâu dài, xóa tình trạng thiếu đói.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -353,7 +335,7 @@
     "province": "Hà Nội",
     "description": "Đại hội VII (24–27/6/1991) tổng kết 5 năm Đổi mới, khẳng định con đường đi lên CNXH và bầu Đỗ Mười làm Tổng Bí thư.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -362,7 +344,7 @@
     "province": "Hà Nội",
     "description": "Tháng 4/1992, Quốc hội thông qua Hiến pháp mới phù hợp với công cuộc Đổi Mới, khẳng định nền kinh tế nhiều thành phần và tăng cường quyền tự do dân chủ.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -371,7 +353,7 @@
     "province": "Bandar Seri Begawan (Brunei)",
     "description": "Ngày 28/7/1995, tại Hội nghị Ngoại trưởng ASEAN ở Bandar Seri Begawan, Việt Nam chính thức trở thành thành viên thứ bảy của Hiệp hội các quốc gia Đông Nam Á.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -380,7 +362,7 @@
     "province": "Hà Nội",
     "description": "Đại hội VIII (28/6–1/7/1996) thông qua Chiến lược ổn định và phát triển kinh tế xã hội đến năm 2000, tiếp tục đường lối Đổi Mới và bầu lại Tổng Bí thư Đỗ Mười.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -389,7 +371,7 @@
     "province": "Hà Nội",
     "description": "Đại hội IX (19–22/4/2001) với 1.168 đại biểu đề ra mục tiêu công nghiệp hóa hiện đại hóa đến 2010 và bầu Nông Đức Mạnh làm Tổng Bí thư.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -398,7 +380,7 @@
     "province": "Hà Nội",
     "description": "Tại Đại hội IX (4/2001), Nông Đức Mạnh – người dân tộc Tày – được bầu làm Tổng Bí thư, dẫn dắt Đảng thực hiện các mục tiêu công nghiệp hóa, hiện đại hóa.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -407,7 +389,7 @@
     "province": "Hà Nội",
     "description": "Đại hội X (18–25/4/2006) thông qua đường lối đưa Việt Nam ra khỏi tình trạng kém phát triển, bầu Nguyễn Minh Triết làm Chủ tịch nước và Nông Đức Mạnh tái cử Tổng Bí thư.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -416,7 +398,7 @@
     "province": "Geneva (Thụy Sĩ)",
     "description": "Ngày 11/1/2007, Việt Nam chính thức gia nhập Tổ chức Thương mại thế giới (WTO) với tư cách thành viên thứ 150, mở ra cơ hội hội nhập kinh tế sâu rộng.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -425,7 +407,7 @@
     "province": "Hà Nội",
     "description": "Đại hội XI (12–19/1/2011) tại Trung tâm Hội nghị Quốc gia, có 1.377 đại biểu, đề ra Chiến lược phát triển 2011–2020 và bầu Nguyễn Phú Trọng làm Tổng Bí thư.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -434,7 +416,7 @@
     "province": "Hà Nội",
     "description": "Ngày 28/11/2013, Quốc hội khóa XIII thông qua Hiến pháp sửa đổi, khẳng định quyền con người, quyền công dân và tiếp tục hoàn thiện Nhà nước pháp quyền XHCN.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -443,7 +425,7 @@
     "province": "Cả nước",
     "description": "Hiến pháp năm 2013 bắt đầu có hiệu lực ngày 1/1/2014, tạo cơ sở pháp lý quan trọng cho công cuộc đổi mới và hội nhập quốc tế của Việt Nam.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -452,7 +434,7 @@
     "province": "Hà Nội",
     "description": "Đại hội XII (20–28/1/2016) tại Trung tâm Hội nghị Quốc gia, với 1.510 đại biểu, tổng kết 30 năm Đổi Mới và đề ra mục tiêu phát triển đến năm 2020.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -461,7 +443,7 @@
     "province": "Hà Nội",
     "description": "Tại Đại hội XII (1/2016), Nguyễn Phú Trọng được bầu lại làm Tổng Bí thư, tiếp tục lãnh đạo Đảng kiên định Đổi Mới và phòng chống tham nhũng.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -470,7 +452,7 @@
     "province": "Hà Nội",
     "description": "Đại hội XII đề ra nhiệm vụ xây dựng Đảng trong sạch vững mạnh, đẩy mạnh công nghiệp hóa – hiện đại hóa, bảo vệ độc lập chủ quyền và hội nhập quốc tế toàn diện.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -479,7 +461,7 @@
     "province": "Hà Nội",
     "description": "Ngày 30/10/2016, Hội nghị Trung ương 4 ban hành Nghị quyết 04-NQ/TW về tăng cường xây dựng, chỉnh đốn Đảng, ngăn chặn suy thoái về tư tưởng, đạo đức và tự diễn biến.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -488,7 +470,7 @@
     "province": "Hà Nội",
     "description": "Ngày 3/6/2017, Trung ương ban hành Nghị quyết 10-NQ/TW (hội nghị Trung ương 5) xác định phát triển kinh tế tư nhân là động lực quan trọng của nền kinh tế thị trường định hướng XHCN.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -497,7 +479,7 @@
     "province": "Hà Nội",
     "description": "Đại hội XIII (25/1–1/2/2021) với 1.587 đại biểu tổng kết nhiệm kỳ và đề ra chiến lược phát triển đến 2025, tầm nhìn 2045; Nguyễn Phú Trọng tái cử Tổng Bí thư.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_the_Communist_Party_of_Vietnam.svg"
+      
     ]
   },
   {
@@ -506,7 +488,7 @@
     "province": "Hà Nội",
     "description": "Đại hội XIII đặt mục tiêu đến năm 2045 Việt Nam trở thành nước phát triển thu nhập cao, xây dựng Đảng và hệ thống chính trị trong sạch vững mạnh.",
     "image_urls": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg"
+      
     ]
   }
 ]

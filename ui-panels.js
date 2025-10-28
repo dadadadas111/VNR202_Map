@@ -256,7 +256,7 @@
           if (event._auto_images && event._auto_images.length) {
             btn.textContent = 'Đã tìm sẵn';
             btn.disabled = true;
-            setTimeout(() => { btn.textContent = 'Tìm ảnh tự động'; btn.disabled = false; }, 1100);
+            setTimeout(() => { btn.textContent = 'Tìm ảnh'; btn.disabled = false; }, 1100);
             return;
           }
           // show lightweight loading state on button
@@ -375,7 +375,7 @@
         html += `</div>`;
       }
       // place find-images button below static images (or after description if none)
-      html += `<div class="t-actions"><button class="find-images-btn" data-evt-idx="${idx}">Tìm ảnh tự động</button><div class="auto-image-warning">Lưu ý: ảnh tìm tự động có thể không chính xác.</div></div>`;
+      html += `<div class="t-actions"><button class="find-images-btn" data-evt-idx="${idx}">Tìm ảnh</button><div class="auto-image-warning">Lưu ý: ảnh tìm tự động có thể không chính xác.</div></div>`;
       html += `</li>`;
     });
     html += '</ol>';
@@ -439,7 +439,7 @@
           if (event._auto_images && event._auto_images.length) {
             btn.textContent = 'Đã tìm sẵn';
             btn.disabled = true;
-            setTimeout(() => { btn.textContent = 'Tìm ảnh tự động'; btn.disabled = false; }, 1100);
+            setTimeout(() => { btn.textContent = 'Tìm ảnh'; btn.disabled = false; }, 1100);
             return;
           }
           const orig = btn.textContent; btn.disabled = true; btn.textContent = 'Đang tìm...';
