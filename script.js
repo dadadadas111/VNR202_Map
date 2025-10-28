@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let selectedEvent = null; // track currently selected event for UI highlighting
   let hcmTimeline = []; // Ho Chi Minh timeline data
   let hcmMarker = null; // marker for Ho Chi Minh location
+  let hcmCurrentIndex = -1; // index into hcmTimeline for current popup
   const layerIndex = new Map(); // cache normalized province name -> Leaflet layer
   const featurePeriodCache = new Map(); // cache per-feature event counts/arrays by period
   const PERIOD_KEYS = ['p1', 'p2', 'p3'];
@@ -89,9 +90,15 @@ function getPeriodRange(key) {
 // Get Ho Chi Minh info for a specific year
 function getHCMInfoForYear(year) {
   if (!hcmTimeline || !hcmTimeline.length) return null;
-  // Find the item where year is between start_year and end_year
-  const item = hcmTimeline.find(h => year >= h.start_year && year <= h.end_year);
-  return item || null;
+  // Find all items where year is between start_year and end_year
+  const matches = hcmTimeline.filter(h => year >= h.start_year && year <= h.end_year);
+  if (!matches || matches.length === 0) return null;
+  // If multiple matches exist for boundary years, prefer the one with the latest start_year
+  let chosen = matches[0];
+  for (let i = 1; i < matches.length; i++) {
+    if ((matches[i].start_year || 0) >= (chosen.start_year || 0)) chosen = matches[i];
+  }
+  return chosen || null;
 }
 
 // Update Ho Chi Minh marker based on current context (period or selected event year)
@@ -110,6 +117,13 @@ function updateHCMMarker(year = null) {
     }
     
     const info = getHCMInfoForYear(targetYear);
+    // update current index for navigation (find index of the chosen info to prefer later-starting items)
+    try {
+      if (Array.isArray(hcmTimeline) && info) {
+        const idx = hcmTimeline.findIndex(h => h === info);
+        if (idx >= 0) hcmCurrentIndex = idx;
+      }
+    } catch (err) { /* ignore */ }
     if (!info) {
       // Remove marker if no info available
       if (hcmMarker) {
@@ -145,8 +159,12 @@ function updateHCMMarker(year = null) {
     const popupContent = `
       <div class="hcm-popup">
         <div class="hcm-popup-header">
-          <strong>${info.name}</strong>
-          <div class="hcm-popup-year">${info.start_year}${info.start_year !== info.end_year ? ' - ' + info.end_year : ''}</div>
+          <div style="display:flex;align-items:center;gap:12px;justify-content:space-between;width:100%;">
+            <div>
+              <strong>${info.name}</strong>
+              <div class="hcm-popup-year">${info.start_year}${info.start_year !== info.end_year ? ' - ' + info.end_year : ''}</div>
+            </div>
+          </div>
         </div>
         <div class="hcm-popup-location"><strong>Địa điểm:</strong> ${info.location}</div>
         <div class="hcm-popup-activity"><strong>Hoạt động:</strong> ${info.activity}</div>
@@ -178,6 +196,8 @@ function updateHCMMarker(year = null) {
     console.warn('updateHCMMarker error:', err);
   }
 }
+
+// Navigation helpers removed (Prev/Next). Navigation UI for HCM popup is intentionally disabled.
 
 // Simple color scale by count
 function getColorForCount(c) {
@@ -312,16 +332,11 @@ function onEachFeature(feature, layer) {
     mouseover: (e) => {
       // don't apply hover effect while animating or if this layer is already selected
       if (suppressStyleUpdateDuringAnimation) return;
-      // skip hover if in event-mode and this layer is in selectedLayers
-      if (selectionMode === 'event' && selectedLayers.indexOf(layer) !== -1) return;
-      // skip hover if in province-mode and this is the selected layer
-      if (selectionMode === 'province' && selectedLayer === layer) return;
       try {
+        // if already selected, don't change style
+        if (selectionMode === 'province' && selectedLayer === layer) return;
+        // apply a light hover highlight
         layer.setStyle({ fillColor: '#ffe082', fillOpacity: 0.95, color: '#b8860b' });
-        // do not bring hovered layer to front (avoid covering selected outline)
-        // ensure selected layer(s) stay on top if present
-        if (selectionMode === 'province' && selectedLayer && selectedLayer !== layer && selectedLayer.bringToFront) selectedLayer.bringToFront();
-        if (selectionMode === 'event') selectedLayers.forEach(l => { if (l !== layer && l.bringToFront) l.bringToFront(); });
         if (layer.openTooltip) layer.openTooltip();
       } catch (err) { /* ignore */ }
     },

@@ -232,8 +232,8 @@ html, body {
 /* HCM center bubble (floating on map) */
 .hcm-center-bubble {
   position: fixed;
-  bottom: 18px;
-  left: 18px;
+  top: 100px;
+  left: 360px;
   width: 52px;
   height: 52px;
   border-radius: 50%;
