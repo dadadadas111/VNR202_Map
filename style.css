@@ -123,6 +123,50 @@ html, body {
 .close-about:hover {
   color: #b44;
 }
+
+/* Fancy 'Tiếp tục xem' button inside About popup */
+.about-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(90deg,#ff9f5a 0%, #ff6b3a 60%, #ff4a1a 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(255,107,60,0.18), inset 0 -2px 6px rgba(0,0,0,0.06);
+  transition: transform 180ms ease, box-shadow 180ms ease, opacity 120ms ease;
+  position: relative;
+}
+.about-continue::after {
+  content: '›';
+  display: inline-block;
+  font-weight: 800;
+  margin-left: 6px;
+  transform: translateX(0);
+  transition: transform 200ms ease;
+}
+.about-continue:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(255,107,60,0.22), inset 0 -2px 6px rgba(0,0,0,0.06);
+}
+.about-continue:hover::after { transform: translateX(6px); }
+.about-continue:active { transform: translateY(-1px) scale(0.995); }
+.about-continue:focus {
+  outline: 3px solid rgba(255,160,110,0.24);
+  outline-offset: 3px;
+}
+
+/* subtle entrance pulse for the primary CTA to make it feel alive */
+@keyframes aboutPulse {
+  0% { box-shadow: 0 8px 22px rgba(255,107,60,0.12); }
+  50% { box-shadow: 0 14px 34px rgba(255,107,60,0.18); }
+  100% { box-shadow: 0 8px 22px rgba(255,107,60,0.12); }
+}
+.about-continue.pulse { animation: aboutPulse 2.4s ease-in-out 0.4s infinite; }
 .title-area h1 { margin: 0; font-size: 20px; font-family: 'Playfair Display', serif; font-weight: 600; color: #3b2b2b; }
 .title-area .subtitle { margin: 6px 0 0 0; color: #6b5b50; font-size: 13px; font-weight: 500; }
 .control-area { display:flex; align-items:center; gap:8px; }
@@ -277,7 +321,7 @@ html, body {
 .timeline-item.selected .event-card {
   /* Stronger selected appearance: clear left accent, warmer background and lift */
   background: linear-gradient(180deg,#fff7f2, #fffaf0);
-  border: 5px solid rgba(199,91,58,0.14);
+  border: 3px solid rgba(199,91,58,0.14);
   border-radius: 10%;
 }
 .timeline-item.selected .event-card {

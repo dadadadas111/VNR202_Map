@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const aboutBtn = document.getElementById('aboutBtn');
   const aboutPopup = document.getElementById('aboutPopup');
   const closeAbout = document.getElementById('closeAbout');
+  const continueBtn = document.getElementById('continueBtn');
   if (aboutBtn && aboutPopup && closeAbout) {
     aboutBtn.addEventListener('click', () => {
       aboutPopup.style.display = 'flex';
@@ -12,10 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
     closeAbout.addEventListener('click', () => {
       aboutPopup.style.display = 'none';
     });
+    if (continueBtn) {
+      continueBtn.addEventListener('click', () => { aboutPopup.style.display = 'none'; });
+    }
     // Đóng popup khi click ra ngoài vùng nội dung
     aboutPopup.addEventListener('click', (e) => {
       if (e.target === aboutPopup) aboutPopup.style.display = 'none';
     });
+    // Auto-show the about popup on first load
+    try { setTimeout(() => { aboutPopup.style.display = 'flex'; }, 350); } catch (err) { /* ignore */ }
   }
   // Guard: ensure Leaflet loaded
   if (typeof L === 'undefined') {
@@ -333,9 +339,15 @@ function onEachFeature(feature, layer) {
       // don't apply hover effect while animating or if this layer is already selected
       if (suppressStyleUpdateDuringAnimation) return;
       try {
-        // if already selected, don't change style
+        // if already selected in province mode, don't change style
         if (selectionMode === 'province' && selectedLayer === layer) return;
-        // apply a light hover highlight
+        // if already part of selected layers in event mode, avoid applying hover style
+        if (selectionMode === 'event' && Array.isArray(selectedLayers) && selectedLayers.indexOf(layer) !== -1) {
+          // still open tooltip for clarity but don't change visual style
+          if (layer.openTooltip) layer.openTooltip();
+          return;
+        }
+        // apply a light hover highlight for unselected layers
         layer.setStyle({ fillColor: '#ffe082', fillOpacity: 0.95, color: '#b8860b' });
         if (layer.openTooltip) layer.openTooltip();
       } catch (err) { /* ignore */ }
