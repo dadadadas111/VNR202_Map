@@ -52,6 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let selectedLayers = []; // for multi-province selection when event is clicked
   let selectionMode = null; // 'event' or 'province' to track selection mode
   let selectedEvent = null; // track currently selected event for UI highlighting
+  const layerIndex = new Map(); // cache normalized province name -> Leaflet layer
+  const featurePeriodCache = new Map(); // cache per-feature event counts/arrays by period
+  const PERIOD_KEYS = ['p1', 'p2', 'p3'];
+  const eventsByPeriod = { p1: [], p2: [], p3: [] };
+  const NATIONAL_KEYWORDS = new Set([normalizeString('cả nước'), 'ca nuoc']);
   // Performance/config
   const MAP_ANIMATION_DURATION = 0.6; // seconds (used for flyTo/flyToBounds)
   window._isMapMoving = false; // flag used to debounce map interactions
@@ -75,6 +80,22 @@ function getColorForCount(c) {
          c >= 3 ? '#c0452b' :
          c >= 1 ? '#ffc4a3' :
                     '#f0f0f0';
+}
+
+function getPeriodKeyForYear(year) {
+  const y = Number(year);
+  if (!Number.isFinite(y)) return null;
+  if (y >= 1930 && y <= 1944) return 'p1';
+  if (y >= 1945 && y <= 1974) return 'p2';
+  if (y >= 1975) return 'p3';
+  return null;
+}
+
+function createEmptyPeriodBuckets() {
+  return {
+    counts: { p1: 0, p2: 0, p3: 0 },
+    events: { p1: [], p2: [], p3: [] }
+  };
 }
 
 // normalize strings for robust matching (case-insensitive, remove diacritics)
@@ -101,7 +122,10 @@ function getFeatureNormName(feature) {
 }
 
 function styleFeature(feature) {
-  const count = countEventsForFeature(feature, currentPeriod);
+  const counts = feature && feature.properties && feature.properties._countsByPeriod;
+  const count = counts && typeof counts[currentPeriod] === 'number'
+    ? counts[currentPeriod]
+    : countEventsForFeature(feature, currentPeriod);
   return {
     fillColor: getColorForCount(count),
     weight: 1.6,
@@ -113,6 +137,11 @@ function styleFeature(feature) {
 
 function onEachFeature(feature, layer) {
   const displayName = getFeatureDisplayName(feature);
+  try {
+    if (feature && feature.properties && feature.properties._normName) {
+      layerIndex.set(feature.properties._normName, layer);
+    }
+  } catch (err) { /* ignore */ }
   layer.on({
     click: () => {
       // Do not show popup any more — open panels instead
@@ -271,23 +300,41 @@ function onEachFeature(feature, layer) {
 
   // Helper to find layers by province name
   function findLayersByProvinceNames(provinceNames) {
-    const normNames = provinceNames.map(n => normalizeString(n));
     const layers = [];
-    if (!geojsonLayer) return layers;
-    geojsonLayer.eachLayer(l => {
-      const f = l.feature;
-      if (!f || !f.properties) return;
-      const fNorm = f.properties._normName;
-      if (normNames.indexOf(fNorm) !== -1) layers.push(l);
+    if (!Array.isArray(provinceNames) || provinceNames.length === 0) return layers;
+    const missing = [];
+    provinceNames.forEach(n => {
+      const norm = normalizeString(n);
+      if (!norm) return;
+      const layer = layerIndex.get(norm);
+      if (layer) {
+        layers.push(layer);
+      } else {
+        missing.push(norm);
+      }
     });
+    if (missing.length && geojsonLayer) {
+      const stillNeeded = new Set(missing);
+      geojsonLayer.eachLayer(l => {
+        if (!stillNeeded.size) return;
+        const f = l.feature;
+        if (!f || !f.properties) return;
+        const fNorm = f.properties._normName;
+        if (stillNeeded.has(fNorm)) {
+          layers.push(l);
+          stillNeeded.delete(fNorm);
+          layerIndex.set(fNorm, l);
+        }
+      });
+    }
     return layers;
   }
 
   // Refresh timeline to show all events for the given period
   function refreshTimelineForPeriod(periodKey) {
     try {
-      const [start, end] = getPeriodRange(periodKey);
-      const periodEvents = events.filter(e => e.year >= start && e.year <= end);
+      const arr = eventsByPeriod[periodKey] || [];
+      const periodEvents = arr.slice();
       if (typeof window.renderAllEventsTimeline === 'function') {
         window.renderAllEventsTimeline(periodEvents, periodKey);
       }
@@ -700,8 +747,8 @@ function onEachFeature(feature, layer) {
   function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   window.getEventsForPeriod = function(periodKey) {
-    const [start, end] = getPeriodRange(periodKey);
-    return events.filter(e => e.year >= start && e.year <= end);
+    const arr = eventsByPeriod[periodKey];
+    return arr ? arr.slice() : [];
   };
 
 function popupHtml(provinceName, items) {
@@ -718,38 +765,40 @@ function popupHtml(provinceName, items) {
   return html;
 }
 
+function getFeatureCacheByProvinceName(provinceName) {
+  if (!provinceName && provinceName !== 0) return null;
+  const norm = normalizeString(provinceName);
+  if (!norm) return null;
+  return featurePeriodCache.get(norm) || null;
+}
+
 function eventsForProvinceAndPeriod(provinceName, periodKey) {
-  const [start, end] = getPeriodRange(periodKey);
-  const probe = normalizeString(provinceName);
-  return events.filter(e => {
-    if (!e) return false;
-    const inTime = e.year >= start && e.year <= end;
-    if (!inTime) return false;
-    if (e._isNational) return true; // applies to whole country
-    return Array.isArray(e._normProvinces) && e._normProvinces.indexOf(probe) !== -1;
-  });
+  const cache = getFeatureCacheByProvinceName(provinceName);
+  if (!cache || !cache.events) return [];
+  return cache.events[periodKey] || [];
 }
 
 function countEventsForProvince(provinceName, periodKey) {
-  return eventsForProvinceAndPeriod(provinceName, periodKey).length;
+  const cache = getFeatureCacheByProvinceName(provinceName);
+  if (!cache || !cache.counts) return 0;
+  const val = cache.counts[periodKey];
+  return typeof val === 'number' ? val : 0;
 }
 
 // New helpers to match GeoJSON features directly
 function eventsForFeatureAndPeriod(feature, periodKey) {
-  const [start, end] = getPeriodRange(periodKey);
-  const probe = feature && feature.properties && feature.properties._normName;
-  if (!probe) return [];
-  return events.filter(e => {
-    if (!e) return false;
-    const inTime = e.year >= start && e.year <= end;
-    if (!inTime) return false;
-    if (e._isNational) return true;
-    return Array.isArray(e._normProvinces) && e._normProvinces.indexOf(probe) !== -1;
-  });
+  if (!feature || !feature.properties) return [];
+  const cache = featurePeriodCache.get(feature.properties._normName);
+  if (!cache || !cache.events) return [];
+  return cache.events[periodKey] || [];
 }
 
 function countEventsForFeature(feature, periodKey) {
-  return eventsForFeatureAndPeriod(feature, periodKey).length;
+  if (!feature || !feature.properties) return 0;
+  const cache = featurePeriodCache.get(feature.properties._normName);
+  if (!cache || !cache.counts) return 0;
+  const val = cache.counts[periodKey];
+  return typeof val === 'number' ? val : 0;
 }
 
     function updateGeoStyle() {
@@ -765,43 +814,78 @@ function countEventsForFeature(feature, periodKey) {
       fetch('events.json').then(r => r.json()),
       fetch('vietnam.geojson').then(r => r.json())
     ]).then(([ev, vg]) => {
-      events = ev;
-      geo = vg;
+      events = Array.isArray(ev) ? ev : [];
+      geo = vg || {};
 
-      // normalize event province names for fast matching
-      // support multiple provinces separated by comma/semicolon, and the special term 'cả nước'
-      events.forEach(e => {
-        const raw = e.province || e.province_name || e.provinceName || '';
-        if (!raw) {
-          e._normProvinces = [];
-          e._isNational = false;
-          // ensure there is at least an empty support_label for UI code
-          if (!e.support_label) e.support_label = '';
-          return;
-        }
-        // split by comma or semicolon
-        const parts = String(raw).split(/[;,]/).map(s => s.trim()).filter(Boolean);
-        const norms = parts.map(p => normalizeString(p)).filter(Boolean);
-        e._normProvinces = norms;
-        e._isNational = norms.indexOf(normalizeString('cả nước')) !== -1 || norms.indexOf('ca nuoc') !== -1;
-        // set a support_label for UI display if not explicitly provided in the JSON
-        if (!e.support_label) {
-          // join the original parts for display (keeps country markers like 'Hồng Kông (Trung Quốc)')
-          e.support_label = parts.join(', ');
-        }
-      });
+      layerIndex.clear();
+      featurePeriodCache.clear();
+      PERIOD_KEYS.forEach(k => { eventsByPeriod[k] = []; });
 
-      // create a dedicated pane for the geojson so it renders above tiles
-      try { map.createPane('geojsonPane'); map.getPane('geojsonPane').style.zIndex = 650; } catch (e) { /* ignore if exists */ }
-
-      // add normalized names to each feature for matching
+      // add normalized names to each feature for matching and seed caches
       (geo.features || []).forEach(f => {
         try {
           f.properties = f.properties || {};
           f.properties._displayName = getFeatureDisplayName(f);
           f.properties._normName = getFeatureNormName(f);
+          const norm = f.properties._normName;
+          if (norm && !featurePeriodCache.has(norm)) {
+            const buckets = createEmptyPeriodBuckets();
+            f.properties._countsByPeriod = buckets.counts;
+            featurePeriodCache.set(norm, buckets);
+          } else if (norm) {
+            const existing = featurePeriodCache.get(norm);
+            if (existing && !f.properties._countsByPeriod) {
+              f.properties._countsByPeriod = existing.counts;
+            }
+          }
         } catch (err) { /* ignore */ }
       });
+
+      // normalize events and populate caches for quick lookups during interaction
+      events.forEach(e => {
+        const raw = e.province || e.province_name || e.provinceName || '';
+        const parts = raw ? String(raw).split(/[;,]/).map(s => s.trim()).filter(Boolean) : [];
+        const norms = parts.map(p => normalizeString(p)).filter(Boolean);
+        e._normProvinces = norms;
+        e._isNational = norms.some(n => NATIONAL_KEYWORDS.has(n));
+        if (!e.support_label) {
+          e.support_label = parts.join(', ');
+        }
+
+        const periodKey = getPeriodKeyForYear(e.year);
+        e._periodKey = periodKey;
+        if (periodKey && eventsByPeriod[periodKey]) {
+          eventsByPeriod[periodKey].push(e);
+        }
+        if (!periodKey) return;
+
+        if (e._isNational) {
+          featurePeriodCache.forEach(bucket => {
+            if (!bucket) return;
+            bucket.counts[periodKey] += 1;
+            bucket.events[periodKey].push(e);
+          });
+        } else if (norms.length) {
+          norms.forEach(norm => {
+            const bucket = featurePeriodCache.get(norm);
+            if (!bucket) return;
+            bucket.counts[periodKey] += 1;
+            bucket.events[periodKey].push(e);
+          });
+        }
+      });
+
+      // ensure caches always have numeric counters/arrays for every period
+      featurePeriodCache.forEach(bucket => {
+        if (!bucket) return;
+        PERIOD_KEYS.forEach(k => {
+          if (typeof bucket.counts[k] !== 'number') bucket.counts[k] = 0;
+          if (!Array.isArray(bucket.events[k])) bucket.events[k] = [];
+        });
+      });
+
+      // create a dedicated pane for the geojson so it renders above tiles
+      try { map.createPane('geojsonPane'); map.getPane('geojsonPane').style.zIndex = 650; } catch (e) { /* ignore if exists */ }
 
       // Use an SVG renderer for geojson layer so HTML tooltips appear above it reliably
       const svgRenderer = L.svg({ pane: 'geojsonPane' });
