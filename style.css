@@ -1,4 +1,3 @@
-/* Basic layout */
 html, body {
   height: 100%;
   margin: 0;
@@ -6,16 +5,119 @@ html, body {
   background: #fafafa;
   color: #222;
 }
+/* Basic layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, Roboto, 'Segoe UI', Arial, Helvetica, sans-serif;
+  background: linear-gradient(120deg, #f7f9fc 0%, #e3f0ff 100%);
+  color: #222;
+}
 
+/* Topbar cải tiến */
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
   padding: 14px 18px;
-  background: linear-gradient(180deg, #ffffff, #f7f9fc);
+  background: linear-gradient(90deg, #e3f0ff 0%, #fff 100%);
   border-bottom: 1px solid #e6eef6;
-  box-shadow: 0 1px 6px rgba(20,40,60,0.04);
+  box-shadow: 0 2px 12px rgba(20,40,60,0.07);
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.github-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 15px;
+  color: #222;
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #f5f7fa;
+  transition: background 0.2s;
+  border: 1px solid #e6eef6;
+}
+.github-link:hover {
+  background: #e3f0ff;
+  color: #0056b3;
+}
+.about-btn {
+  font-size: 15px;
+  padding: 4px 14px;
+  border-radius: 6px;
+  background: linear-gradient(90deg,#ffecd2,#fcb69f);
+  color: #222;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255,87,34,0.08);
+  transition: background 0.2s;
+}
+.about-btn:hover {
+  background: linear-gradient(90deg,#fcb69f,#ffecd2);
+  color: #b44;
+}
+/* About popup */
+.about-popup {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(12,17,23,0.18);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.about-content {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(10,30,60,0.18);
+  padding: 32px 28px 22px 28px;
+  max-width: 420px;
+  width: 92%;
+  color: #223;
+  position: relative;
+  animation: fadeInAbout 0.3s;
+}
+@keyframes fadeInAbout {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.about-content h2 {
+  margin-top: 0;
+  font-size: 22px;
+  color: #0056b3;
+}
+.about-content p {
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+.about-members ul {
+  margin: 8px 0 0 0;
+  padding-left: 18px;
+  font-size: 15px;
+}
+.about-members li {
+  margin-bottom: 4px;
+}
+.close-about {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close-about:hover {
+  color: #b44;
 }
 .title-area h1 { margin: 0; font-size: 18px; }
 .title-area .subtitle { margin: 4px 0 0 0; color: #556; font-size: 13px; }
@@ -87,6 +189,46 @@ html, body {
 .panel-header { font-weight: 600; padding: 10px 12px; border-bottom: 1px solid #eee; display:flex; justify-content:space-between; align-items:center; }
 .panel-content { padding: 12px; font-size: 14px; color: #223; }
 .close-btn { background:transparent; border: none; font-size: 14px; cursor: pointer; }
+
+/* Panel Bubbles - small floating buttons to reopen panels */
+.panel-bubble {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+  cursor: pointer;
+  z-index: 2900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.panel-bubble:hover {
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 18px rgba(102,126,234,0.5);
+}
+.panel-bubble.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.left-bubble {
+  left: 12px;
+}
+.right-bubble {
+  right: 12px;
+}
+.panel-bubble svg {
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+}
+
 .timeline-list { list-style: decimal inside; margin: 8px 0; padding: 0; }
 .timeline-item { margin-bottom: 10px; }
 .t-year { color:#b44; font-weight:700; margin-right:6px; }

@@ -1,6 +1,22 @@
 // Prototype script for the interactive historical map
 
 document.addEventListener('DOMContentLoaded', () => {
+  // About popup logic
+  const aboutBtn = document.getElementById('aboutBtn');
+  const aboutPopup = document.getElementById('aboutPopup');
+  const closeAbout = document.getElementById('closeAbout');
+  if (aboutBtn && aboutPopup && closeAbout) {
+    aboutBtn.addEventListener('click', () => {
+      aboutPopup.style.display = 'flex';
+    });
+    closeAbout.addEventListener('click', () => {
+      aboutPopup.style.display = 'none';
+    });
+    // Đóng popup khi click ra ngoài vùng nội dung
+    aboutPopup.addEventListener('click', (e) => {
+      if (e.target === aboutPopup) aboutPopup.style.display = 'none';
+    });
+  }
   // Guard: ensure Leaflet loaded
   if (typeof L === 'undefined') {
     console.error('Leaflet (L) is not defined — check that leaflet.js loaded correctly.');

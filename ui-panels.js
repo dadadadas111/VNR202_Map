@@ -8,6 +8,24 @@
   // This variable is NEVER reset, only updated when user clicks a different event
   let uiSelectedEvent = null;
 
+  // Bubble management functions
+  function showLeftBubble() {
+    const bubble = byId('leftBubble');
+    if (bubble) bubble.classList.add('visible');
+  }
+  function hideLeftBubble() {
+    const bubble = byId('leftBubble');
+    if (bubble) bubble.classList.remove('visible');
+  }
+  function showRightBubble() {
+    const bubble = byId('rightBubble');
+    if (bubble) bubble.classList.add('visible');
+  }
+  function hideRightBubble() {
+    const bubble = byId('rightBubble');
+    if (bubble) bubble.classList.remove('visible');
+  }
+
   window.panels = {
     openLeft: function (htmlContent) {
       if (isMobile()) return showMobileOverlay();
@@ -15,9 +33,12 @@
       const c = byId('leftContent');
       if (c) c.innerHTML = htmlContent || '';
       if (p) p.classList.add('open');
+      hideLeftBubble(); // Hide bubble when panel opens
     },
     closeLeft: function () {
-      const p = byId('leftPanel'); if (p) p.classList.remove('open');
+      const p = byId('leftPanel'); 
+      if (p) p.classList.remove('open');
+      showLeftBubble(); // Show bubble when panel closes
     },
     openRight: function (htmlContent) {
       if (isMobile()) return showMobileOverlay();
@@ -25,16 +46,51 @@
       const c = byId('rightContent');
       if (c) c.innerHTML = htmlContent || '';
       if (p) p.classList.add('open');
+      hideRightBubble(); // Hide bubble when panel opens
     },
-    closeRight: function () { const p = byId('rightPanel'); if (p) p.classList.remove('open'); }
+    closeRight: function () { 
+      const p = byId('rightPanel'); 
+      if (p) p.classList.remove('open');
+      showRightBubble(); // Show bubble when panel closes
+    }
   };
 
-  // wire close buttons
+  // wire close buttons and bubble buttons
   document.addEventListener('DOMContentLoaded', () => {
     const closeLeft = byId('closeLeft');
     const closeRight = byId('closeRight');
+    const leftBubble = byId('leftBubble');
+    const rightBubble = byId('rightBubble');
+    
     if (closeLeft) closeLeft.addEventListener('click', () => panels.closeLeft());
     if (closeRight) closeRight.addEventListener('click', () => panels.closeRight());
+    
+    // Wire bubble clicks to reopen panels
+    if (leftBubble) {
+      leftBubble.addEventListener('click', () => {
+        // Reopen the left panel with last content
+        const p = byId('leftPanel');
+        if (p) {
+          p.classList.add('open');
+          hideLeftBubble();
+        }
+      });
+    }
+    
+    if (rightBubble) {
+      rightBubble.addEventListener('click', () => {
+        // Reopen the right panel with last content
+        const p = byId('rightPanel');
+        if (p) {
+          p.classList.add('open');
+          hideRightBubble();
+        }
+      });
+    }
+    
+    // Show bubbles initially (panels are closed by default)
+    showLeftBubble();
+    showRightBubble();
   });
 
   // Mobile overlay helpers

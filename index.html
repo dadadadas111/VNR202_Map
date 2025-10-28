@@ -24,11 +24,59 @@
         <option value="p3">1975–nay</option>
       </select>
     </div>
+    <div class="header-actions">
+      <a href="https://github.com/dadadadas111/VNR202_Map" target="_blank" class="github-link" title="Xem trên GitHub">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" style="height:22px;vertical-align:middle;"> GitHub
+      </a>
+      <button id="aboutBtn" class="about-btn" title="Thông tin nhóm">About</button>
+    </div>
   </header>
+
 
   <div id="loader" class="loader">Đang tải bản đồ...</div>
 
+  <!-- About Popup -->
+  <div id="aboutPopup" class="about-popup" style="display:none;">
+    <div class="about-content">
+      <button id="closeAbout" class="close-about">×</button>
+      <h2>Giới thiệu sản phẩm</h2>
+      <p>Đây là sản phẩm sáng tạo của <b>Nhóm 5 lớp SE1823-NET</b>, môn <b>VNR202</b>, do thầy <b>Namkv</b> là giảng viên.</p>
+      <div class="about-members">
+        <b>Thành viên nhóm:</b>
+        <ul>
+          <li>Nguyễn Thế Phong</li>
+          <li>Nguyễn Văn Hùng</li>
+          <li>Lê Hoàng Anh</li>
+          <li>Trịnh Hoàng Việt</li>
+          <li>Nguyễn Hải Đăng</li>
+          <li>Lê Nhật Huy <i>(leader)</i></li>
+          <li>Nguyễn Thành Long</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <!-- Left / Right panels (hidden by default) -->
+  <!-- Bubble buttons to reopen panels -->
+  <button id="leftBubble" class="panel-bubble left-bubble" title="Mở danh sách sự kiện">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3.01" y2="6"></line>
+      <line x1="3" y1="12" x2="3.01" y2="12"></line>
+      <line x1="3" y1="18" x2="3.01" y2="18"></line>
+    </svg>
+  </button>
+
+  <button id="rightBubble" class="panel-bubble right-bubble" title="Mở thông tin chi tiết">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="16" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
+  </button>
+
   <div id="leftPanel" class="panel left">
     <div class="panel-header">Sự kiện <button id="closeLeft" class="close-btn">✕</button></div>
     <div id="leftContent" class="panel-content">Chưa có dữ liệu.</div>
