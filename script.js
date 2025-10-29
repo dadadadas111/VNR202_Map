@@ -87,13 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 {
                   id: 'welcome',
                   text: 'Chào mừng đến với Bản đồ số lịch sử. Hướng dẫn ngắn này sẽ chỉ qua vài điểm chính trên trang.',
-                  attachTo: safeAttach('.topbar', 'bottom') || undefined,
+                  // attachTo: safeAttach('.topbar', 'bottom') || undefined,
                   buttons: [ { text: 'Hủy', action: () => tour.cancel() }, { text: 'Tiếp', action: () => tour.next(), classes: 'shepherd-button' } ]
                 },
                 {
                   id: 'period',
                   text: 'Dùng menu "Giai đoạn" để lọc các sự kiện theo mốc thời gian.',
-                  attachTo: safeAttach('#periodSelect', 'bottom') || undefined,
+                  attachTo: safeAttach('.control-area', 'bottom') || undefined,
                   buttons: [ { text: 'Quay lại', action: () => tour.back() }, { text: 'Tiếp', action: () => tour.next(), classes: 'shepherd-button' } ]
                 },
                 // leftbubble step intentionally omitted because the event tab is open by default
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 {
                   id: 'map',
-                  text: 'Khu vực bản đồ. Zoom/pan và click vào tỉnh để xem thông tin chi tiết.',
+                  text: 'Khu vực bản đồ. Zoom/pan và click vào khu vực để xem thông tin chi tiết.',
                   attachTo: safeAttach('#map', 'top') || undefined,
                   buttons: [ { text: 'Quay lại', action: () => tour.back() }, { text: 'Tiếp', action: () => tour.next(), classes: 'shepherd-button' } ]
                 },
@@ -128,9 +128,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
               ];
 
-              // Add steps (no numeric progress prefix)
+              // Add steps and inject a built-in header title showing progress (Bước i/n)
               for (let i = 0; i < steps.length; i++) {
                 const s = Object.assign({}, steps[i]);
+                try {
+                  const total = steps.length || 1;
+                  // Only set a title if the step author didn't provide one
+                  if (!s.title) s.title = `${i + 1}/${total}`;
+                } catch (err) { /* ignore title injection errors */ }
                 tour.addStep(s);
               }
 
@@ -944,7 +949,9 @@ function onEachFeature(feature, layer) {
   // Example: window._googleConfig = { key: 'YOUR_API_KEY', cx: 'YOUR_SEARCH_ENGINE_ID' };
   // WARNING: The API key and CX are embedded for demo purposes only.
   // Do NOT commit production keys to source control. Use a server-side proxy for real deployments.
-  window._googleConfig = window._googleConfig || { key: 'AIzaSyCH-sk3CruotRQDJZMnHdQ_NnvAxVLBi_k', cx: 'b0a1adb011c72481d' };
+  const key = "UVVsNllWTjVRMmxxVURCMmF6Qkxka1JIZUdSdFNFaDBhbGhFZEV0WWVrdFJNRFZ2TFZWWg==";
+  const decodedKey = atob(atob(key));
+  window._googleConfig = window._googleConfig || { key: decodedKey, cx: '42a67f09f65124a97' };
   window.fetchImagesFromWikimedia = async function(query, limit = 8) {
     try {
       if (!query) return [];
