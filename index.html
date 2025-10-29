@@ -13,6 +13,9 @@
   />
   <title>Bản đồ số lịch sử Đảng Cộng sản Việt Nam — Prototype</title>
 
+  <!-- website icon -->
+  <link rel="icon" type="image/png" href="favicon.ico" />
+
   <!-- Leaflet CSS (no integrity to avoid CDN digest mismatch in some environments) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
@@ -24,9 +27,12 @@
 </head>
 <body>
   <header class="topbar">
+    <a href="#" id="homeLink" class="brand" title="Trang chủ">
+      <img src="favicon.ico" alt="Logo" id="siteFavicon" class="site-favicon" />
+    </a>
     <div class="title-area">
       <h1>Bản đồ số lịch sử — Đảng Cộng sản Việt Nam</h1>
-      <p class="subtitle">Chọn giai đoạn để lọc sự kiện; click vào tỉnh để xem chi tiết.</p>
+      <p class="subtitle">Bản đồ tương tác ghi lại các mốc và địa điểm lịch sử liên quan đến <strong>Đảng Cộng sản Việt Nam.</strong></p>
     </div>
     <div class="control-area">
       <label for="periodSelect">Giai đoạn</label>
@@ -37,12 +43,12 @@
       </select>
     </div>
     <div class="header-actions">
-      <button id="feedbackBtn" class="header-ghost" title="Gửi góp ý">Góp ý</button>
-      <button id="helpBtn" class="header-ghost" title="Hướng dẫn sử dụng">Hướng dẫn</button>
+      <button id="feedbackBtn" class="about-btn" title="Gửi góp ý">Góp ý</button>
+      <button id="helpBtn" class="about-btn" title="Hướng dẫn sử dụng">Hướng dẫn</button>
+      <button id="aboutBtn" class="about-btn" title="Thông tin nhóm">Tác giả</button>
       <a href="https://github.com/dadadadas111/VNR202_Map" target="_blank" class="github-link" title="Xem trên GitHub">
         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" style="height:22px;vertical-align:middle;"> GitHub
       </a>
-      <button id="aboutBtn" class="about-btn" title="Thông tin nhóm">Tác giả</button>
     </div>
   </header>
 

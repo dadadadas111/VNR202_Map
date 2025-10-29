@@ -21,11 +21,12 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  padding: 18px 22px;
-  background: linear-gradient(90deg, rgba(244,236,224,0.9) 0%, rgba(255,255,255,0.95) 40%);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 6px 30px rgba(20,30,50,0.06);
+  gap: 14px;
+  padding: 14px 18px;
+  /* warmer, terracotta-leaning header to match favicon vibe */
+  background: linear-gradient(90deg, #fff6f1 0%, #fff2ea 50%, #fffdf9 100%);
+  border-bottom: 1px solid rgba(199,91,58,0.08);
+  box-shadow: 0 8px 30px rgba(199,91,58,0.06);
 }
 .header-actions {
   display: flex;
@@ -53,6 +54,11 @@ html, body {
   transition: background 140ms ease, transform 120ms ease;
 }
 .header-ghost:hover { background: rgba(0,0,0,0.04); transform: translateY(-2px); }
+
+/* Brand favicon in header */
+.brand { display: inline-flex; align-items: center; text-decoration: none; margin-right: 8px; }
+.site-favicon { width: 44px; height: 44px; display: block; object-fit: cover; border-radius: 8px; border: 2px solid rgba(255,255,255,0.7); box-shadow: 0 6px 18px rgba(199,91,58,0.18); background: white; }
+.brand:focus { outline: 2px solid rgba(199,91,58,0.18); border-radius: 8px; }
 
 /* Help popup specifics (reuse about-popup styles) */
 #helpPopup .about-content { max-width: 640px; }
@@ -253,6 +259,8 @@ html, body {
 .about-continue.pulse { animation: aboutPulse 2.4s ease-in-out 0.4s infinite; }
 .title-area h1 { margin: 0; font-size: 20px; font-family: 'Playfair Display', serif; font-weight: 600; color: #3b2b2b; }
 .title-area .subtitle { margin: 6px 0 0 0; color: #6b5b50; font-size: 13px; font-weight: 500; }
+/* ensure title area can shrink on small screens while favicon stays visible */
+.title-area { display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto; min-width: 0; }
 .control-area { display:flex; align-items:center; gap:8px; }
 .control-area label { font-size: 13px; color: #334; }
 .control-area select {
@@ -315,11 +323,40 @@ html, body {
   pointer-events: auto; /* allow interaction even when map elements are below */
   border-radius: 10px;
 }
+
+/* Custom scrollbar for panels (WebKit/Blink and Firefox) to match terracotta theme */
+.panel {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #d9733f rgba(255,250,245,0.6);
+}
+
+/* WebKit-based browsers */
+.panel::-webkit-scrollbar { width: 10px; height: 10px; }
+.panel::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, rgba(255,250,245,0.9), rgba(255,245,240,0.9));
+  border-radius: 8px;
+  margin: 6px 0;
+}
+.panel::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #f7b58a, #c75b3a);
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
+}
+.panel::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #f0a46d, #b24f2e);
+}
+
+/* Slightly narrower scrollbars on small screens */
+@media (max-width: 640px) {
+  .panel::-webkit-scrollbar { width: 8px; }
+}
 .panel.open { transform: translateX(0); opacity: 1; }
 .panel.left { left: 12px; transform: translateX(-100%); }
 .panel.right { right: 12px; transform: translateX(100%); border-left: none; border-right: 1px solid rgba(0,0,0,0.06); }
 .panel.open { transform: translateX(0); opacity: 1; }
-.panel-header { font-weight: 700; padding: 12px 14px; border-bottom: 1px solid rgba(0,0,0,0.04); display:flex; justify-content:space-between; align-items:center; background: linear-gradient(90deg, rgba(255,250,245,0.6), rgba(255,255,255,0.4)); border-top-left-radius: 10px; border-top-right-radius: 10px; }
+.panel-header { font-weight: 700; padding: 12px 14px; border-bottom: 1px solid rgba(199,91,58,0.10); display:flex; justify-content:space-between; align-items:center; background: linear-gradient(90deg,#fff7f2,#fffaf0); color: #6b2a1f; border-top-left-radius: 10px; border-top-right-radius: 10px; }
 .panel-content { padding: 14px; font-size: 15px; color: #222; }
 .close-btn { background:transparent; border: none; font-size: 14px; cursor: pointer; }
 
