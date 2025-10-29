@@ -262,12 +262,24 @@ html, body {
 /* ensure title area can shrink on small screens while favicon stays visible */
 .title-area { display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto; min-width: 0; }
 .control-area { display:flex; align-items:center; gap:8px; }
-.control-area label { font-size: 13px; color: #334; }
-.control-area select {
-  padding: 6px 8px;
-  border-radius: 6px;
-  border: 1px solid #d0d7de;
-  background: white;
+.control-area label { font-size: 13px; color: #334; font-weight: 700; margin-right: 6px; }
+/* Make the period select visually prominent: larger, bold, rounded, with terracotta accent */
+#periodSelect, .control-area select {
+  font-size: 15px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(199,91,58,0.14);
+  background: linear-gradient(180deg,#fffaf5,#fff2ea);
+  color: #6b2a1f;
+  box-shadow: 0 8px 20px rgba(199,91,58,0.06);
+  transition: box-shadow 160ms ease, transform 120ms ease, border-color 120ms ease;
+}
+#periodSelect:focus, .control-area select:focus {
+  outline: none;
+  box-shadow: 0 12px 36px rgba(199,91,58,0.12);
+  transform: translateY(-2px);
+  border-color: rgba(199,91,58,0.28);
 }
 
 #map { position: absolute; left: 0; right: 0; bottom: 0; top: 92px; transition: top 220ms ease; }

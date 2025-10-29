@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // final step with feedback/github and friendly closing message
                 {
                   id: 'final',
-                  text: 'Cảm ơn bạn đã dùng bản đồ — chúc bạn có trải nghiệm tốt! Nếu muốn góp ý hoặc xem mã nguồn, dùng các nút bên dưới.',
+                  text: 'Cảm ơn bạn đã dùng bản đồ! Chúc bạn có trải nghiệm tốt! Nếu muốn góp ý hoặc xem mã nguồn, dùng các nút bên dưới.',
                   attachTo: undefined,
                   buttons: [
                     { text: 'Góp ý', action: () => { window.open('https://forms.gle/Wsn5noKfLkyFtQMXA', '_blank'); } },
