@@ -16,28 +16,226 @@ document.addEventListener('DOMContentLoaded', () => {
     if (continueBtn) {
       continueBtn.addEventListener('click', () => { aboutPopup.style.display = 'none'; });
     }
-    // Feedback / Help buttons
-    const feedbackBtn = document.getElementById('feedbackBtn');
-    const helpBtn = document.getElementById('helpBtn');
-    const helpFromAboutBtn = document.getElementById('helpFromAboutBtn');
-    const helpPopup = document.getElementById('helpPopup');
-    const closeHelp = document.getElementById('closeHelp');
-    const startTourBtn = document.getElementById('startTourBtn');
+  // Feedback / Help buttons
+  const feedbackBtn = document.getElementById('feedbackBtn');
+  const helpBtn = document.getElementById('helpBtn');
+  const helpFromAboutBtn = document.getElementById('helpFromAboutBtn');
+  const helpPopup = document.getElementById('helpPopup');
+  const closeHelp = document.getElementById('closeHelp');
+  const startTourBtn = document.getElementById('startTourBtn');
     if (feedbackBtn) {
       feedbackBtn.addEventListener('click', () => {
         // placeholder: open feedback form in new tab (user will update link later)
         window.open('https://forms.gle/your-feedback-form', '_blank');
       });
     }
-    function openHelp() { if (helpPopup) helpPopup.style.display = 'flex'; }
-    if (helpBtn) helpBtn.addEventListener('click', openHelp);
-    if (helpFromAboutBtn) helpFromAboutBtn.addEventListener('click', () => { aboutPopup.style.display = 'none'; openHelp(); });
-    if (closeHelp) closeHelp.addEventListener('click', () => { if (helpPopup) helpPopup.style.display = 'none'; });
-    if (helpPopup) helpPopup.addEventListener('click', (e) => { if (e.target === helpPopup) helpPopup.style.display = 'none'; });
-    if (startTourBtn) startTourBtn.addEventListener('click', () => {
-      // Placeholder action: start a guided tour. For now we can show a small alert.
-      try { alert('Bắt đầu hướng dẫn tương tác (placeholder). Bạn có thể tích hợp Intro.js hoặc Shepherd.js để có tour đẹp hơn.'); } catch (err) {}
-    });
+      // startTourAction encapsulates the full logic to start the Shepherd tour (loads libs if needed)
+      const startTourAction = () => {
+        // Start a Shepherd.js tour. If Shepherd isn't loaded, load it dynamically
+        try {
+          // close help/about popups when starting the tour so they don't block attachTo targets
+          try { if (helpPopup) helpPopup.style.display = 'none'; } catch (e) {}
+          try { if (aboutPopup) aboutPopup.style.display = 'none'; } catch (e) {}
+          // helper: transient non-blocking toast message
+          const showToast = (msg, timeout = 4000) => {
+            try {
+              const id = 'shepherd_toast';
+              let el = document.getElementById(id);
+              if (!el) {
+                el = document.createElement('div');
+                el.id = id;
+                el.style.position = 'fixed';
+                el.style.right = '18px';
+                el.style.bottom = '18px';
+                el.style.zIndex = 20000;
+                el.style.padding = '10px 14px';
+                el.style.background = 'rgba(0,0,0,0.75)';
+                el.style.color = '#fff';
+                el.style.borderRadius = '6px';
+                el.style.fontSize = '13px';
+                el.style.boxShadow = '0 6px 18px rgba(0,0,0,0.25)';
+                document.body.appendChild(el);
+              }
+              el.textContent = msg;
+              el.style.opacity = '1';
+              setTimeout(() => {
+                try { el.style.transition = 'opacity 400ms'; el.style.opacity = '0'; } catch (e) {}
+              }, timeout - 250);
+            } catch (e) { /* ignore toast errors */ }
+          };
+
+          // encapsulate the tour creation so we can call it after dynamic load
+          const doStartTour = () => {
+            try {
+              const safeAttach = (sel, on) => {
+                const el = document.querySelector(sel);
+                return el ? { element: el, on: on || 'auto' } : null;
+              };
+
+              const tour = new Shepherd.Tour({
+                defaultStepOptions: {
+                  cancelIcon: { enabled: true },
+                  scrollTo: { behavior: 'smooth', block: 'center' },
+                  classes: 'shepherd-theme-arrows',
+                  useModalOverlay: true
+                },
+                useModalOverlay: true
+              });
+
+              // Steps (guard selectors in case the DOM layout changed)
+              const steps = [
+                {
+                  id: 'welcome',
+                  text: 'Chào mừng đến với Bản đồ số lịch sử. Hướng dẫn ngắn này sẽ chỉ qua vài điểm chính trên trang.',
+                  attachTo: safeAttach('.topbar', 'bottom') || undefined,
+                  buttons: [ { text: 'Hủy', action: () => tour.cancel() }, { text: 'Tiếp', action: () => tour.next(), classes: 'shepherd-button' } ]
+                },
+                {
+                  id: 'period',
+                  text: 'Dùng menu "Giai đoạn" để lọc các sự kiện theo mốc thời gian.',
+                  attachTo: safeAttach('#periodSelect', 'bottom') || undefined,
+                  buttons: [ { text: 'Quay lại', action: () => tour.back() }, { text: 'Tiếp', action: () => tour.next(), classes: 'shepherd-button' } ]
+                },
+                // leftbubble step intentionally omitted because the event tab is open by default
+                {
+                  id: 'leftpanel',
+                  text: 'Danh sách sự kiện xuất hiện ở đây. Click vào một mục để làm nổi vùng/ tỉnh liên quan trên bản đồ.',
+                  attachTo: safeAttach('#leftPanel', 'right') || undefined,
+                  buttons: [ { text: 'Quay lại', action: () => tour.back() }, { text: 'Tiếp', action: () => tour.next(), classes: 'shepherd-button' } ]
+                },
+                {
+                  id: 'map',
+                  text: 'Khu vực bản đồ. Zoom/pan và click vào tỉnh để xem thông tin chi tiết.',
+                  attachTo: safeAttach('#map', 'top') || undefined,
+                  buttons: [ { text: 'Quay lại', action: () => tour.back() }, { text: 'Tiếp', action: () => tour.next(), classes: 'shepherd-button' } ]
+                },
+                {
+                  id: 'hcm',
+                  text: 'Nút này (hình Bác Hồ) luôn cho phép zoom về vị trí lịch sử của Bác.',
+                  attachTo: safeAttach('.hcm-center-bubble', 'left') || undefined,
+                  buttons: [ { text: 'Quay lại', action: () => tour.back() }, { text: 'Tiếp', action: () => tour.next(), classes: 'shepherd-button' } ]
+                },
+                // final step with feedback/github and friendly closing message
+                {
+                  id: 'final',
+                  text: 'Cảm ơn bạn đã dùng bản đồ — chúc bạn có trải nghiệm tốt! Nếu muốn góp ý hoặc xem mã nguồn, dùng các nút bên dưới.',
+                  attachTo: undefined,
+                  buttons: [
+                    { text: 'Góp ý', action: () => { window.open('https://forms.gle/your-feedback-form', '_blank'); } },
+                    { text: 'Xem GitHub', action: () => { window.open('https://github.com/dadadadas111/VNR202_Map', '_blank'); } },
+                    { text: 'Kết thúc', action: () => tour.complete(), classes: 'shepherd-button' }
+                  ]
+                }
+              ];
+
+              // Add steps (no numeric progress prefix)
+              for (let i = 0; i < steps.length; i++) {
+                const s = Object.assign({}, steps[i]);
+                tour.addStep(s);
+              }
+
+              tour.start();
+            } catch (err) {
+              console.warn('Failed to construct/start tour', err);
+              showToast('Không thể bắt đầu hướng dẫn. Xem console để biết chi tiết.', 5000);
+            }
+          };
+
+          // If Shepherd is not yet available, load CSS+JS dynamically using multiple CDN fallbacks
+          if (typeof Shepherd === 'undefined') {
+            if (window._shepherdLoading) {
+              showToast('Đang tải hướng dẫn... Vui lòng chờ.');
+              return;
+            }
+            window._shepherdLoading = true;
+            showToast('Đang tải thư viện hướng dẫn...');
+
+            const cssUrls = [
+              'https://cdn.jsdelivr.net/npm/shepherd.js/dist/css/shepherd.css',
+              'https://unpkg.com/shepherd.js/dist/css/shepherd.css',
+              'https://cdnjs.cloudflare.com/ajax/libs/shepherd/8.1.0/css/shepherd.css'
+            ];
+            const jsUrls = [
+              'https://cdn.jsdelivr.net/npm/shepherd.js/dist/js/shepherd.min.js',
+              'https://unpkg.com/shepherd.js/dist/js/shepherd.min.js',
+              'https://cdnjs.cloudflare.com/ajax/libs/shepherd/8.1.0/js/shepherd.min.js'
+            ];
+
+            const tryLoadTag = (tagName, url, attrs = {}) => new Promise((resolve, reject) => {
+              try {
+                let el;
+                if (tagName === 'link') {
+                  el = document.createElement('link');
+                  el.rel = attrs.rel || 'stylesheet';
+                  el.href = url;
+                } else if (tagName === 'script') {
+                  el = document.createElement('script');
+                  el.src = url;
+                  el.async = false;
+                } else return reject(new Error('Unsupported tag'));
+                // attach load/error handlers
+                el.onload = () => { resolve(url); };
+                el.onerror = (e) => { try { el.remove(); } catch (er) {} ; reject(new Error('error loading ' + url)); };
+                // small timeout in case load never fires (network hang)
+                const to = setTimeout(() => { try { el.onerror(); } catch (e) {} }, 12000);
+                const wrapResolve = (u) => { clearTimeout(to); resolve(u); };
+                const wrapReject = (err) => { clearTimeout(to); reject(err); };
+                el.onload = () => wrapResolve(url);
+                el.onerror = (ev) => wrapReject(new Error('Failed to load ' + url));
+                if (tagName === 'link') document.head.appendChild(el); else document.head.appendChild(el);
+              } catch (err) { reject(err); }
+            });
+
+            const trySequential = async (tagName, urls) => {
+              for (let i = 0; i < urls.length; i++) {
+                const u = urls[i];
+                try {
+                  await tryLoadTag(tagName, u);
+                  return u; // success
+                } catch (err) {
+                  console.warn('CDN load failed, trying next:', u, err);
+                  // try next
+                }
+              }
+              throw new Error('All CDN loads failed for ' + tagName);
+            };
+
+            // Load CSS first (we don't strictly need it to start the tour, but nicer)
+            (async () => {
+              try {
+                await trySequential('link', cssUrls);
+              } catch (err) {
+                console.warn('All CSS CDN loads failed for Shepherd:', err);
+              }
+              // Then load JS trying multiple CDNs
+              try {
+                await trySequential('script', jsUrls);
+                window._shepherdLoading = false;
+                showToast('Thư viện hướng dẫn đã sẵn sàng', 1500);
+                try { doStartTour(); } catch (e) { console.warn(e); }
+              } catch (err) {
+                window._shepherdLoading = false;
+                console.warn('Failed to load Shepherd.js from all CDNs', err);
+                showToast('Không thể tải thư viện hướng dẫn. Thử tải lại trang hoặc kiểm tra kết nối.', 6000);
+              }
+            })();
+            return;
+          }
+
+          // If Shepherd already present, start immediately
+          doStartTour();
+        } catch (err) {
+          console.warn('startTour click handler error', err);
+          try { showToast('Không thể bắt đầu hướng dẫn. Xem console để biết chi tiết.'); } catch (e) {}
+        }
+      };
+
+      // wire both the old startTour button (if still present) and the header Help button to start the tour
+      if (startTourBtn) startTourBtn.addEventListener('click', startTourAction);
+      if (helpBtn) helpBtn.addEventListener('click', startTourAction);
+      // if About popup had a 'help' link, wire it to start the tour and close the popup
+      if (helpFromAboutBtn) helpFromAboutBtn.addEventListener('click', () => { try { aboutPopup.style.display = 'none'; } catch(e){}; startTourAction(); });
+    
     // Đóng popup khi click ra ngoài vùng nội dung
     aboutPopup.addEventListener('click', (e) => {
       if (e.target === aboutPopup) aboutPopup.style.display = 'none';

@@ -19,6 +19,8 @@
   <!-- Fonts: serif for headings (historic feel) + clean sans for body -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <!-- Shepherd.js (guided tours) -->
+  <link rel="stylesheet" href="https://unpkg.com/shepherd.js@8.4.0/dist/css/shepherd.css" />
 </head>
 <body>
   <header class="topbar">
@@ -72,23 +74,7 @@
     </div>
   </div>
 
-  <!-- Help / Guide Modal -->
-  <div id="helpPopup" class="about-popup" style="display:none;">
-    <div class="about-content" style="max-width:640px;">
-      <button id="closeHelp" class="close-about">×</button>
-      <h2>Hướng dẫn sử dụng</h2>
-      <p>Đây là phần hướng dẫn nhanh để giúp người dùng làm quen với giao diện:</p>
-      <ol>
-        <li>Chọn giai đoạn từ menu trên cùng để lọc sự kiện.</li>
-        <li>Mở bảng bên trái để xem danh sách sự kiện; click vào một mục để làm nổi vùng liên quan trên bản đồ.</li>
-        <li>Sử dụng nút GitHub để xem mã nguồn; dùng nút Góp ý để gửi phản hồi.</li>
-        <li>Click vào biểu tượng Bác Hồ để xem thông tin theo mốc thời gian.</li>
-      </ol>
-      <div style="margin-top:12px;text-align:right;">
-        <button id="startTourBtn" class="about-continue">Bắt đầu hướng dẫn (tour)</button>
-      </div>
-    </div>
-  </div>
+  <!-- Help modal removed: Help button now starts the guided tour directly -->
 
   <!-- Left / Right panels (hidden by default) -->
   <!-- Bubble buttons to reopen panels -->
@@ -129,6 +115,7 @@
   <!-- small UI and map action helpers split out to keep main script smaller -->
   <script src="ui-panels.js"></script>
   <script src="map-actions.js"></script>
+  <script src="https://unpkg.com/shepherd.js@8.4.0/dist/js/shepherd.min.js"></script>
 
   <script src="script.js"></script>
 </body>
