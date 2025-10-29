@@ -30,11 +30,21 @@ html, body {
 .header-actions {
   display: flex;
   align-items: center;
+  .province-image-header { margin-top: 12px; margin-bottom: 8px; font-size: 13px; color: #2b4a6f; font-weight: 700; display:flex; align-items:center; gap:8px; }
   gap: 12px;
+  .province-image-row.event-image-row { display:flex; gap:10px; align-items:center; }
+  .province-image-row .event-image-wrap { width: 112px; height: 72px; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 18px rgba(20,30,50,0.12); border: 1px solid rgba(0,0,0,0.06); }
+  .province-image-row .event-image-wrap .event-thumb { width: 100%; height: 100%; object-fit: cover; display:block; }
+  .province-image-row .image-overlay { font-size: 13px; }
+  .province-image-row .event-image-wrap:hover { transform: translateY(-4px); transition: transform 160ms ease; box-shadow: 0 12px 28px rgba(20,30,50,0.14); }
 }
 .header-ghost {
+  .no-prov-images { margin-top: 8px; color: #666; font-size: 13px; }
   background: transparent;
   border: 1px solid rgba(0,0,0,0.06);
+  .province-image-loading { margin-top: 8px; color: #666; font-size: 13px; display:flex; align-items:center; gap:8px; }
+  .province-image-loading::before { content: ''; width:14px; height:14px; border-radius:50%; border:2px solid rgba(0,0,0,0.12); border-top-color:#2b6cb0; display:inline-block; animation: spin 900ms linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
   padding: 6px 10px;
   border-radius: 8px;
   font-size: 13px;
@@ -620,7 +630,7 @@ html, body {
 .wiki-summary { margin-top: 10px; background: transparent; color: #223; }
 .wiki-summary h3 { margin: 0 0 6px 0; font-size: 15px; }
 .wiki-extract { color: #334; font-size: 13px; line-height: 1.4; }
-.wiki-summary .visit-site { display: inline-block; margin-top: 8px; padding: 6px 10px; border-radius: 6px; background: #2b6cb0; color: white; text-decoration: none; }
+.wiki-summary .visit-site { display: inline-block; margin-top: 8px; margin-bottom: 10px; padding: 6px 10px; border-radius: 6px; background: #2b6cb0; color: white; text-decoration: none; }
 
 /* images row below description */
 .event-image-row { margin-top: 8px; display:flex; gap:8px; }
@@ -631,6 +641,13 @@ html, body {
 .event-list { margin: 0; padding-left: 16px; }
 .event-item { margin-bottom: 6px; }
 .event-year { font-weight: bold; margin-right: 6px; }
+
+.info-separator {
+  height: 1px;
+  background: rgba(0,0,0,0.04);
+  margin: 16px 0;
+  border-radius: 2px;
+}
 
 @media (max-width: 600px) {
   header h1 { font-size: 16px; }

@@ -3,10 +3,46 @@
 
 (function () {
   function byId(id) { return document.getElementById(id); }
-  
+
   // UI-only state: track selected event for visual highlight ONLY
   // This variable is NEVER reset, only updated when user clicks a different event
   let uiSelectedEvent = null;
+
+  // Small localStorage-backed cache for auto-found images (events/provinces)
+  // Keyed by 'evt:<name>|<year>' and 'prov:<ma_tinh or displayName>'
+  const CACHE_KEY = 'vnr_auto_images_v1';
+  window._autoImageCache = window._autoImageCache || {};
+
+  function _loadAutoImageCache() {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') window._autoImageCache = parsed;
+    } catch (err) { console.warn('Failed to load auto image cache', err); }
+  }
+  function _saveAutoImageCache() {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(window._autoImageCache || {})); } catch (err) { console.warn('Failed to save auto image cache', err); }
+  }
+  function _eventCacheKey(ev) {
+    if (!ev) return null;
+    const n = (ev.name || '').trim();
+    const y = (ev.year || '').toString();
+    return `evt:${n}|${y}`;
+  }
+  function _featureCacheKey(feature) {
+    if (!feature || !feature.properties) return null;
+    const p = feature.properties;
+    const id = p.ma_tinh || p._displayName || p.ten_tinh || p.name || '';
+    return `prov:${String(id).trim()}`;
+  }
+  function _getCacheForEvent(ev) { try { const k = _eventCacheKey(ev); return k && window._autoImageCache && window._autoImageCache[k] ? window._autoImageCache[k].slice() : null; } catch (e) { return null; } }
+  function _setCacheForEvent(ev, arr) { try { const k = _eventCacheKey(ev); if (!k) return; window._autoImageCache = window._autoImageCache || {}; window._autoImageCache[k] = (arr || []).slice(); _saveAutoImageCache(); } catch (e) { } }
+  function _getCacheForFeature(feature) { try { const k = _featureCacheKey(feature); return k && window._autoImageCache && window._autoImageCache[k] ? window._autoImageCache[k].slice() : null; } catch (e) { return null; } }
+  function _setCacheForFeature(feature, arr) { try { const k = _featureCacheKey(feature); if (!k) return; window._autoImageCache = window._autoImageCache || {}; window._autoImageCache[k] = (arr || []).slice(); _saveAutoImageCache(); } catch (e) { } }
+
+  // Load cache on startup
+  try { _loadAutoImageCache(); } catch (e) { /* ignore */ }
 
   // Bubble management functions
   function showLeftBubble() {
@@ -36,7 +72,7 @@
       hideLeftBubble(); // Hide bubble when panel opens
     },
     closeLeft: function () {
-      const p = byId('leftPanel'); 
+      const p = byId('leftPanel');
       if (p) p.classList.remove('open');
       showLeftBubble(); // Show bubble when panel closes
     },
@@ -48,8 +84,8 @@
       if (p) p.classList.add('open');
       hideRightBubble(); // Hide bubble when panel opens
     },
-    closeRight: function () { 
-      const p = byId('rightPanel'); 
+    closeRight: function () {
+      const p = byId('rightPanel');
       if (p) p.classList.remove('open');
       showRightBubble(); // Show bubble when panel closes
     }
@@ -61,10 +97,10 @@
     const closeRight = byId('closeRight');
     const leftBubble = byId('leftBubble');
     const rightBubble = byId('rightBubble');
-    
+
     if (closeLeft) closeLeft.addEventListener('click', () => panels.closeLeft());
     if (closeRight) closeRight.addEventListener('click', () => panels.closeRight());
-    
+
     // Wire bubble clicks to reopen panels
     if (leftBubble) {
       leftBubble.addEventListener('click', () => {
@@ -76,7 +112,7 @@
         }
       });
     }
-    
+
     if (rightBubble) {
       rightBubble.addEventListener('click', () => {
         // Reopen the right panel with last content
@@ -87,7 +123,7 @@
         }
       });
     }
-    
+
     // Show bubbles initially (panels are closed by default)
     showLeftBubble();
     showRightBubble();
@@ -134,8 +170,15 @@
     }
     let html = `<div class="timeline-title">Sự kiện tại <strong>${provinceDisplayName}</strong> (${eventsArray.length})</div>`;
     html += '<ol class="timeline-list">';
-    const sorted = eventsArray.slice().sort((a,b) => a.year - b.year);
+    const sorted = eventsArray.slice().sort((a, b) => a.year - b.year);
     sorted.forEach((ev, idx) => {
+      // Restore cached auto images for this event if present
+      try {
+        if ((!ev._auto_images || !ev._auto_images.length) && typeof _getCacheForEvent === 'function') {
+          const cached = _getCacheForEvent(ev);
+          if (cached && cached.length) ev._auto_images = cached.slice();
+        }
+      } catch (e) { /* ignore */ }
       const imgs = ev.image_urls || [];
       const autoImgs = ev._auto_images || [];
       // Add timeline-clickable class for hover + selection
@@ -153,7 +196,7 @@
         if (raw.toLowerCase().includes('cả nước') || raw.toLowerCase().includes('ca nuoc')) scopeLabel = 'Cả nước';
         else scopeLabel = raw;
       }
-  if (scopeLabel) html += `<div class="t-scope"><strong>Phạm vi:</strong> ${scopeLabel}</div>`;
+      if (scopeLabel) html += `<div class="t-scope"><strong>Phạm vi:</strong> ${scopeLabel}</div>`;
       // images row (original images from JSON) placed below description, show up to 3
       if (imgs && imgs.length) {
         html += `<div class="event-image-row">`;
@@ -168,13 +211,13 @@
         }
         html += `</div>`;
       }
-      // show find-images button BELOW the static image row (or right after description if no static images)
-      html += `<div class="t-actions"><button class="find-images-btn" data-evt-idx="${idx}">Hình ảnh liên quan</button><div class="auto-image-warning">Lưu ý: ảnh tìm tự động, có thể không chính xác.</div></div>`;
+      // note: 'find images' control moved to the right panel; keep a subtle hint for selected items
+      // no left-panel image controls or warnings here (moved to right panel)
       // auto-found images (kept separate so we don't mix with original JSON images)
       if (autoImgs && autoImgs.length) {
         html += `<div class="event-auto-header">Ảnh tìm tự động (${autoImgs.length})</div>`;
         html += `<div class="event-image-row auto-row">`;
-        autoImgs.slice(0,3).forEach((url, ai) => {
+        autoImgs.slice(0, 3).forEach((url, ai) => {
           const extraAuto = (ai === 2 && autoImgs.length > 3) ? autoImgs.length - 3 : 0;
           html += `<div class="event-image-wrap">`;
           html += `<img src="${url}" class="event-thumb" data-idx="${idx}" data-img-index="${ai}" data-source="auto" />`;
@@ -188,14 +231,14 @@
     html += '</ol>';
     panels.openLeft(html);
 
-      // wire thumbnail clicks to open gallery and event item selection
+    // wire thumbnail clicks to open gallery and event item selection
     setTimeout(() => {
       const container = document.getElementById('leftContent');
       if (!container) return;
       container.querySelectorAll('.event-thumb').forEach(img => {
         // thumbnail error handling: replace broken thumb with placeholder and mark as broken
         img.addEventListener('error', () => {
-          try { img.classList.add('thumb-broken'); img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120"><rect width="100%" height="100%" fill="%23eee"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="12">Không tải được</text></svg>'; } catch (e) {}
+          try { img.classList.add('thumb-broken'); img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120"><rect width="100%" height="100%" fill="%23eee"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="12">Không tải được</text></svg>'; } catch (e) { }
         });
         img.addEventListener('click', (e) => {
           e.stopPropagation(); // Don't trigger parent timeline-item click
@@ -220,7 +263,7 @@
           showImageGallery(imgsList, indexInList);
         });
       });
-      
+
       // wire event item clicks for selection highlight + province highlighting
       container.querySelectorAll('.timeline-clickable').forEach((item, idx) => {
         item.addEventListener('click', (e) => {
@@ -245,89 +288,15 @@
         });
       });
 
-      // wire find-images button
-      container.querySelectorAll('.find-images-btn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          const idx = Number(btn.getAttribute('data-evt-idx')) || 0;
-          const event = sorted[idx];
-          if (!event) return;
-          // If auto images already exist for this event, do not fetch again
-          if (event._auto_images && event._auto_images.length) {
-            btn.textContent = 'Đã tìm sẵn';
-            btn.disabled = true;
-            setTimeout(() => { btn.textContent = 'Tìm ảnh'; btn.disabled = false; }, 1100);
-            return;
-          }
-          // show lightweight loading state on button
-          const orig = btn.textContent;
-          btn.disabled = true; btn.textContent = 'Đang tìm...';
-          try {
-            if (typeof window.fetchImagesForEvent === 'function') {
-              // request 4 images per click
-              const found = await window.fetchImagesForEvent(event, 4);
-              if (found && found.length) {
-                // ensure auto_images array exists and avoid duplicates vs original images
-                event._auto_images = event._auto_images || [];
-                const baseSet = new Set((event.image_urls || []).map(u => String(u)));
-                found.forEach(it => {
-                  const addUrl = (it && it.safe_url) ? it.safe_url : (it && it.url) ? it.url : null;
-                  if (!addUrl) return;
-                  if (baseSet.has(addUrl)) return; // skip if present in original
-                  if (event._auto_images.indexOf(addUrl) === -1) event._auto_images.push(addUrl);
-                });
-                // append thumbnails in a dedicated auto-row under this item
-                const li = btn.closest('.timeline-item');
-                if (li) {
-                  let autoHeader = li.querySelector('.event-auto-header');
-                  let autoRow = li.querySelector('.event-image-row.auto-row');
-                  if (!autoHeader) {
-                    autoHeader = document.createElement('div'); autoHeader.className = 'event-auto-header'; autoHeader.textContent = `Ảnh tìm tự động (${event._auto_images.length})`;
-                    li.appendChild(autoHeader);
-                  } else {
-                    autoHeader.textContent = `Ảnh tìm tự động (${event._auto_images.length})`;
-                  }
-                  if (!autoRow) { autoRow = document.createElement('div'); autoRow.className = 'event-image-row auto-row'; li.appendChild(autoRow); }
-                  // Clear and add up to 3 thumbnails
-                  autoRow.innerHTML = '';
-                  event._auto_images.slice(0,3).forEach((u, ai) => {
-                    const extraAuto = (ai === 2 && event._auto_images.length > 3) ? event._auto_images.length - 3 : 0;
-                    const wrap = document.createElement('div'); wrap.className = 'event-image-wrap';
-                    const img = document.createElement('img'); img.className = 'event-thumb'; img.src = u; img.setAttribute('data-idx', idx); img.setAttribute('data-img-index', ai); img.setAttribute('data-source', 'auto');
-                    // error fallback
-                    img.onerror = () => { try { img.classList.add('thumb-broken'); img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120"><rect width="100%" height="100%" fill="%23eee"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="12">Không tải được</text></svg>'; } catch(e){} };
-                    wrap.appendChild(img);
-                    if (extraAuto) {
-                      const ov = document.createElement('div'); ov.className = 'image-overlay'; ov.textContent = `+${extraAuto}`; wrap.appendChild(ov);
-                    }
-                    autoRow.appendChild(wrap);
-                    img.addEventListener('click', (ev) => { ev.stopPropagation(); const imgs = (event.image_urls || []).concat(event._auto_images || []); const i = imgs.indexOf(u); showImageGallery(imgs, i >= 0 ? i : 0); });
-                  });
-                }
-              } else {
-                btn.textContent = 'Không tìm thấy';
-                setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1200);
-                return;
-              }
-            }
-          } catch (err) {
-            console.warn('Find images failed', err);
-            btn.textContent = 'Lỗi';
-            setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1200);
-            return;
-          }
-          btn.textContent = 'Hoàn tất';
-          setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 900);
-        });
-      });
-      
+      // Note: image lookup moved to right panel (auto-search on event selection)
+
       // Restore selection state from uiSelectedEvent
       if (uiSelectedEvent) {
         container.querySelectorAll('.timeline-clickable').forEach((item, idx) => {
           const event = sorted[idx];
           if (event && event.name === uiSelectedEvent.name && event.year === uiSelectedEvent.year) {
             item.classList.add('selected');
-            try { item.scrollIntoView({ behavior: 'auto', block: 'start' }); } catch (err) {}
+            try { item.scrollIntoView({ behavior: 'auto', block: 'start' }); } catch (err) { }
           }
         });
       }
@@ -342,8 +311,15 @@
     }
     let html = `<div class="timeline-title">Tất cả sự kiện giai đoạn hiện tại (${eventsArray.length})</div>`;
     html += '<ol class="timeline-list timeline-all">';
-    const sorted = eventsArray.slice().sort((a,b) => a.year - b.year);
+    const sorted = eventsArray.slice().sort((a, b) => a.year - b.year);
     sorted.forEach((ev, idx) => {
+      // Restore cached auto images for this event if present
+      try {
+        if ((!ev._auto_images || !ev._auto_images.length) && typeof _getCacheForEvent === 'function') {
+          const cached = _getCacheForEvent(ev);
+          if (cached && cached.length) ev._auto_images = cached.slice();
+        }
+      } catch (e) { /* ignore */ }
       const imgs = ev.image_urls || [];
       html += `<li class="timeline-item timeline-clickable" data-evt-idx="${idx}">`;
       html += `<div class="timeline-main"><span class="t-year">${ev.year}</span> <strong>${ev.name}</strong></div>`;
@@ -359,7 +335,7 @@
         if (raw.toLowerCase().includes('cả nước') || raw.toLowerCase().includes('ca nuoc')) scopeLabel = 'Cả nước';
         else scopeLabel = raw;
       }
-  if (scopeLabel) html += `<div class="t-scope"><strong>Phạm vi:</strong> ${scopeLabel}</div>`;
+      if (scopeLabel) html += `<div class="t-scope"><strong>Phạm vi:</strong> ${scopeLabel}</div>`;
       // images
       if (imgs && imgs.length) {
         html += `<div class="event-image-row">`;
@@ -374,8 +350,6 @@
         }
         html += `</div>`;
       }
-      // place find-images button below static images (or after description if none)
-      html += `<div class="t-actions"><button class="find-images-btn" data-evt-idx="${idx}">Tìm ảnh</button><div class="auto-image-warning">Lưu ý: ảnh tìm tự động có thể không chính xác.</div></div>`;
       html += `</li>`;
     });
     html += '</ol>';
@@ -387,7 +361,7 @@
       if (!container) return;
       container.querySelectorAll('.event-thumb').forEach(img => {
         img.addEventListener('error', () => {
-          try { img.classList.add('thumb-broken'); img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120"><rect width="100%" height="100%" fill="%23eee"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="12">Không tải được</text></svg>'; } catch (e) {}
+          try { img.classList.add('thumb-broken'); img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120"><rect width="100%" height="100%" fill="%23eee"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="12">Không tải được</text></svg>'; } catch (e) { }
         });
         img.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -415,8 +389,8 @@
           item.classList.add('selected');
 
           // Scroll selected item so it's aligned to the top of the scroll container
-          try { item.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (err) {}
-          
+          try { item.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (err) { }
+
           const event = sorted[idx];
           if (event) {
             // Update UI-only selection state (never reset)
@@ -428,75 +402,15 @@
           }
         });
       });
-      // wire find-images buttons (same behavior as in renderTimeline)
-      container.querySelectorAll('.find-images-btn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          const idx = Number(btn.getAttribute('data-evt-idx')) || 0;
-          const event = sorted[idx];
-          if (!event) return;
-          // If auto images already exist for this event, do not fetch again
-          if (event._auto_images && event._auto_images.length) {
-            btn.textContent = 'Đã tìm sẵn';
-            btn.disabled = true;
-            setTimeout(() => { btn.textContent = 'Tìm ảnh'; btn.disabled = false; }, 1100);
-            return;
-          }
-          const orig = btn.textContent; btn.disabled = true; btn.textContent = 'Đang tìm...';
-          try {
-            if (typeof window.fetchImagesForEvent === 'function') {
-              const found = await window.fetchImagesForEvent(event, 4);
-              if (found && found.length) {
-                event._auto_images = event._auto_images || [];
-                const baseSet = new Set((event.image_urls || []).map(u => String(u)));
-                found.forEach(it => {
-                  const addUrl = (it && it.safe_url) ? it.safe_url : (it && it.url) ? it.url : null;
-                  if (!addUrl) return;
-                  if (baseSet.has(addUrl)) return;
-                  if (event._auto_images.indexOf(addUrl) === -1) event._auto_images.push(addUrl);
-                });
-                const li = btn.closest('.timeline-item');
-                if (li) {
-                  let autoHeader = li.querySelector('.event-auto-header');
-                  let autoRow = li.querySelector('.event-image-row.auto-row');
-                  if (!autoHeader) {
-                    autoHeader = document.createElement('div'); autoHeader.className = 'event-auto-header'; autoHeader.textContent = `Ảnh tìm tự động (${event._auto_images.length})`;
-                    li.appendChild(autoHeader);
-                  } else { autoHeader.textContent = `Ảnh tìm tự động (${event._auto_images.length})`; }
-                  if (!autoRow) { autoRow = document.createElement('div'); autoRow.className = 'event-image-row auto-row'; li.appendChild(autoRow); }
-                  autoRow.innerHTML = '';
-                  event._auto_images.slice(0,3).forEach((u, ai) => {
-                    const extraAuto = (ai === 2 && event._auto_images.length > 3) ? event._auto_images.length - 3 : 0;
-                    const wrap = document.createElement('div'); wrap.className = 'event-image-wrap';
-                    const img = document.createElement('img'); img.className = 'event-thumb'; img.src = u; img.setAttribute('data-idx', idx); img.setAttribute('data-img-index', ai); img.setAttribute('data-source', 'auto');
-                    img.onerror = () => { try { img.classList.add('thumb-broken'); img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120"><rect width="100%" height="100%" fill="%23eee"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="12">Không tải được</text></svg>'; } catch(e){} };
-                    wrap.appendChild(img);
-                    if (extraAuto) {
-                      const ov = document.createElement('div'); ov.className = 'image-overlay'; ov.textContent = `+${extraAuto}`; wrap.appendChild(ov);
-                    }
-                    autoRow.appendChild(wrap);
-                    img.addEventListener('click', (ev) => { ev.stopPropagation(); const imgs = (event.image_urls || []).concat(event._auto_images || []); const i = imgs.indexOf(u); showImageGallery(imgs, i >= 0 ? i : 0); });
-                  });
-                }
-              } else {
-                btn.textContent = 'Không tìm thấy';
-                setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1200);
-                return;
-              }
-            }
-          } catch (err) { console.warn('Find images failed', err); btn.textContent = 'Lỗi'; setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1200); return; }
-          btn.textContent = 'Hoàn tất';
-          setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 900);
-        });
-      });
-      
+      // (no find-images button here; images are fetched/displayed in the right panel)
+
       // Restore selection state from uiSelectedEvent
       if (uiSelectedEvent) {
         container.querySelectorAll('.timeline-clickable').forEach((item, idx) => {
           const event = sorted[idx];
           if (event && event.name === uiSelectedEvent.name && event.year === uiSelectedEvent.year) {
             item.classList.add('selected');
-            try { item.scrollIntoView({ behavior: 'auto', block: 'start' }); } catch (err) {}
+            try { item.scrollIntoView({ behavior: 'auto', block: 'start' }); } catch (err) { }
           }
         });
       }
@@ -514,7 +428,130 @@
     html += '</div>';
     html += `<div class="info-desc">${p && p.ghichu ? p.ghichu : ''}</div>`;
     panels.openRight(html);
+
+    // Automatically fetch and display images related to this province when showing province info.
+    // Reuse existing global helpers: window.fetchImagesFromWikimedia / window.fetchImagesFromGoogle
+    // Cache results on feature._auto_images to avoid refetching.
+    setTimeout(async () => {
+      try {
+        const rightContent = document.getElementById('rightContent');
+        if (!rightContent) return;
+        // If already fetched, render thumbnails immediately
+        if (feature._auto_images && feature._auto_images.length) {
+          renderProvinceImages(feature, rightContent);
+          return;
+        }
+
+        // Insert a lightweight loading placeholder
+        const loadId = 'prov_img_load_' + Date.now();
+        const loadNode = document.createElement('div');
+        loadNode.id = loadId;
+        loadNode.className = 'province-image-loading';
+        loadNode.textContent = 'Đang tìm hình ảnh liên quan...';
+        rightContent.appendChild(loadNode);
+
+        let found = [];
+        // Improve query quality: try a few prioritized queries that bias toward
+        // landscape / place / landmark images in Vietnamese. This helps return
+        // photos of the province (scenery, city, monument) rather than unrelated items.
+        const queryVariants = [
+          `${displayName} danh lam thắng cảnh`,
+          `${displayName} di tích lịch sử`,
+          `${displayName} phong cảnh`,
+          `${displayName} địa danh`,
+          `${displayName}`
+        ];
+
+        // Prefer Google (if configured) because you requested Google as primary source.
+        if (window._googleConfig && typeof window.fetchImagesFromGoogle === 'function') {
+          for (let q of queryVariants) {
+            try {
+              const r = await window.fetchImagesFromGoogle(q, 6);
+              if (r && r.length) { found = r; break; }
+            } catch (err) { /* ignore and try next */ }
+          }
+        }
+
+        // If Google didn't return results, fall back to Wikimedia Commons
+        if ((!found || found.length === 0) && typeof window.fetchImagesFromWikimedia === 'function') {
+          for (let q of queryVariants) {
+            try {
+              const r = await window.fetchImagesFromWikimedia(q, 6);
+              if (r && r.length) { found = r; break; }
+            } catch (err) { /* ignore and try next */ }
+          }
+        }
+
+        // Remove loading node
+        try { const n = document.getElementById(loadId); if (n) n.remove(); } catch (e) { }
+
+        if (found && found.length) {
+          // Normalize to URL array (prefer safe_url then url)
+          feature._auto_images = feature._auto_images || [];
+          const baseSet = new Set((feature._auto_images || []).map(u => String(u)));
+          found.forEach(it => {
+            const u = (it && it.safe_url) ? it.safe_url : (it && it.url) ? it.url : null;
+            if (!u) return;
+            if (!baseSet.has(u) && feature._auto_images.indexOf(u) === -1) feature._auto_images.push(u);
+            // Save metadata cache for gallery
+            try { if (window._imageMeta && u) window._imageMeta[u] = Object.assign({}, it, { safe_url: u }); } catch (e) { }
+          });
+          try { if (typeof _setCacheForFeature === 'function') _setCacheForFeature(feature, feature._auto_images); } catch (e) { }
+          renderProvinceImages(feature, rightContent);
+        } else {
+          // show a subtle note when no images found
+          const note = document.createElement('div');
+          note.className = 'no-prov-images';
+          note.textContent = 'Không tìm thấy hình ảnh liên quan.';
+          rightContent.appendChild(note);
+        }
+      } catch (err) {
+        console.warn('Auto fetch province images failed', err);
+      }
+    }, 20);
   };
+
+  // Helper to render province images block into the right panel
+  function renderProvinceImages(feature, rightContent) {
+    try {
+      if (!feature || !feature._auto_images || !feature._auto_images.length) return;
+      // Remove existing province-image-row if present
+      const existing = rightContent.querySelector('.province-image-row');
+      if (existing) existing.remove();
+
+      const imgs = feature._auto_images.slice(0, 6);
+      // reuse existing horizontal image row styles by including 'event-image-row'
+      const container = document.createElement('div'); container.className = 'event-image-row province-image-row';
+      const header = document.createElement('div'); header.className = 'province-image-header'; header.textContent = `Ảnh liên quan (${feature._auto_images.length})`;
+      rightContent.appendChild(header);
+      rightContent.appendChild(container);
+
+      // show up to 3 thumbnails and overlay +n if more
+      imgs.slice(0, 3).forEach((u, i) => {
+        const wrap = document.createElement('div'); wrap.className = 'event-image-wrap';
+        const img = document.createElement('img'); img.className = 'event-thumb'; img.src = u; img.setAttribute('data-prov-img-index', i);
+        img.onerror = () => { try { img.classList.add('thumb-broken'); img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120"><rect width="100%" height="100%" fill="%23eee"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="12">Không tải được</text></svg>'; } catch (e) { } };
+        wrap.appendChild(img);
+        const extra = (i === 2 && feature._auto_images.length > 3) ? feature._auto_images.length - 3 : 0;
+        if (extra) {
+          const ov = document.createElement('div'); ov.className = 'image-overlay'; ov.textContent = `+${extra}`; wrap.appendChild(ov);
+        }
+        container.appendChild(wrap);
+        img.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          const imgsList = feature._auto_images.slice();
+          // open gallery at the clicked index
+          const idx = i;
+          if (typeof showImageGallery === 'function') showImageGallery(imgsList, idx);
+        });
+      });
+      // Ensure right panel is visible when images are rendered
+      try {
+        const rp = document.getElementById('rightPanel');
+        if (rp && !rp.classList.contains('open')) { rp.classList.add('open'); hideRightBubble(); }
+      } catch (e) { /* ignore */ }
+    } catch (err) { /* ignore render errors */ }
+  }
 
   // NEW: Render info for multiple provinces (when event is selected)
   window.renderMultiProvinceInfo = function (features, event) {
@@ -522,10 +559,16 @@
       panels.openRight('<div class="empty">Không có thông tin.</div>');
       return;
     }
-    let html = `<div class="info-title">Các tỉnh liên quan</div>`;
+    let html = '';
+    html += '<div class="event-image-block"></div>';
+    html += '<ul class="province-list">';
+    // horizontal line separator
+    html += `<div class="info-separator"></div>`;
+    html += `<div class="info-title">Các tỉnh liên quan</div>`;
     if (event && event.name) html += `<div class="info-event-ref"><strong>Sự kiện:</strong> ${event.name} (${event.year})</div>`;
     html += `<div class="info-meta"><strong>Số tỉnh:</strong> ${features.length}</div>`;
-    html += '<ul class="province-list">';
+    // placeholder for event images (will be rendered above the province list)
+
     features.forEach(f => {
       const p = f.properties;
       const dName = (p && (p._displayName || p.ten_tinh || p.name)) || 'Không rõ';
@@ -534,7 +577,7 @@
     });
     html += '</ul>';
     panels.openRight(html);
-    
+
     // Wire up province links after rendering
     setTimeout(() => {
       const rightContent = document.getElementById('rightContent');
@@ -548,9 +591,88 @@
           }
         });
       });
+
+      // Automatically fetch images related to the selected event and render them
+      (async () => {
+        try {
+          if (!event) return;
+          // If already present, render immediately into the image block
+          if (event._auto_images && event._auto_images.length) {
+            const imgBlock = rightContent.querySelector('.event-image-block') || rightContent;
+            renderEventImages(event, imgBlock);
+            return;
+          }
+          // Insert loading placeholder
+          const loadId = 'event_img_load_' + Date.now();
+          const loadNode = document.createElement('div');
+          loadNode.id = loadId; loadNode.className = 'province-image-loading'; loadNode.textContent = 'Đang tìm hình ảnh liên quan...';
+          rightContent.appendChild(loadNode);
+
+          let found = [];
+          // Use existing helper which prefers Google when configured
+          if (typeof window.fetchImagesForEvent === 'function') {
+            try { found = await window.fetchImagesForEvent(event, 6); } catch (err) { found = []; }
+          }
+          // remove loader
+          try { const n = document.getElementById(loadId); if (n) n.remove(); } catch (e) { }
+
+          if (found && found.length) {
+            event._auto_images = event._auto_images || [];
+            const baseSet = new Set((event.image_urls || []).map(u => String(u)));
+            found.forEach(it => {
+              const u = (it && it.safe_url) ? it.safe_url : (it && it.url) ? it.url : null;
+              if (!u) return;
+              if (!baseSet.has(u) && event._auto_images.indexOf(u) === -1) event._auto_images.push(u);
+              try { if (window._imageMeta && u) window._imageMeta[u] = Object.assign({}, it, { safe_url: u }); } catch (e) { }
+            });
+            try { if (typeof _setCacheForEvent === 'function') _setCacheForEvent(event, event._auto_images); } catch (e) { }
+            // render into the dedicated image block above provinces
+            const imgBlock = rightContent.querySelector('.event-image-block') || rightContent;
+            renderEventImages(event, imgBlock);
+          } else {
+            const note = document.createElement('div'); note.className = 'no-prov-images'; note.textContent = 'Không tìm thấy hình ảnh liên quan.'; const imgBlock = rightContent.querySelector('.event-image-block') || rightContent; imgBlock.appendChild(note);
+          }
+        } catch (err) { console.warn('Auto fetch event images failed', err); }
+      })();
     }, 10);
   };
-  
+
+  // Render images for a selected event into the right panel
+  function renderEventImages(event, rightContent) {
+    try {
+      if (!event || !rightContent) return;
+      // If rightContent is the whole panel, try to find the block
+      const block = (rightContent.classList && rightContent.classList.contains('event-image-block')) ? rightContent : (rightContent.querySelector ? rightContent.querySelector('.event-image-block') : null) || rightContent;
+      // clear previous contents
+      try { block.innerHTML = ''; } catch (e) { }
+
+      // header (style similar to 'Các tỉnh liên quan')
+      const header = document.createElement('div'); header.className = 'info-title'; header.textContent = `Ảnh liên quan (${(event._auto_images || []).length})`;
+      block.appendChild(header);
+
+      const imgs = (event._auto_images || []).slice(0, 6);
+      const container = document.createElement('div'); container.className = 'event-image-row province-image-row';
+      block.appendChild(container);
+      imgs.slice(0, 3).forEach((u, i) => {
+        const wrap = document.createElement('div'); wrap.className = 'event-image-wrap';
+        const img = document.createElement('img'); img.className = 'event-thumb'; img.src = u;
+        img.onerror = () => { try { img.classList.add('thumb-broken'); img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120"><rect width="100%" height="100%" fill="%23eee"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="12">Không tải được</text></svg>'; } catch (e) { } };
+        wrap.appendChild(img);
+        const extra = (i === 2 && (event._auto_images || []).length > 3) ? (event._auto_images.length - 3) : 0;
+        if (extra) { const ov = document.createElement('div'); ov.className = 'image-overlay'; ov.textContent = `+${extra}`; wrap.appendChild(ov); }
+        container.appendChild(wrap);
+        img.addEventListener('click', (ev) => { ev.stopPropagation(); const imgsList = (event.image_urls || []).concat(event._auto_images || []); const idx = imgsList.indexOf(u); if (typeof showImageGallery === 'function') showImageGallery(imgsList, idx >= 0 ? idx : 0); });
+      });
+
+      // warning note goes below the images
+      const warn = document.createElement('div'); warn.className = 'auto-image-warning'; warn.style.marginTop = '8px'; warn.textContent = 'Lưu ý: ảnh tìm tự động, có thể không chính xác.';
+      block.appendChild(warn);
+
+      // Auto-open right panel so user sees the images
+      try { const rp = document.getElementById('rightPanel'); if (rp && !rp.classList.contains('open')) { rp.classList.add('open'); hideRightBubble(); } } catch (e) { }
+    } catch (err) { /* ignore */ }
+  }
+
   // Image gallery modal
   function createGalleryModal() {
     if (document.getElementById('imageGalleryModal')) return;
@@ -583,7 +705,7 @@
   function showImageGallery(images, startIndex) {
     createGalleryModal();
     galleryImages = images || [];
-    galleryIndex = Math.max(0, Math.min((startIndex||0), galleryImages.length-1));
+    galleryIndex = Math.max(0, Math.min((startIndex || 0), galleryImages.length - 1));
     const m = document.getElementById('imageGalleryModal');
     const frame = document.getElementById('imgFrame');
     const meta = document.getElementById('imgMeta');
@@ -594,7 +716,7 @@
       frame.innerHTML = `<div class="pdf-preview"><object data="${url}" type="application/pdf" width="100%" height="480">Không thể hiển thị PDF. <a href="${url}" target="_blank" rel="noopener">Mở tệp</a></object></div>`;
     } else {
       const img = document.createElement('img'); img.className = 'gallery-img'; img.src = url;
-      img.onerror = function() {
+      img.onerror = function () {
         // show fallback link if image fails to load
         frame.innerHTML = `<div class="img-error">Không thể tải ảnh. <a href="${url}" target="_blank" rel="noopener">Mở liên kết</a></div>`;
       };
@@ -641,7 +763,7 @@
         frame.innerHTML = `<div class="pdf-preview"><object data="${url}" type="application/pdf" width="100%" height="480">Không thể hiển thị PDF. <a href="${url}" target="_blank" rel="noopener">Mở tệp</a></object></div>`;
       } else {
         const img = document.createElement('img'); img.className = 'gallery-img'; img.src = url;
-        img.onerror = function() { frame.innerHTML = `<div class="img-error">Không thể tải ảnh. <a href="${url}" target="_blank" rel="noopener">Mở liên kết</a></div>`; };
+        img.onerror = function () { frame.innerHTML = `<div class="img-error">Không thể tải ảnh. <a href="${url}" target="_blank" rel="noopener">Mở liên kết</a></div>`; };
         frame.innerHTML = ''; frame.appendChild(img);
       }
       if (meta) {
