@@ -13,6 +13,22 @@
   const CACHE_KEY = 'vnr_auto_images_v1';
   window._autoImageCache = window._autoImageCache || {};
 
+  // Persisted image metadata cache (so gallery metadata survives reloads)
+  const IMAGE_META_KEY = 'vnr_image_meta_v1';
+  window._imageMeta = window._imageMeta || {};
+
+  function _loadImageMeta() {
+    try {
+      const raw = localStorage.getItem(IMAGE_META_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') window._imageMeta = parsed;
+    } catch (err) { console.warn('Failed to load image meta cache', err); }
+  }
+  function _saveImageMeta() {
+    try { localStorage.setItem(IMAGE_META_KEY, JSON.stringify(window._imageMeta || {})); } catch (err) { console.warn('Failed to save image meta cache', err); }
+  }
+
   function _loadAutoImageCache() {
     try {
       const raw = localStorage.getItem(CACHE_KEY);
@@ -43,6 +59,7 @@
 
   // Load cache on startup
   try { _loadAutoImageCache(); } catch (e) { /* ignore */ }
+  try { _loadImageMeta(); } catch (e) { /* ignore */ }
 
   // Bubble management functions
   function showLeftBubble() {
@@ -168,7 +185,8 @@
       panels.openLeft('<div class="empty">Không có sự kiện trong giai đoạn này.</div>');
       return;
     }
-    let html = `<div class="timeline-title">Sự kiện tại <strong>${provinceDisplayName}</strong> (${eventsArray.length})</div>`;
+    let html = '';
+    html += `<div class="timeline-title">Sự kiện tại <strong>${provinceDisplayName}</strong> (${eventsArray.length})</div>`;
     html += '<ol class="timeline-list">';
     const sorted = eventsArray.slice().sort((a, b) => a.year - b.year);
     sorted.forEach((ev, idx) => {
@@ -184,7 +202,7 @@
       // Add timeline-clickable class for hover + selection
       html += `<li class="timeline-item timeline-clickable" data-evt-idx="${idx}">`;
       html += `<div class="timeline-main"><span class="t-year">${ev.year}</span> <strong>${ev.name}</strong></div>`;
-      html += `<div class="t-desc">${ev.description}</div>`;
+      // html += `<div class="t-desc">${ev.description}</div>`;
       // scope / phạm vi: prefer support_label if present, otherwise fall back to province
       let scopeLabel = '';
       if (ev.support_label) {
@@ -196,7 +214,7 @@
         if (raw.toLowerCase().includes('cả nước') || raw.toLowerCase().includes('ca nuoc')) scopeLabel = 'Cả nước';
         else scopeLabel = raw;
       }
-      if (scopeLabel) html += `<div class="t-scope"><strong>Phạm vi:</strong> ${scopeLabel}</div>`;
+      if (scopeLabel) html += `<div class="t-scope"> ${scopeLabel}</div>`;
       // images row (original images from JSON) placed below description, show up to 3
       if (imgs && imgs.length) {
         html += `<div class="event-image-row">`;
@@ -229,12 +247,31 @@
       html += `</li>`;
     });
     html += '</ol>';
+    // Add a small control to switch back to the current-period timeline
+    html += `<div class="timeline-controls"><button id="backToPeriodBtn" class="small-link">← Sự kiện giai đoạn hiện tại</button></div>`;
+
     panels.openLeft(html);
 
     // wire thumbnail clicks to open gallery and event item selection
     setTimeout(() => {
       const container = document.getElementById('leftContent');
       if (!container) return;
+      // wire the back-to-period control
+      const backBtn = document.getElementById('backToPeriodBtn');
+      if (backBtn) {
+        backBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          try {
+            // determine selected period from #periodSelect if present, fallback to 'p1'
+            const sel = document.getElementById('periodSelect');
+            const period = (sel && sel.value) ? sel.value : 'p1';
+            const arr = (typeof window.getEventsForPeriod === 'function') ? window.getEventsForPeriod(period) : (window._histMap && typeof window._histMap.eventsArray === 'function' ? window._histMap.eventsArray() : []);
+            if (typeof window.renderAllEventsTimeline === 'function') {
+              window.renderAllEventsTimeline(arr, period);
+            }
+          } catch (err) { console.warn('backToPeriodBtn click failed', err); }
+        });
+      }
       container.querySelectorAll('.event-thumb').forEach(img => {
         // thumbnail error handling: replace broken thumb with placeholder and mark as broken
         img.addEventListener('error', () => {
@@ -309,7 +346,16 @@
       panels.openLeft('<div class="empty">Không có sự kiện trong giai đoạn này.</div>');
       return;
     }
-    let html = `<div class="timeline-title">Tất cả sự kiện giai đoạn hiện tại (${eventsArray.length})</div>`;
+    // Derive a human-friendly period name from the select (if present)
+    let periodName = periodKey || '';
+    try {
+      const sel = document.getElementById('periodSelect');
+      if (sel) {
+        const opt = sel.querySelector(`option[value="${periodKey}"]`);
+        if (opt && opt.textContent) periodName = opt.textContent.trim();
+      }
+    } catch (err) { /* ignore */ }
+    let html = `<div class="timeline-title">Sự kiện giai đoạn <strong>${periodName}</strong> (${eventsArray.length})</div>`;
     html += '<ol class="timeline-list timeline-all">';
     const sorted = eventsArray.slice().sort((a, b) => a.year - b.year);
     sorted.forEach((ev, idx) => {
@@ -323,7 +369,7 @@
       const imgs = ev.image_urls || [];
       html += `<li class="timeline-item timeline-clickable" data-evt-idx="${idx}">`;
       html += `<div class="timeline-main"><span class="t-year">${ev.year}</span> <strong>${ev.name}</strong></div>`;
-      html += `<div class="t-desc">${ev.description}</div>`;
+      // html += `<div class="t-desc">${ev.description}</div>`;
       // scope: prefer support_label if present, otherwise fall back to province
       let scopeLabel = '';
       if (ev.support_label) {
@@ -335,7 +381,7 @@
         if (raw.toLowerCase().includes('cả nước') || raw.toLowerCase().includes('ca nuoc')) scopeLabel = 'Cả nước';
         else scopeLabel = raw;
       }
-      if (scopeLabel) html += `<div class="t-scope"><strong>Phạm vi:</strong> ${scopeLabel}</div>`;
+      if (scopeLabel) html += `<div class="t-scope">${scopeLabel}</div>`;
       // images
       if (imgs && imgs.length) {
         html += `<div class="event-image-row">`;
@@ -353,12 +399,80 @@
       html += `</li>`;
     });
     html += '</ol>';
-    panels.openLeft(html);
+  // period navigation (prev/next) placed at the bottom for quick switching
+  html += `<div class="period-nav" style="margin-top:12px; padding:8px 12px; display:flex; gap:10px; justify-content:center;"><button id="periodPrevBtn" class="small-link">← Giai đoạn trước</button><button id="periodNextBtn" class="small-link">Giai đoạn sau →</button></div>`;
+  panels.openLeft(html);
 
     // wire thumbnail clicks
     setTimeout(() => {
       const container = document.getElementById('leftContent');
       if (!container) return;
+      // wire period prev/next buttons (only present on the all-events timeline)
+      try {
+        const prev = document.getElementById('periodPrevBtn');
+        const next = document.getElementById('periodNextBtn');
+        const sel = document.getElementById('periodSelect');
+        const opts = sel ? Array.from(sel.options).map(o => o.value) : [];
+        // determine current index using provided periodKey or select value
+        let idx = opts.indexOf(periodKey);
+        if (idx === -1 && sel) idx = opts.indexOf(sel.value);
+        // If there's no previous/next option, hide the corresponding button(s)
+        try {
+          if (prev) {
+            if (!opts || opts.length <= 1 || idx <= 0) prev.style.display = 'none';
+            else prev.style.display = '';
+          }
+          if (next) {
+            if (!opts || opts.length <= 1 || idx === -1 || idx >= opts.length - 1) next.style.display = 'none';
+            else next.style.display = '';
+          }
+        } catch (err) { /* ignore DOM style errors */ }
+
+        const wire = (btn, dir) => {
+          if (!btn) return;
+          btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+              if (!sel) return;
+              const opts = Array.from(sel.options).map(o => o.value);
+              // determine current index using provided periodKey or select value
+              let idx = opts.indexOf(periodKey);
+              if (idx === -1) idx = opts.indexOf(sel.value);
+              if (idx === -1) return;
+              const newIdx = dir === 'prev' ? Math.max(0, idx - 1) : Math.min(opts.length - 1, idx + 1);
+              if (newIdx === idx) return; // already at edge
+              const newVal = opts[newIdx];
+
+              // Scroll the left PANEL to top FIRST, wait for it to reach top (or timeout)
+              try {
+                const lp = document.getElementById('leftPanel');
+                if (lp) {
+                  // ensure panel is open so scrolling has effect
+                  if (!lp.classList.contains('open')) lp.classList.add('open');
+                  // start smooth scroll to top on the panel element
+                  try { lp.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { lp.scrollTop = 0; }
+                  // wait until scrollTop === 0 or timeout
+                  const start = Date.now();
+                  await new Promise(resolve => {
+                    const t = setInterval(() => {
+                      try {
+                        if (!lp || lp.scrollTop === 0) { clearInterval(t); resolve(); return; }
+                        if (Date.now() - start > 800) { clearInterval(t); resolve(); return; }
+                      } catch (err) { clearInterval(t); resolve(); }
+                    }, 40);
+                  });
+                }
+              } catch (err) { /* ignore scroll errors */ }
+
+              // now update the period selector (dispatch change so global handlers run)
+              sel.value = newVal;
+              sel.dispatchEvent(new Event('change'));
+            } catch (err) { console.warn('period nav click failed', err); }
+          });
+        };
+        wire(prev, 'prev');
+        wire(next, 'next');
+      } catch (err) { /* ignore wiring errors */ }
       container.querySelectorAll('.event-thumb').forEach(img => {
         img.addEventListener('error', () => {
           try { img.classList.add('thumb-broken'); img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120"><rect width="100%" height="100%" fill="%23eee"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="12">Không tải được</text></svg>'; } catch (e) { }
@@ -421,11 +535,13 @@
     const p = feature && feature.properties;
     const displayName = (p && (p._displayName || p.ten_tinh || p.name)) || 'Không rõ';
     let html = `<div class="info-title">${displayName}</div>`;
+    // separate
+    html += '<br>';
     html += '<div class="info-meta">';
-    if (p && p.ma_tinh) html += `<div><strong>Mã tỉnh:</strong> ${p.ma_tinh}</div>`;
-    if (p && p.loai) html += `<div><strong>Loại:</strong> ${p.loai}</div>`;
-    html += `<div><strong>Số sự kiện (giai đoạn):</strong> ${eventsCount}</div>`;
+    if (p && p.ma_tinh) html += `<div><strong>Mã:</strong> ${p.ma_tinh}</div>`;
+    if (p && p.loai) html += `<div><strong>Cấp:</strong> ${p.loai}</div>`;
     html += '</div>';
+    html += '<div class="info-separator"></div>';
     html += `<div class="info-desc">${p && p.ghichu ? p.ghichu : ''}</div>`;
     panels.openRight(html);
 
@@ -496,6 +612,7 @@
             // Save metadata cache for gallery
             try { if (window._imageMeta && u) window._imageMeta[u] = Object.assign({}, it, { safe_url: u }); } catch (e) { }
           });
+          try { _saveImageMeta(); } catch (e) { /* ignore */ }
           try { if (typeof _setCacheForFeature === 'function') _setCacheForFeature(feature, feature._auto_images); } catch (e) { }
           renderProvinceImages(feature, rightContent);
         } else {
@@ -522,7 +639,7 @@
       const imgs = feature._auto_images.slice(0, 6);
       // reuse existing horizontal image row styles by including 'event-image-row'
       const container = document.createElement('div'); container.className = 'event-image-row province-image-row';
-      const header = document.createElement('div'); header.className = 'province-image-header'; header.textContent = `Ảnh liên quan (${feature._auto_images.length})`;
+      const header = document.createElement('div'); header.className = 'info-title'; header.textContent = `Ảnh liên quan (${feature._auto_images.length})`;
       rightContent.appendChild(header);
       rightContent.appendChild(container);
 
@@ -555,28 +672,39 @@
 
   // NEW: Render info for multiple provinces (when event is selected)
   window.renderMultiProvinceInfo = function (features, event) {
-    if (!features || features.length === 0) {
-      panels.openRight('<div class="empty">Không có thông tin.</div>');
-      return;
-    }
+    // If there are no matching province features (e.g. the event is outside
+    // the available map dataset), don't bail out — still render an event-focused
+    // right panel and attempt to fetch images for the event. This prevents
+    // foreign events from showing a bare "Không có thông tin." message.
+    if (!features || features.length === 0) features = features || [];
     let html = '';
-    if (event && event.name) html += `<div class="info-title"><strong>Sự kiện:</strong> ${event.name} (${event.year})</div>`;
-        html += `<div class="info-separator"></div>`;
-    html += '<div class="event-image-block"></div>';
-    html += '<ul class="province-list">';
-    // horizontal line separator
+    if (event && event.name) {
+      html += `<div class="info-title"> ${event.name} (${event.year})</div>`;
+      html += `<br><div class="info-meta">${event.description || 'Không có mô tả.'}</div>`;
+    }
     html += `<div class="info-separator"></div>`;
-    html += `<div class="info-title">Các tỉnh liên quan</div> <br>`;
-    html += `<div class="info-meta"><strong>Số tỉnh:</strong> ${features.length}</div>`;
-    // placeholder for event images (will be rendered above the province list)
-
-    features.forEach(f => {
-      const p = f.properties;
-      const dName = (p && (p._displayName || p.ten_tinh || p.name)) || 'Không rõ';
-      const code = p && p.ma_tinh ? ` (${p.ma_tinh})` : '';
-      html += `<li><a href="#" class="province-link" data-province="${dName}">${dName}${code}</a></li>`;
-    });
-    html += '</ul>';
+    html += '<div class="event-image-block"></div>';
+    if (features && features.length > 0) {
+      html += `<div class="info-separator"></div>`;
+      html += `<div class="info-title">Địa điểm liên quan</div> <br>`;
+      html += `<div class="info-meta"><strong>Số tỉnh:</strong> ${features.length}</div>`;
+      html += '<ul class="province-list">';
+      features.forEach(f => {
+        const p = f.properties;
+        const dName = (p && (p._displayName || p.ten_tinh || p.name)) || 'Không rõ';
+        const code = p && p.ma_tinh ? ` (${p.ma_tinh})` : '';
+        html += `<li><a href="#" class="province-link" data-province="${dName}">${dName}${code}</a></li>`;
+      });
+      html += '</ul>';
+    } else {
+      html += `<div class="info-separator"></div>`;
+      html += `<div class="info-title">Địa điểm</div> <br>`;
+      if (event && event.province) {
+        html += `<div class="info-meta">${event.province}</div>`;
+      } else {
+        html += `<div class="info-meta">Không xác định</div>`;
+      }
+    }
     panels.openRight(html);
 
     // Wire up province links after rendering
@@ -626,6 +754,7 @@
               if (!baseSet.has(u) && event._auto_images.indexOf(u) === -1) event._auto_images.push(u);
               try { if (window._imageMeta && u) window._imageMeta[u] = Object.assign({}, it, { safe_url: u }); } catch (e) { }
             });
+            try { _saveImageMeta(); } catch (e) { }
             try { if (typeof _setCacheForEvent === 'function') _setCacheForEvent(event, event._auto_images); } catch (e) { }
             // render into the dedicated image block above provinces
             const imgBlock = rightContent.querySelector('.event-image-block') || rightContent;

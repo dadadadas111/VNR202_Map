@@ -536,7 +536,7 @@ function onEachFeature(feature, layer) {
               return;
             }
             const extract = w.extract ? (w.extract.length > 600 ? escapeHtml(w.extract.slice(0,600)) + '...' : escapeHtml(w.extract)) : '';
-            const html = `<div class="wiki-summary"><h3>Tóm tắt Wikipedia</h3><div class="wiki-extract">${extract}</div><div class="meta-actions"><a class="visit-site" href="${w.url}" target="_blank" rel="noopener">Xem nguồn</a></div></div>`;
+            const html = `<div class="wiki-summary"><div class="info-title ">Mô tả (Wikipedia)</div><br><div class="info-meta">${extract}</div><div class="meta-actions"><a class="visit-site" href="${w.url}" target="_blank" rel="noopener">Xem nguồn</a></div></div><div class="info-separator"></div>`;
             if (node) node.outerHTML = html; else rightContent.insertAdjacentHTML('beforeend', html);
           }).catch(err => { const node = document.getElementById(loadId); if (node) node.textContent = 'Lỗi khi tải Wikipedia.'; });
         }
@@ -1298,7 +1298,23 @@ function countEventsForFeature(feature, periodKey) {
     // Period selection handling
     const periodSelect = document.getElementById('periodSelect');
     periodSelect.addEventListener('change', (e) => {
-      currentPeriod = e.target.value;
+      const newPeriod = e.target.value;
+      // Make sure the left panel is scrolled to top before swapping content so
+      // the user doesn't end up mid-list after the period changes.
+      try {
+        const leftPanel = document.getElementById('leftPanel');
+        const leftContent = document.getElementById('leftContent');
+        if (leftPanel) {
+          // ensure panel is open so scrolling is visible
+          leftPanel.classList.add('open');
+          // deterministic jump to top (no smooth animation) so it's always at top
+          leftPanel.scrollTop = 0;
+        }
+        if (leftContent) leftContent.scrollTop = 0;
+      } catch (err) { /* ignore scroll failures */ }
+
+      // Now update the period and refresh UI/state as before
+      currentPeriod = newPeriod;
       updateGeoStyle();
       // Update Ho Chi Minh marker for new period
       updateHCMMarker();

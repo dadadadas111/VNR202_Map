@@ -443,7 +443,6 @@ html, body {
   /* Stronger selected appearance: clear left accent, warmer background and lift */
   background: linear-gradient(180deg,#fff7f2, #fffaf0);
   border: 3px solid rgba(199,91,58,0.14);
-  border-radius: 10%;
 }
 .timeline-item.selected .event-card {
   border-left: 6px solid #b33a2a;
@@ -457,6 +456,38 @@ html, body {
 /* also support cases where selection class is applied to the card directly */
 .event-card.selected, .timeline-item.selected { outline: 0; }
 .timeline-item.selected { transition: transform 180ms ease, box-shadow 180ms ease; }
+
+/* Controls placed above the timeline to switch views */
+.timeline-controls { display:flex; align-items:center; justify-content:flex-start; gap:8px; margin-bottom:8px; }
+.timeline-controls .small-link {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.06);
+  color: #6b2a1f;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  transition: background 160ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+.timeline-controls .small-link:hover { background: linear-gradient(180deg,#fff6f2,#fff2ec); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+.timeline-controls .small-link:active { transform: translateY(0); }
+
+.period-nav { display:flex; align-items:center; justify-content:flex-start; gap:8px; margin-bottom:8px; }
+.period-nav .small-link {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.06);
+  color: #6b2a1f;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  transition: background 160ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+.period-nav .small-link:hover { background: linear-gradient(180deg,#fff6f2,#fff2ec); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+.period-nav .small-link:active { transform: translateY(0); }
+
 
 /* province list in right panel (multi-province display) */
 .province-list { list-style: disc inside; margin: 8px 0; padding: 0; }
@@ -684,6 +715,10 @@ html, body {
   background: rgba(0,0,0,0.04);
   margin: 16px 0;
   border-radius: 2px;
+}
+
+.info-meta {
+  font-style: italic;
 }
 
 @media (max-width: 600px) {
