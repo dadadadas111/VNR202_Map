@@ -560,12 +560,13 @@
       return;
     }
     let html = '';
+    if (event && event.name) html += `<div class="info-title"><strong>Sự kiện:</strong> ${event.name} (${event.year})</div>`;
+        html += `<div class="info-separator"></div>`;
     html += '<div class="event-image-block"></div>';
     html += '<ul class="province-list">';
     // horizontal line separator
     html += `<div class="info-separator"></div>`;
-    html += `<div class="info-title">Các tỉnh liên quan</div>`;
-    if (event && event.name) html += `<div class="info-event-ref"><strong>Sự kiện:</strong> ${event.name} (${event.year})</div>`;
+    html += `<div class="info-title">Các tỉnh liên quan</div> <br>`;
     html += `<div class="info-meta"><strong>Số tỉnh:</strong> ${features.length}</div>`;
     // placeholder for event images (will be rendered above the province list)
 
