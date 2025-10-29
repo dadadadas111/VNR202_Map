@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (feedbackBtn) {
       feedbackBtn.addEventListener('click', () => {
         // placeholder: open feedback form in new tab (user will update link later)
-        window.open('https://forms.gle/your-feedback-form', '_blank');
+        window.open('https://forms.gle/Wsn5noKfLkyFtQMXA', '_blank');
       });
     }
       // startTourAction encapsulates the full logic to start the Shepherd tour (loads libs if needed)
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   text: 'Cảm ơn bạn đã dùng bản đồ — chúc bạn có trải nghiệm tốt! Nếu muốn góp ý hoặc xem mã nguồn, dùng các nút bên dưới.',
                   attachTo: undefined,
                   buttons: [
-                    { text: 'Góp ý', action: () => { window.open('https://forms.gle/your-feedback-form', '_blank'); } },
+                    { text: 'Góp ý', action: () => { window.open('https://forms.gle/Wsn5noKfLkyFtQMXA', '_blank'); } },
                     { text: 'Xem GitHub', action: () => { window.open('https://github.com/dadadadas111/VNR202_Map', '_blank'); } },
                     { text: 'Kết thúc', action: () => tour.complete(), classes: 'shepherd-button' }
                   ]
