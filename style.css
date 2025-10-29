@@ -221,10 +221,6 @@ body {
   box-shadow: 0 8px 26px rgba(255, 111, 0, 0.16);
 }
 
-.shepherd-button:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
 .shepherd-cancel-icon {
   color: rgba(255, 255, 255, 0.8) !important;
 }
@@ -315,7 +311,7 @@ body {
 }
 
 .shepherd-button:hover {
-  background: #b8b7b7 !important;
+  background: white !important;
   color: #90452a !important;
 }
 
