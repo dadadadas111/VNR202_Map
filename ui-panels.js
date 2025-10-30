@@ -536,11 +536,6 @@
     const displayName = (p && (p._displayName || p.ten_tinh || p.name)) || 'Không rõ';
     let html = `<div class="info-title">${displayName}</div>`;
     // separate
-    html += '<br>';
-    html += '<div class="info-meta">';
-    if (p && p.ma_tinh) html += `<div><strong>Mã:</strong> ${p.ma_tinh}</div>`;
-    if (p && p.loai) html += `<div><strong>Cấp:</strong> ${p.loai}</div>`;
-    html += '</div>';
     html += '<div class="info-separator"></div>';
     html += `<div class="info-desc">${p && p.ghichu ? p.ghichu : ''}</div>`;
     panels.openRight(html);
