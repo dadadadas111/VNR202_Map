@@ -300,8 +300,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let hcmCurrentIndex = -1; // index into hcmTimeline for current popup
   const layerIndex = new Map(); // cache normalized province name -> Leaflet layer
   const featurePeriodCache = new Map(); // cache per-feature event counts/arrays by period
-  const PERIOD_KEYS = ['p1', 'p2', 'p3'];
-  const eventsByPeriod = { p1: [], p2: [], p3: [] };
+  // Expand to five periods per user's request.
+  // Note: to avoid double-counting boundary years we include the boundary
+  // year in the *later* period. For example, 1945 belongs to period 2.
+  const PERIOD_KEYS = ['p1', 'p2', 'p3', 'p4', 'p5'];
+  const eventsByPeriod = { p1: [], p2: [], p3: [], p4: [], p5: [] };
   const NATIONAL_KEYWORDS = new Set([normalizeString('cả nước'), 'ca nuoc']);
   // Performance/config
   const MAP_ANIMATION_DURATION = 0.6; // seconds (used for flyTo/flyToBounds)
@@ -309,13 +312,20 @@ document.addEventListener('DOMContentLoaded', () => {
   window._pendingEventSelection = null; // store last clicked event while flying
 
 // Period definitions (ASSUMPTION: to avoid double-counting boundary years we use these ranges)
-// p1: 1930-1944, p2: 1945-1974, p3: 1975-present
-// Note: Original prompt lists overlapping boundaries (e.g., 1945 appears in two ranges).
-// I choose the convention above and include 1945 in period 2 and 1975 in period 3.
+// p1: 1930-1944
+// p2: 1945-1953
+// p3: 1954-1974
+// p4: 1975-1985
+// p5: 1986-present
+// Note: boundary years are assigned to the later period (e.g., 1945 -> p2).
 function getPeriodRange(key) {
-  if (key === 'p1') return [1930, 1944];
-  if (key === 'p2') return [1945, 1974];
-  return [1975, 9999];
+  // Map keys to ranges. Using the convention that boundary years belong to
+  // the later period to avoid double-counting. Result ranges are [start, end].
+  if (key === 'p1') return [1930, 1944]; // 1930-1944 (1945 -> p2)
+  if (key === 'p2') return [1945, 1953]; // 1945-1953 (1954 -> p3)
+  if (key === 'p3') return [1954, 1974]; // 1954-1974 (1975 -> p4)
+  if (key === 'p4') return [1975, 1985]; // 1975-1985 (1986 -> p5)
+  return [1986, 9999]; // p5: 1986 - present
 }
 
 // Get Ho Chi Minh info for a specific year
@@ -444,15 +454,17 @@ function getPeriodKeyForYear(year) {
   const y = Number(year);
   if (!Number.isFinite(y)) return null;
   if (y >= 1930 && y <= 1944) return 'p1';
-  if (y >= 1945 && y <= 1974) return 'p2';
-  if (y >= 1975) return 'p3';
+  if (y >= 1945 && y <= 1953) return 'p2';
+  if (y >= 1954 && y <= 1974) return 'p3';
+  if (y >= 1975 && y <= 1985) return 'p4';
+  if (y >= 1986) return 'p5';
   return null;
 }
 
 function createEmptyPeriodBuckets() {
   return {
-    counts: { p1: 0, p2: 0, p3: 0 },
-    events: { p1: [], p2: [], p3: [] }
+    counts: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0 },
+    events: { p1: [], p2: [], p3: [], p4: [], p5: [] }
   };
 }
 
@@ -1146,7 +1158,7 @@ function countEventsForFeature(feature, periodKey) {
 
     // Load data and initialize
     Promise.all([
-      fetch('events.json').then(r => r.json()),
+      fetch('vietnam_communist_party_history_2025-10-30.json').then(r => r.json()),
       fetch('vietnam.geojson').then(r => r.json()),
       fetch('ho-chi-minh-timeline.json').then(r => r.json())
     ]).then(([ev, vg, hcm]) => {

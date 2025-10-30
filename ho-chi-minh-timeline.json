@@ -160,14 +160,34 @@
     "description": "Xây dựng nền móng nước Việt Nam Dân chủ Cộng hòa, giữ vững chính quyền trước thù trong giặc ngoài."
   },
   {
-    "start_year": 1946,
+    "start_year": 1945,
+    "end_year": 1946,
+    "name": "Hồ Chí Minh lãnh đạo chính phủ cách mạng đầu tiên",
+    "activity": "Tuyên ngôn Độc lập ngày 2/9/1945, làm Chủ tịch nước, đàm phán với Pháp, ra Lời kêu gọi Toàn quốc kháng chiến.",
+    "location": "Hà Nội",
+    "lat": 21.0285,
+    "lon": 105.8542,
+    "description": "Thời kỳ Bác ở Hà Nội, xây dựng chính quyền cách mạng và lãnh đạo toàn quốc bước vào kháng chiến chống Pháp."
+  },
+  {
+    "start_year": 1947,
+    "end_year": 1950,
+    "name": "Hồ Chí Minh trong giai đoạn đầu kháng chiến chống Pháp",
+    "activity": "Chỉ đạo kháng chiến tại chiến khu Việt Bắc, củng cố lực lượng, tổ chức chính quyền kháng chiến.",
+    "location": "Tuyên Quang, Thái Nguyên, Cao Bằng",
+    "lat": 21.8,
+    "lon": 105.2,
+    "description": "Bác sống và làm việc tại chiến khu Việt Bắc, lãnh đạo kháng chiến toàn quốc sau khi rút khỏi Thủ đô."
+  },
+  {
+    "start_year": 1950,
     "end_year": 1954,
-    "name": "Hồ Chí Minh trong kháng chiến chống Pháp",
-    "activity": "Lãnh đạo kháng chiến 9 năm, xây dựng căn cứ địa Việt Bắc, chỉ đạo chiến dịch Điện Biên Phủ.",
-    "location": "Việt Bắc, Hà Nội, Điện Biên",
+    "name": "Hồ Chí Minh lãnh đạo kháng chiến toàn thắng",
+    "activity": "Chỉ đạo Chiến dịch Biên giới, Đại hội II của Đảng, chiến thắng Điện Biên Phủ và Hiệp định Genève.",
+    "location": "Việt Bắc, Điện Biên",
     "lat": 21.75,
     "lon": 104.9,
-    "description": "Lãnh đạo kháng chiến chống thực dân Pháp thắng lợi, kết thúc bằng chiến thắng Điện Biên Phủ."
+    "description": "Thời kỳ cao trào kháng chiến chống Pháp, kết thúc bằng thắng lợi lịch sử Điện Biên Phủ."
   },
   {
     "start_year": 1954,

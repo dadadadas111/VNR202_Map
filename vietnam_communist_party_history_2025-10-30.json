@@ -1,0 +1,493 @@
+[
+  {
+    "name": "Hội nghị thành lập Đảng Cộng sản Việt Nam",
+    "year": 1930,
+    "province": "Hồng Kông (Trung Quốc)",
+    "description": "Hội nghị hợp nhất các tổ chức cộng sản do Nguyễn Ái Quốc chủ trì tại Hồng Kông tháng 1-2/1930, lập ra Đảng Cộng sản Việt Nam và thông qua Cương lĩnh đầu tiên.",
+    "image_urls": []
+  },
+  {
+    "name": "Thông qua Điều lệ và tên Đảng Cộng sản Việt Nam",
+    "year": 1930,
+    "province": "Hồng Kông (Trung Quốc)",
+    "description": "Ngày 3/2/1930, hội nghị hợp nhất thông qua Điều lệ lâm thời và quyết định lấy tên Đảng Cộng sản Việt Nam cho tổ chức mới.",
+    "image_urls": []
+  },
+  {
+    "name": "Phong trào Xô Viết Nghệ Tĩnh",
+    "year": 1931,
+    "province": "Nghệ An, Hà Tĩnh",
+    "support_label": "Nghệ An, Hà Tĩnh",
+    "description": "Phong trào đấu tranh cách mạng của nông dân và công nhân Nghệ An, Hà Tĩnh năm 1930–1931, lập các chính quyền Xô viết ở nông thôn bị thực dân đàn áp dữ dội.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ I",
+    "year": 1935,
+    "province": "Ma Cao (Trung Quốc)",
+    "description": "Đại hội Đảng đầu tiên tổ chức tại Ma Cao (27–31/3/1935) với 13 đại biểu, bầu Lê Hồng Phong làm Tổng Bí thư và củng cố tổ chức sau khủng bố trắng.",
+    "image_urls": []
+  },
+  {
+    "name": "Khởi nghĩa Bắc Sơn",
+    "year": 1940,
+    "province": "Lạng Sơn",
+    "support_label": "Lạng Sơn",
+    "description": "Ngày 27/9/1940, quân dân Bắc Sơn (Lạng Sơn) nhất tề nổi dậy cướp khí giới, thành lập chính quyền cách mạng rồi bị lực lượng Pháp – Nhật đàn áp.",
+    "image_urls": []
+  },
+  {
+    "name": "Nam Kỳ khởi nghĩa",
+    "year": 1940,
+    "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Cần Thơ, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau",
+    "support_label": "Nam Bộ",
+    "description": "Cuộc nổi dậy vũ trang của Đảng bộ Nam Kỳ (22/11–31/12/1940) chống ách thống trị Pháp – Nhật, diễn ra tại nhiều tỉnh Nam Bộ và bị đàn áp đẫm máu.",
+    "image_urls": []
+  },
+  {
+    "name": "Hội nghị Trung ương 8 tại Pác Bó",
+    "year": 1941,
+    "province": "Hà Quảng, Cao Bằng",
+    "support_label": "Hà Quảng, Cao Bằng",
+    "description": "Từ 10–19/5/1941, Hội nghị Trung ương 8 họp tại hang Pác Bó (Hà Quảng, Cao Bằng) quyết định chuyển hướng đấu tranh giành độc lập và thành lập Mặt trận Việt Minh.",
+    "image_urls": []
+  },
+  {
+    "name": "Thành lập Việt Nam Ðộc lập Đồng minh (Việt Minh)",
+    "year": 1941,
+    "province": "Hà Quảng, Cao Bằng",
+    "description": "Ngày 19/5/1941, tại hang Pác Bó, Hội nghị Trung ương 8 công bố thành lập Việt Minh – mặt trận dân tộc thống nhất nhằm tập hợp lực lượng đánh đuổi phát xít và giành độc lập.",
+    "image_urls": []
+  },
+  {
+    "name": "Nhật đảo chính Pháp ở Đông Dương",
+    "year": 1945,
+    "province": "Cả nước",
+    "support_label": "Cả nước",
+    "description": "Đêm 9/3/1945, phát xít Nhật đảo chính Pháp, lập chính quyền bù nhìn 'Đế quốc Việt Nam', tạo thời cơ cho Đảng chuẩn bị tổng khởi nghĩa.",
+    "image_urls": []
+  },
+  {
+    "name": "Cách mạng Tháng Tám",
+    "year": 1945,
+    "province": "Cả nước",
+    "support_label": "Cả nước",
+    "description": "Từ 13–28/8/1945, Việt Minh lãnh đạo tổng khởi nghĩa giành chính quyền trên toàn quốc, lật đổ chính quyền bù nhìn, mở đường cho nền độc lập Việt Nam.",
+    "image_urls": []
+  },
+  {
+    "name": "Đọc Tuyên ngôn Ðộc lập tại Quảng trường Ba Đình",
+    "year": 1945,
+    "province": "Hà Nội",
+    "description": "Ngày 2/9/1945 tại Quảng trường Ba Đình, Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Ðộc lập, khai sinh nước Việt Nam Dân chủ Cộng hòa trước hàng chục vạn nhân dân.",
+    "image_urls": []
+  },
+  {
+    "name": "Bùng nổ Nam Bộ kháng chiến",
+    "year": 1945,
+    "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Cần Thơ, Bà Rịa - Vũng Tàu, Đồng Nai, Bình Dương, Bình Phước, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau, Quảng Bình, Quảng Trị, Thừa Thiên Huế, Đà Nẵng, Quảng Nam, Quảng Ngãi, Bình Định, Phú Yên, Khánh Hòa, Ninh Thuận, Bình Thuận, Kon Tum, Gia Lai, Đắk Lắk, Đắk Nông, Lâm Đồng",
+    "support_label": "Nam Bộ, Nam Trung Bộ, Tây Nguyên",
+    "description": "Ngày 23/9/1945, quân Pháp tái chiếm Sài Gòn khiến Nam Bộ nổ ra kháng chiến. Lực lượng Việt Nam rút ra chiến khu, chiến đấu lan sang Nam Trung Bộ và Tây Nguyên.",
+    "image_urls": []
+  },
+  {
+    "name": "Bầu cử Quốc hội khóa I",
+    "year": 1946,
+    "province": "Cả nước",
+    "support_label": "Cả nước",
+    "description": "Ngày 6/1/1946, hơn 90% cử tri toàn quốc tham gia bầu cử Quốc hội đầu tiên, lựa chọn 333 đại biểu đại diện cho 71 tỉnh thành của nước Việt Nam Dân chủ Cộng hòa.",
+    "image_urls": []
+  },
+  {
+    "name": "Kết thúc Nam Bộ kháng chiến",
+    "year": 1946,
+    "province": "TP. Hồ Chí Minh, Tây Ninh, Long An, Cần Thơ, Bà Rịa - Vũng Tàu, Đồng Nai, Bình Dương, Bình Phước, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau, Quảng Bình, Quảng Trị, Thừa Thiên Huế, Đà Nẵng, Quảng Nam, Quảng Ngãi, Bình Định, Phú Yên, Khánh Hòa, Ninh Thuận, Bình Thuận, Kon Tum, Gia Lai, Đắk Lắk, Đắk Nông, Lâm Đồng",
+    "support_label": "Nam Bộ, Nam Trung Bộ, Tây Nguyên",
+    "description": "Cuộc kháng chiến Nam Bộ kéo dài tới 30/3/1946 khi các lực lượng chuyển sang chiến tranh lâu dài, bảo vệ thành quả cách mạng ở Nam Bộ và vùng cao.",
+    "image_urls": []
+  },
+  {
+    "name": "Chiến dịch Biên giới Thu – Đông",
+    "year": 1950,
+    "province": "Cao Bằng, Lạng Sơn",
+    "description": "Từ 16/9 đến 14/10/1950, Quân đội Nhân dân tiến công Biên giới Cao Bằng – Lạng Sơn, phá vỡ hệ thống đồn bốt, mở hành lang với Trung Quốc và củng cố lực lượng kháng chiến.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ II",
+    "year": 1951,
+    "province": "Vinh Quang, Chiêm Hóa, Tuyên Quang",
+    "description": "Đại hội II (11–19/2/1951) họp tại Chiêm Hóa (Tuyên Quang) đổi tên Đảng Lao động Việt Nam, đề ra nhiệm vụ kháng chiến kiến quốc và bầu Hồ Chí Minh làm Chủ tịch.",
+    "image_urls": []
+  },
+  {
+    "name": "Phát động cải cách ruộng đất ở miền Bắc",
+    "year": 1953,
+    "province": "Lai Châu, Lào Cai, Yên Bái, Điện Biên, Sơn La, Hòa Bình, Bắc Giang, Lạng Sơn, Quảng Ninh, Hà Nội, Hà Giang, Cao Bằng, Bắc Kạn, Tuyên Quang, Thái Nguyên, Phú Thọ, Vĩnh Phúc, Bắc Ninh, Hải Dương, Hải Phòng, Hưng Yên, Thái Bình, Hà Nam, Nam Định, Ninh Bình, Thanh Hóa, Nghệ An, Hà Tĩnh, Quảng Bình, Quảng Trị",
+    "support_label": "Miền Bắc",
+    "description": "Từ năm 1953, Đảng và Chính phủ phát động cải cách ruộng đất nhằm xóa bỏ chế độ chiếm hữu ruộng đất phong kiến, trao đất cho nông dân, thực hiện khẩu hiệu 'người cày có ruộng'.",
+    "image_urls": []
+  },
+  {
+    "name": "Kết thúc cải cách ruộng đất",
+    "year": 1956,
+    "province": "Lai Châu, Lào Cai, Yên Bái, Điện Biên, Sơn La, Hòa Bình, Bắc Giang, Lạng Sơn, Quảng Ninh, Hà Nội, Hà Giang, Cao Bằng, Bắc Kạn, Tuyên Quang, Thái Nguyên, Phú Thọ, Vĩnh Phúc, Bắc Ninh, Hải Dương, Hải Phòng, Hưng Yên, Thái Bình, Hà Nam, Nam Định, Ninh Bình, Thanh Hóa, Nghệ An, Hà Tĩnh, Quảng Bình, Quảng Trị",
+    "support_label": "Miền Bắc",
+    "description": "Chương trình cải cách ruộng đất kết thúc năm 1956 sau khi đã phân phối lại ruộng đất cho nông dân, mặc dù có sai lầm phải sửa chữa, góp phần biến đổi quan hệ sở hữu ở nông thôn.",
+    "image_urls": []
+  },
+  {
+    "name": "Chiến dịch Điện Biên Phủ",
+    "year": 1954,
+    "province": "Điện Biên",
+    "description": "Từ 13/3 đến 7/5/1954, Quân đội Nhân dân Việt Nam tiến công tập đoàn cứ điểm Điện Biên Phủ, giành chiến thắng quyết định buộc Pháp ký Hiệp định Genève chấm dứt chiến tranh Đông Dương.",
+    "image_urls": []
+  },
+  {
+    "name": "Nghị quyết 15 của Trung ương về đấu tranh vũ trang ở miền Nam",
+    "year": 1959,
+    "province": "Hà Nội",
+    "description": "Ngày 22/1/1959, Trung ương Đảng ra Nghị quyết 15 cho phép sử dụng đấu tranh vũ trang ở miền Nam để chống chế độ Mỹ – Diệm và giành độc lập dân tộc.",
+    "image_urls": []
+  },
+  {
+    "name": "Thành lập Đoàn 559 (Đường mòn Hồ Chí Minh)",
+    "year": 1959,
+    "province": "Hà Nội",
+    "description": "Ngày 19/5/1959, Bộ Chính trị quyết định thành lập Đoàn 559 để mở tuyến vận tải chiến lược Trường Sơn – Ðường mòn Hồ Chí Minh nhằm chi viện cho cách mạng miền Nam.",
+    "image_urls": []
+  },
+  {
+    "name": "Phong trào Đồng Khởi bùng nổ",
+    "year": 1959,
+    "province": "Bến Tre",
+    "description": "Cuối năm 1959, phong trào Đồng Khởi nổ ra ở Bến Tre, nhân dân nổi dậy phá ấp chiến lược, lập chính quyền cách mạng, mở đầu cao trào đấu tranh ở miền Nam.",
+    "image_urls": []
+  },
+  {
+    "name": "Phong trào Đồng Khởi lan rộng",
+    "year": 1960,
+    "province": "Bến Tre",
+    "description": "Đầu năm 1960, Đồng Khởi lan rộng khắp miền Tây Nam Bộ và Trung Nam Bộ, tạo tiền đề thành lập Mặt trận Dân tộc Giải phóng miền Nam Việt Nam.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ III",
+    "year": 1960,
+    "province": "Hà Nội",
+    "description": "Đại hội III (5–10/9/1960) họp ở Hà Nội, thông qua đường lối xây dựng CNXH ở miền Bắc, đấu tranh giải phóng miền Nam và bầu Ban Chấp hành Trung ương mới với 525 đại biểu.",
+    "image_urls": []
+  },
+  {
+    "name": "Cuộc tổng tiến công và nổi dậy Tết Mậu Thân",
+    "year": 1968,
+    "province": "TP. Hồ Chí Minh,Cần Thơ, Tây Ninh, Long An, Tiền Giang, Bến Tre, Trà Vinh, Vĩnh Long, Đồng Tháp, An Giang, Kiên Giang, Hậu Giang, Sóc Trăng, Bạc Liêu, Cà Mau, Bình Phước, Bình Dương, Đồng Nai, Bà Rịa - Vũng Tàu, Quảng Bình, Quảng Trị, Thừa Thiên Huế, Đà Nẵng, Quảng Nam, Quảng Ngãi, Bình Định, Phú Yên, Khánh Hòa, Ninh Thuận, Bình Thuận, Kon Tum, Gia Lai, Đắk Lắk, Đắk Nông, Lâm Đồng",
+    "support_label": "Miền Nam Việt Nam",
+    "description": "Nửa đêm 30/1/1968, quân và dân miền Nam đồng loạt tiến công vào hầu hết đô thị, căn cứ quân sự Mỹ – Sài Gòn, tạo bước ngoặt chiến lược trong cuộc kháng chiến.",
+    "image_urls": []
+  },
+  {
+    "name": "Chiến dịch ‘Điện Biên Phủ trên không’ (Linebacker II)",
+    "year": 1972,
+    "province": "Hà Nội, Hải Phòng, Bắc Ninh, Quảng Ninh, Thái Nguyên, Lạng Sơn, Bắc Giang",
+    "description": "Từ 18–30/12/1972, Không quân Mỹ ném bom rải thảm Hà Nội, Hải Phòng và miền Bắc song thất bại; Việt Nam bắn rơi nhiều B‑52, buộc Mỹ phải ký Hiệp định Paris.",
+    "image_urls": []
+  },
+  {
+    "name": "Ký kết Hiệp định Paris về Việt Nam",
+    "year": 1973,
+    "province": "Paris (Pháp)",
+    "description": "Ngày 27/1/1973 tại Paris, Chính phủ Cách mạng lâm thời và Mỹ ký Hiệp định chấm dứt chiến tranh, cam kết tôn trọng độc lập và thống nhất của Việt Nam.",
+    "image_urls": []
+  },
+  {
+    "name": "Hiệp định Paris có hiệu lực, quân Mỹ rút",
+    "year": 1973,
+    "province": "Cả nước",
+    "description": "Hiệp định Paris bắt đầu có hiệu lực ngày 28/1/1973; quân đội Mỹ và đồng minh phải rút khỏi Việt Nam, tạo điều kiện để cuộc đấu tranh thống nhất đất nước tiến lên.",
+    "image_urls": []
+  },
+  {
+    "name": "Chiến dịch Tây Nguyên",
+    "year": 1975,
+    "province": "Đắk Lắk, Gia Lai, Kon Tum",
+    "description": "Từ 4/3 đến 3/4/1975, quân Giải phóng mở Chiến dịch Tây Nguyên giải phóng Buôn Ma Thuột, Pleiku, Kon Tum, phá thế phòng thủ của chính quyền Sài Gòn tại cao nguyên.",
+    "image_urls": []
+  },
+  {
+    "name": "Chiến dịch Huế – Đà Nẵng",
+    "year": 1975,
+    "province": "Thừa Thiên Huế, Đà Nẵng",
+    "description": "Từ 5/3 đến 2/4/1975, quân giải phóng tiến công Huế, Đà Nẵng và các tỉnh ven biển miền Trung, tiêu diệt lực lượng chính quyền Sài Gòn, giải phóng khu vực trọng yếu.",
+    "image_urls": []
+  },
+  {
+    "name": "Chiến dịch Hồ Chí Minh",
+    "year": 1975,
+    "province": "TP. Hồ Chí Minh, Bình Dương, Đồng Nai, Tây Ninh, Long An, Tiền Giang, Bà Rịa – Vũng Tàu, Bình Phước",
+    "support_label": "Khu vực Đông Nam Bộ và vùng phụ cận Nam Bộ, lấy Sài Gòn – Gia Định làm trung tâm",
+    "description": "Từ 26–30/4/1975, quân giải phóng mở Chiến dịch Hồ Chí Minh giải phóng Sài Gòn – Gia Định và đồng bằng Nam Bộ, buộc chính quyền Sài Gòn phải đầu hàng vô điều kiện.",
+    "image_urls": []
+  },
+  {
+    "name": "Thống nhất đất nước, thành lập nước Cộng hòa xã hội chủ nghĩa Việt Nam",
+    "year": 1976,
+    "province": "Cả nước",
+    "description": "Ngày 2/7/1976, nước Việt Nam Dân chủ Cộng hòa và Chính phủ Cách mạng lâm thời miền Nam hợp nhất thành nước Cộng hòa xã hội chủ nghĩa Việt Nam.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ IV",
+    "year": 1976,
+    "province": "Hà Nội",
+    "description": "Đại hội IV (14–20/12/1976) được gọi là Đại hội thống nhất đất nước, xác định nhiệm vụ xây dựng CNXH trên cả nước và bầu Lê Duẩn làm Tổng Bí thư.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ V",
+    "year": 1982,
+    "province": "Hà Nội",
+    "description": "Đại hội V (27–31/3/1982) đánh giá 5 năm sau thống nhất, đề ra mục tiêu kinh tế – xã hội 1981–1985, bầu Trường Chinh làm Chủ tịch Đoàn Chủ tịch.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ VI",
+    "year": 1986,
+    "province": "Hà Nội",
+    "description": "Đại hội VI (15–18/12/1986) công bố đường lối đổi mới toàn diện, chuyển sang nền kinh tế thị trường định hướng XHCN và bầu Nguyễn Văn Linh làm Tổng Bí thư.",
+    "image_urls": []
+  },
+  {
+    "name": "Khởi xướng công cuộc Ðổi mới",
+    "year": 1986,
+    "province": "Cả nước",
+    "description": "Sau Đại hội VI, Đảng khởi xướng công cuộc Đổi mới, chuyển đổi mô hình quản lý kinh tế, mở cửa với thế giới và thúc đẩy kinh tế nhiều thành phần.",
+    "image_urls": []
+  },
+  {
+    "name": "Nguyễn Văn Linh được bầu Tổng Bí thư",
+    "year": 1986,
+    "province": "Hà Nội",
+    "description": "Tại Đại hội VI (12/1986), Nguyễn Văn Linh được bầu làm Tổng Bí thư, lãnh đạo phong trào Đổi mới và cải cách kinh tế ở Việt Nam.",
+    "image_urls": []
+  },
+  {
+    "name": "Ban hành Nghị quyết 10 về Khoán 10 trong nông nghiệp",
+    "year": 1988,
+    "province": "Cả nước",
+    "description": "Ngày 5/4/1988, Bộ Chính trị ban hành Nghị quyết 10-NQ/TW (Khoán 10) đổi mới quản lý kinh tế nông nghiệp, giao ruộng đất cho hộ gia đình sản xuất lâu dài, xóa tình trạng thiếu đói.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ VII",
+    "year": 1991,
+    "province": "Hà Nội",
+    "description": "Đại hội VII (24–27/6/1991) tổng kết 5 năm Đổi mới, khẳng định con đường đi lên CNXH và bầu Đỗ Mười làm Tổng Bí thư.",
+    "image_urls": []
+  },
+  {
+    "name": "Thông qua Hiến pháp năm 1992",
+    "year": 1992,
+    "province": "Hà Nội",
+    "description": "Tháng 4/1992, Quốc hội thông qua Hiến pháp mới phù hợp với công cuộc Đổi Mới, khẳng định nền kinh tế nhiều thành phần và tăng cường quyền tự do dân chủ.",
+    "image_urls": []
+  },
+  {
+    "name": "Bình thường hóa quan hệ Việt Nam – Hoa Kỳ",
+    "year": 1995,
+    "province": "Washington D.C. (Hoa Kỳ)",
+    "support_label": "Quốc tế",
+    "description": "Ngày 11/7/1995, Việt Nam và Hoa Kỳ chính thức tuyên bố bình thường hóa quan hệ ngoại giao, mở ra thời kỳ hợp tác mới giữa hai nước.",
+    "image_urls": []
+  },
+  {
+    "name": "Việt Nam gia nhập ASEAN",
+    "year": 1995,
+    "province": "Bandar Seri Begawan (Brunei)",
+    "description": "Ngày 28/7/1995, tại Hội nghị Ngoại trưởng ASEAN ở Bandar Seri Begawan, Việt Nam chính thức trở thành thành viên thứ bảy của Hiệp hội các quốc gia Đông Nam Á.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ VIII",
+    "year": 1996,
+    "province": "Hà Nội",
+    "description": "Đại hội VIII (28/6–1/7/1996) thông qua Chiến lược ổn định và phát triển kinh tế xã hội đến năm 2000, tiếp tục đường lối Đổi Mới và bầu lại Tổng Bí thư Đỗ Mười.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ IX",
+    "year": 2001,
+    "province": "Hà Nội",
+    "description": "Đại hội IX (19–22/4/2001) với 1.168 đại biểu đề ra mục tiêu công nghiệp hóa hiện đại hóa đến 2010 và bầu Nông Đức Mạnh làm Tổng Bí thư.",
+    "image_urls": []
+  },
+  {
+    "name": "Nông Đức Mạnh được bầu Tổng Bí thư",
+    "year": 2001,
+    "province": "Hà Nội",
+    "description": "Tại Đại hội IX (4/2001), Nông Đức Mạnh – người dân tộc Tày – được bầu làm Tổng Bí thư, dẫn dắt Đảng thực hiện các mục tiêu công nghiệp hóa, hiện đại hóa.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ X",
+    "year": 2006,
+    "province": "Hà Nội",
+    "description": "Đại hội X (18–25/4/2006) thông qua đường lối đưa Việt Nam ra khỏi tình trạng kém phát triển, bầu Nguyễn Minh Triết làm Chủ tịch nước và Nông Đức Mạnh tái cử Tổng Bí thư.",
+    "image_urls": []
+  },
+  {
+    "name": "Việt Nam trở thành thành viên WTO",
+    "year": 2007,
+    "province": "Geneva (Thụy Sĩ)",
+    "description": "Ngày 11/1/2007, Việt Nam chính thức gia nhập Tổ chức Thương mại thế giới (WTO) với tư cách thành viên thứ 150, mở ra cơ hội hội nhập kinh tế sâu rộng.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ XI",
+    "year": 2011,
+    "province": "Hà Nội",
+    "description": "Đại hội XI (12–19/1/2011) tại Trung tâm Hội nghị Quốc gia, có 1.377 đại biểu, đề ra Chiến lược phát triển 2011–2020 và bầu Nguyễn Phú Trọng làm Tổng Bí thư.",
+    "image_urls": []
+  },
+  {
+    "name": "Quốc hội thông qua Hiến pháp 2013",
+    "year": 2013,
+    "province": "Hà Nội",
+    "description": "Ngày 28/11/2013, Quốc hội khóa XIII thông qua Hiến pháp sửa đổi, khẳng định quyền con người, quyền công dân và tiếp tục hoàn thiện Nhà nước pháp quyền XHCN.",
+    "image_urls": []
+  },
+  {
+    "name": "Hiến pháp 2013 có hiệu lực",
+    "year": 2014,
+    "province": "Cả nước",
+    "description": "Hiến pháp năm 2013 bắt đầu có hiệu lực ngày 1/1/2014, tạo cơ sở pháp lý quan trọng cho công cuộc đổi mới và hội nhập quốc tế của Việt Nam.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ XII",
+    "year": 2016,
+    "province": "Hà Nội",
+    "description": "Đại hội XII (20–28/1/2016) tại Trung tâm Hội nghị Quốc gia, với 1.510 đại biểu, tổng kết 30 năm Đổi Mới và đề ra mục tiêu phát triển đến năm 2020.",
+    "image_urls": []
+  },
+  {
+    "name": "Nguyễn Phú Trọng tái đắc cử Tổng Bí thư khóa XII",
+    "year": 2016,
+    "province": "Hà Nội",
+    "description": "Tại Đại hội XII (1/2016), Nguyễn Phú Trọng được bầu lại làm Tổng Bí thư, tiếp tục lãnh đạo Đảng kiên định Đổi Mới và phòng chống tham nhũng.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội XII xác định nhiệm vụ phát triển giai đoạn 2016–2020",
+    "year": 2016,
+    "province": "Hà Nội",
+    "description": "Đại hội XII đề ra nhiệm vụ xây dựng Đảng trong sạch vững mạnh, đẩy mạnh công nghiệp hóa – hiện đại hóa, bảo vệ độc lập chủ quyền và hội nhập quốc tế toàn diện.",
+    "image_urls": []
+  },
+  {
+    "name": "Nghị quyết Trung ương 4 khóa XII về xây dựng Đảng",
+    "year": 2016,
+    "province": "Hà Nội",
+    "description": "Ngày 30/10/2016, Hội nghị Trung ương 4 ban hành Nghị quyết 04-NQ/TW về tăng cường xây dựng, chỉnh đốn Đảng, ngăn chặn suy thoái về tư tưởng, đạo đức và tự diễn biến.",
+    "image_urls": []
+  },
+  {
+    "name": "Nghị quyết Trung ương 5 khóa XII về kinh tế tư nhân",
+    "year": 2017,
+    "province": "Hà Nội",
+    "description": "Ngày 3/6/2017, Trung ương ban hành Nghị quyết 10-NQ/TW (hội nghị Trung ương 5) xác định phát triển kinh tế tư nhân là động lực quan trọng của nền kinh tế thị trường định hướng XHCN.",
+    "image_urls": []
+  },
+  {
+    "name": "Đại hội Đảng lần thứ XIII",
+    "year": 2021,
+    "province": "Hà Nội",
+    "description": "Đại hội XIII (25/1–1/2/2021) với 1.587 đại biểu tổng kết nhiệm kỳ và đề ra chiến lược phát triển đến 2025, tầm nhìn 2045; Nguyễn Phú Trọng tái cử Tổng Bí thư.",
+    "image_urls": []
+  },
+  {
+    "name": "Hội nghị Trung ương 6 của Đảng",
+    "year": 1939,
+    "province": "Bà Điểm, Hóc Môn, TP. Hồ Chí Minh",
+    "description": "Tháng 11/1939, Hội nghị Trung ương 6 họp tại Bà Điểm (Hóc Môn) xác định nhiệm vụ giải phóng dân tộc là trọng tâm, tạm gác khẩu hiệu cách mạng ruộng đất.",
+    "image_urls": []
+  },
+  {
+    "name": "Lời kêu gọi toàn quốc kháng chiến",
+    "year": 1946,
+    "province": "Hà Nội",
+    "support_label": "Cả nước",
+    "description": "Ngày 19/12/1946, Chủ tịch Hồ Chí Minh ra Lời kêu gọi toàn quốc kháng chiến, kêu gọi toàn dân đứng lên bảo vệ độc lập chống thực dân Pháp.",
+    "image_urls": []
+  },
+  {
+    "name": "Chiến dịch Việt Bắc Thu – Đông",
+    "year": 1947,
+    "province": "Tuyên Quang, Bắc Kạn, Thái Nguyên, Cao Bằng",
+    "support_label": "Việt Bắc",
+    "description": "Từ 7/10 đến 19/12/1947, quân và dân Việt Bắc đập tan cuộc tấn công quy mô lớn của Pháp, bảo vệ an toàn căn cứ địa kháng chiến.",
+    "image_urls": []
+  },
+  {
+    "name": "Ký Hiệp định Genève",
+    "year": 1954,
+    "province": "Genève (Thụy Sĩ)",
+    "support_label": "Genève (Thụy Sĩ)",
+    "description": "Ngày 21/7/1954, Hiệp định Genève được ký kết, chấm dứt chiến tranh Đông Dương, công nhận độc lập, chủ quyền, thống nhất và toàn vẹn lãnh thổ Việt Nam.",
+    "image_urls": []
+  },
+  {
+    "name": "Thành lập Mặt trận Dân tộc Giải phóng miền Nam Việt Nam",
+    "year": 1960,
+    "province": "Tây Ninh",
+    "support_label": "Miền Nam Việt Nam",
+    "description": "Ngày 20/12/1960, Mặt trận Dân tộc Giải phóng miền Nam Việt Nam được thành lập tại Tây Ninh, đoàn kết nhân dân miền Nam chống Mỹ – Diệm.",
+    "image_urls": []
+  },
+  {
+    "name": "Chiến thắng Ấp Bắc",
+    "year": 1963,
+    "province": "Tiền Giang",
+    "support_label": "Miền Nam Việt Nam",
+    "description": "Ngày 2/1/1963, quân giải phóng miền Nam đánh bại cuộc hành quân của quân đội Sài Gòn tại Ấp Bắc (Tiền Giang), mở đầu thời kỳ phản công chiến lược.",
+    "image_urls": []
+  },
+  {
+    "name": "Chiến tranh biên giới Tây Nam",
+    "year": 1978,
+    "province": "An Giang, Kiên Giang, Tây Ninh",
+    "support_label": "Biên giới Tây Nam",
+    "description": "Từ cuối năm 1978, tập đoàn diệt chủng Pol Pot xâm phạm biên giới Tây Nam. Quân đội Việt Nam phản công, giúp nhân dân Campuchia thoát khỏi nạn diệt chủng.",
+    "image_urls": []
+  },
+  {
+    "name": "Chiến tranh biên giới phía Bắc",
+    "year": 1979,
+    "province": "Lạng Sơn, Cao Bằng, Hà Giang, Lào Cai",
+    "support_label": "Biên giới phía Bắc",
+    "description": "Tháng 2/1979, Trung Quốc huy động hàng chục vạn quân tấn công biên giới phía Bắc Việt Nam. Nhân dân ta kiên cường chiến đấu bảo vệ Tổ quốc.",
+    "image_urls": []
+  },
+  {
+    "name": "Việt Nam gia nhập APEC",
+    "year": 1998,
+    "province": "Kuala Lumpur (Malaysia)",
+    "description": "Năm 1998, Việt Nam trở thành thành viên của Diễn đàn Hợp tác Kinh tế châu Á – Thái Bình Dương (APEC), mở rộng quan hệ hợp tác khu vực.",
+    "image_urls": []
+  },
+  {
+    "name": "Việt Nam ký Hiệp định CPTPP",
+    "year": 2018,
+    "province": "Santiago (Chile)",
+    "description": "Ngày 8/3/2018, Việt Nam cùng 10 quốc gia ký Hiệp định Đối tác Toàn diện và Tiến bộ xuyên Thái Bình Dương (CPTPP), thúc đẩy hội nhập kinh tế sâu rộng.",
+    "image_urls": []
+  },
+  {
+    "name": "Ứng phó đại dịch COVID-19",
+    "year": 2020,
+    "province": "Cả nước",
+    "support_label": "Cả nước",
+    "description": "Năm 2020, Việt Nam triển khai nhiều biện pháp phòng chống COVID-19 hiệu quả, trở thành điểm sáng toàn cầu trong kiểm soát dịch bệnh.",
+    "image_urls": []
+  }
+]
