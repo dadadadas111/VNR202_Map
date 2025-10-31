@@ -837,15 +837,12 @@
     if (!m || !frame) return;
     const url = galleryImages[galleryIndex];
     // If the URL looks like a PDF, embed as object with fallback link; otherwise show an image
-    if (typeof url === 'string' && /\.pdf(\?.*)?$/i.test(url)) {
+  if (typeof url === 'string' && /\.pdf(\?.*)?$/i.test(url)) {
       frame.innerHTML = `<div class="pdf-preview"><object data="${url}" type="application/pdf" width="100%" height="480">Không thể hiển thị PDF. <a href="${url}" target="_blank" rel="noopener">Mở tệp</a></object></div>`;
     } else {
-      const img = document.createElement('img'); img.className = 'gallery-img'; img.src = url;
-      img.onerror = function () {
-        // show fallback link if image fails to load
-        frame.innerHTML = `<div class="img-error">Không thể tải ảnh. <a href="${url}" target="_blank" rel="noopener">Mở liên kết</a></div>`;
-      };
+      // Use helper to create a gallery image element that will scale up small images
       frame.innerHTML = '';
+      const img = createGalleryImage(url);
       frame.appendChild(img);
     }
     // render metadata (if available)
@@ -872,6 +869,55 @@
     m.style.display = 'flex';
   }
 
+  // Helper: create a gallery <img> element and apply sizing rules so small
+  // images are scaled up to a reasonable minimum while respecting viewport
+  // max dimensions and preserving aspect ratio.
+  function createGalleryImage(url) {
+    const img = document.createElement('img');
+    img.className = 'gallery-img';
+    img.src = url;
+    img.style.display = 'block';
+    img.style.margin = '0 auto';
+    img.onerror = function () {
+      const frame = document.getElementById('imgFrame');
+      if (frame) frame.innerHTML = `<div class="img-error">Không thể tải ảnh. <a href="${url}" target="_blank" rel="noopener">Mở liên kết</a></div>`;
+    };
+    img.onload = function () {
+      try {
+        const nw = img.naturalWidth || 0;
+        const nh = img.naturalHeight || 0;
+        // Viewport constraints
+        const maxW = Math.min(window.innerWidth * 0.86, 1200); // leave margins
+        const maxH = Math.min(window.innerHeight * 0.78, 900);
+        // Minimum display target (so small thumbs are scaled up a bit)
+        const minW = Math.min(800, maxW);
+        const minH = Math.min(480, maxH);
+
+        let targetW = nw;
+        let targetH = nh;
+        if (nw > 0 && nh > 0) {
+          // compute scale-up to meet minimums
+          const scaleUp = Math.max(1, Math.max(minW / nw, minH / nh));
+          targetW = Math.round(nw * scaleUp);
+          targetH = Math.round(nh * scaleUp);
+          // then ensure we don't exceed max constraints (scale down if needed)
+          const scaleDown = Math.min(1, Math.min(maxW / targetW, maxH / targetH));
+          targetW = Math.round(targetW * scaleDown);
+          targetH = Math.round(targetH * scaleDown);
+        } else {
+          // fallback: constrain by viewport
+          targetW = Math.min(maxW, minW);
+        }
+        // Apply sizing while preserving aspect ratio: set width and auto height
+        img.style.width = targetW + 'px';
+        img.style.height = 'auto';
+        img.style.maxWidth = '100%';
+        img.style.maxHeight = maxH + 'px';
+      } catch (err) { /* ignore sizing errors */ }
+    };
+    return img;
+  }
+
   function galleryPrev() { if (galleryImages.length === 0) return; galleryIndex = (galleryIndex - 1 + galleryImages.length) % galleryImages.length; document.getElementById('imgFrame').innerHTML = `<img src="${galleryImages[galleryIndex]}" class="gallery-img" />`; }
   function galleryNext() { if (galleryImages.length === 0) return; galleryIndex = (galleryIndex + 1) % galleryImages.length; document.getElementById('imgFrame').innerHTML = `<img src="${galleryImages[galleryIndex]}" class="gallery-img" />`; }
   // Update prev/next to refresh metadata as well
@@ -887,9 +933,9 @@
       if (typeof url === 'string' && /\.pdf(\?.*)?$/i.test(url)) {
         frame.innerHTML = `<div class="pdf-preview"><object data="${url}" type="application/pdf" width="100%" height="480">Không thể hiển thị PDF. <a href="${url}" target="_blank" rel="noopener">Mở tệp</a></object></div>`;
       } else {
-        const img = document.createElement('img'); img.className = 'gallery-img'; img.src = url;
-        img.onerror = function () { frame.innerHTML = `<div class="img-error">Không thể tải ảnh. <a href="${url}" target="_blank" rel="noopener">Mở liên kết</a></div>`; };
-        frame.innerHTML = ''; frame.appendChild(img);
+        frame.innerHTML = '';
+        const img = createGalleryImage(url);
+        frame.appendChild(img);
       }
       if (meta) {
         meta.innerHTML = '';
